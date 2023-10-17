@@ -1,1 +1,6 @@
 ^dev$
+^README\.Rmd$
+^\.github$
+^.*\.Rproj$
+^\.Rproj\.user$
+^codecov\.yml$

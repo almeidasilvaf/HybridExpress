@@ -6,3 +6,4 @@
 *.Rproj
 
 dev/
+inst/doc

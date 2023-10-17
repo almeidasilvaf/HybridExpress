@@ -1,0 +1,44 @@
+Package: HybridExpress
+Title: Analysis of RNA-seq data for hybrid species and their parents
+Version: 0.99.0
+Date: 2023-10-17
+Authors@R: 
+    c(
+        person(
+            given = "Fabricio",
+            family = "Almeida-Silva",
+            role = c("aut", "cre"),
+            email = "fabricio_almeidasilva@hotmail.com",
+            comment = c(ORCID = "0000-0002-5314-2964")
+        ),
+        person(
+            given = "Lucas",
+            family = "Prost",
+            role = "aut",
+            comment = c(ORCID = "0000-0003-2779-9097")
+        ),
+        person(
+            given = "Yves",
+            family = "Van de Peer",
+            role = "aut",
+            email = "yves.vandepeer@psb.vib-ugent.be",
+            comment = c(ORCID = "0000-0003-4327-3730")
+        )
+    )
+Description: What the package does (one paragraph).
+License: GPL-3
+URL: https://github.com/almeidasilvaf/HybridExpress
+BugReports: https://support.bioconductor.org/tag/HybridExpress
+biocViews: 
+    Software,
+    FunctionalGenomics
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+Suggests: 
+    BiocStyle,
+    knitr,
+    sessioninfo,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+VignetteBuilder: knitr
