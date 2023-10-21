@@ -16,7 +16,7 @@ package: "`r pkg_ver('HybridExpress')`"
 vignette: >
   %\VignetteIndexEntry{Introduction to HybridExpress}
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}  
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include = FALSE}
