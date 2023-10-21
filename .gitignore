@@ -7,3 +7,4 @@
 
 dev/
 inst/doc
+inst/script/*.Rmd
