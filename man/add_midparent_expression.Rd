@@ -32,7 +32,6 @@ A \code{SummarizedExperiment} object.
 Add midparent expression to \code{SummarizedExperiment} object
 }
 \examples{
-se <- se_chlamy
-
-
+data(se_chlamy)
+new_se <- add_midparent_expression(se_chlamy)
 }
