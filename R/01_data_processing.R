@@ -56,7 +56,7 @@ add_midparent_expression <- function(
     
     ## Create `SummarizedExperiment` object
     new_se <- SummarizedExperiment::SummarizedExperiment(
-        assay = list(count = new_counts),
+        assay = list(counts = new_counts),
         colData = new_cdata
     )
     

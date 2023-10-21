@@ -3,7 +3,6 @@
 data(se_chlamy)
 
 
-
 # Start tests ----
 test_that("add_midparent_expression() adds columns with midparent expression", {
     
