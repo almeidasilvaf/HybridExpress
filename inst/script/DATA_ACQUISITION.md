@@ -88,5 +88,5 @@ by `get_deg_counts()`.
 deg_counts <- get_deg_counts(deg_list)
 
 # Save data
-usethis::use_data(deg_counts, compress = "xz")
+usethis::use_data(deg_counts, compress = "xz", overwrite = TRUE)
 ```

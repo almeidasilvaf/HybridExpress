@@ -7,7 +7,9 @@
 \format{
 A list of data frames with gene-wise test statistics for
 differentially expressed genes for each contrast. Contrasts are
-"P1_vs_P2", "P1_vs_F1", "P2_vs_F1", and "midparent_vs_F1".
+"P2_vs_P1", "F1_vs_P1", "F1_vs_P2", and "F1_vs_midparent",
+where the ID before 'vs' represents the numerator, and the ID after 'vs'
+represents the denominator.
 }
 \usage{
 data(deg_list)
