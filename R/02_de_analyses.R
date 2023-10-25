@@ -28,10 +28,10 @@
 #' for each contrast. Each data frame contains the same columns as the
 #' output of \code{DESeq2::results()}. Contrasts (list names) are:
 #' \describe{
-#'   \item{P1_vs_P2}{Parent 2 versus parent 1 (reference level).}
-#'   \item{P1_vs_F1}{Parent 1 versus offspring (reference level).}
-#'   \item{P2_vs_F1}{Parent 2 versus offspring (reference level).}
-#'   \item{midparent_vs_F1}{Midparent versus offspring (reference level).}
+#'   \item{P2_vs_P1}{Parent 2 (numerator) versus parent 1 (denominator).}
+#'   \item{F1_vs_P1}{Offspring (numerator) versus parent 1 (denominator).}
+#'   \item{F1_vs_P2}{Offspring (numerator) versus parent 2 (denominator).}
+#'   \item{F1_vs_midparent}{Offspring (numerator) versus midparent (denominator).}
 #' }
 #' 
 #' The data frame with gene-wise test statistics in each list element contains
@@ -85,15 +85,15 @@ get_deg_list <- function(
     
     # Extract gene-wise test statistics for each contrast
     contrasts <- list(
-        "P1_vs_P2" = c(parent1, parent2),
-        "P1_vs_F1" = c(parent1, offspring),
-        "P2_vs_F1" = c(parent2, offspring),
-        "midparent_vs_F1" = c("midparent", offspring)
+        "P2_vs_P1" = c(parent2, parent1),
+        "F1_vs_P1" = c(offspring, parent1),
+        "F1_vs_P2" = c(offspring, parent2),
+        "F1_vs_midparent" = c(offspring, "midparent")
     )
     
     dge_list <- lapply(contrasts, function(x) {
         res_df <- as.data.frame(DESeq2::results(
-            res, contrast = c(coldata_column, x[2], x[1]), ...
+            res, contrast = c(coldata_column, x[1], x[2]), ...
         ))
         res_df <- res_df[res_df$padj < alpha & 
                              abs(res_df$log2FoldChange) >= lfcThreshold, ]
@@ -109,7 +109,8 @@ get_deg_list <- function(
 
 #' Get a count table of differentially expressed genes per contrast
 #' 
-#' @param deg_list A list as returned by \code{get_deg_list()}.
+#' @param deg_list A list of data frames with gene-wise test statistics for
+#' differentially expressed genes as returned by \code{get_deg_list()}.
 #'
 #' @return A data frame with the following variables:
 #' \describe{

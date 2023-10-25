@@ -7,7 +7,8 @@
 get_deg_counts(deg_list)
 }
 \arguments{
-\item{deg_list}{A list as returned by \code{get_deg_list()}.}
+\item{deg_list}{A list of data frames with gene-wise test statistics for
+differentially expressed genes as returned by \code{get_deg_list()}.}
 }
 \value{
 A data frame with the following variables:

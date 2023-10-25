@@ -55,10 +55,10 @@ A list of data frames with DESeq2's gene-wise tests statistics
 for each contrast. Each data frame contains the same columns as the
 output of \code{DESeq2::results()}. Contrasts (list names) are:
 \describe{
-\item{P1_vs_P2}{Parent 2 versus parent 1 (reference level).}
-\item{P1_vs_F1}{Parent 1 versus offspring (reference level).}
-\item{P2_vs_F1}{Parent 2 versus offspring (reference level).}
-\item{midparent_vs_F1}{Midparent versus offspring (reference level).}
+\item{P2_vs_P1}{Parent 2 (numerator) versus parent 1 (denominator).}
+\item{F1_vs_P1}{Offspring (numerator) versus parent 1 (denominator).}
+\item{F1_vs_P2}{Offspring (numerator) versus parent 2 (denominator).}
+\item{F1_vs_midparent}{Offspring (numerator) versus midparent (denominator).}
 }
 
 The data frame with gene-wise test statistics in each list element contains
