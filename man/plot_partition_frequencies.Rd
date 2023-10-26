@@ -4,7 +4,7 @@
 \alias{plot_partition_frequencies}
 \title{Plot a barplot of gene frequencies per expression partition}
 \usage{
-plot_partition_frequencies(partition_table, group_by = "Group")
+plot_partition_frequencies(partition_table, group_by = "Group", palette = NULL)
 }
 \arguments{
 \item{partition_table}{A data frame with genes per expression partition
@@ -13,6 +13,12 @@ as returned by \code{expression_partitioning()}.}
 \item{group_by}{Character indicating the name of the variable
 in \strong{partition_table} to use to group genes. One of "Group" or
 "Class". Default: "Group".}
+
+\item{palette}{Character vector with color names to be used for each level
+of the variable specified in \strong{group_by}.
+If \strong{group_by = "Group"}, this must be a vector of length 12.
+If \strong{group_by = "Class"}, this must be a vector of length 5.
+If NULL, a default color palette will be used.}
 }
 \value{
 A ggplot object with a barplot showing gene frequencies per

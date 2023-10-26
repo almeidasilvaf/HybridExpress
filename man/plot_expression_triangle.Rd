@@ -4,11 +4,20 @@
 \alias{plot_expression_triangle}
 \title{Plot a triangle of comparisons of DEG sets among generations}
 \usage{
-plot_expression_triangle(deg_counts)
+plot_expression_triangle(deg_counts, palette = NULL, box_labels = NULL)
 }
 \arguments{
 \item{deg_counts}{Data frame with number of differentially expressed
 genes per contrast as returned by \code{get_deg_counts}.}
+
+\item{palette}{Character vector of length 4 indicating the colors of the
+boxes for P1, P2, F1, and midparent, respectively. If NULL,
+a default color palette will be used.}
+
+\item{box_labels}{Character vector of length 4 indicating the labels of the
+boxes for P1, P2, F1, and midparent, respectively. Default: NULL, which
+will lead to labels "P1", "P2",
+"F1", and "Midparent", respectively.}
 }
 \value{
 A ggplot object with an expression triangle.

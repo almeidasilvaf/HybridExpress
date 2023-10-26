@@ -296,5 +296,43 @@ partition_lineplots <- function(
 }
 
 
+#' Process color palette for plotting functions
+#'
+#' @param palette Character vector with user-defined color palette, or NULL
+#' if the user does not pass a custom color palette. Default: NULL.
+#' @param plot Character indicating the name of the plot for which
+#' a color palette will be extracted if \strong{palette = NULL}. One 
+#' of 'triangle', 'part1', 'part2',   
+#'
+#' @return A character vector of color names.
+#' @noRd
+#'
+ppal <- function(palette = NULL, plot = "triangle") {
+    
+    col <- palette
+    if(is.null(col)) {
+        
+        if(plot == "triangle") { # Expression triangle
+            col <- c("dodgerblue3", "firebrick", "purple4", "mediumorchid4")
+        } else if(plot == "partition") { # Partitions
+            col <- c(
+                "#5050FFFF", "#CE3D32FF", "#749B58FF", "#F0E685FF", 
+                "#466983FF", "#BA6338FF", "#5DB1DDFF", "#802268FF", 
+                "#6BD76BFF", "#D595A7FF", "gold2", "#837B8DFF"
+            )
+        } else if(plot == "pca") { # PCA plot
+            col <- c("#3182BDFF", "#E6550DFF", "#31A354FF", "#756BB1FF", 
+                     "#636363FF", "#6BAED6FF", "#FD8D3CFF", "#74C476FF", 
+                     "#9E9AC8FF", "#969696FF", "#9ECAE1FF", "#FDAE6BFF", 
+                     "#A1D99BFF", "#BCBDDCFF", "#BDBDBDFF", "#C6DBEFFF", 
+                     "#FDD0A2FF", "#C7E9C0FF", "#DADAEBFF", "#D9D9D9FF"
+            )
+        } else {
+            stop("Unknown plot type.")
+        }
+    }
+    
+    return(col)
+}
 
 

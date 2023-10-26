@@ -3,6 +3,13 @@
 #'
 #' @param deg_counts Data frame with number of differentially expressed
 #' genes per contrast as returned by \code{get_deg_counts}.
+#' @param palette Character vector of length 4 indicating the colors of the 
+#' boxes for P1, P2, F1, and midparent, respectively. If NULL, 
+#' a default color palette will be used.
+#' @param box_labels Character vector of length 4 indicating the labels of the
+#' boxes for P1, P2, F1, and midparent, respectively. Default: NULL, which
+#' will lead to labels "P1", "P2", 
+#' "F1", and "Midparent", respectively.
 #'
 #' @return A ggplot object with an expression triangle.
 #' @details
@@ -19,11 +26,22 @@
 #' @examples
 #' data(deg_counts)
 #' plot_expression_triangle(deg_counts)
-plot_expression_triangle <- function(deg_counts) {
+plot_expression_triangle <- function(
+        deg_counts, palette = NULL, box_labels = NULL
+) {
+    
+    pal <- ppal(palette, "triangle")
     
     # Get plot data
     tgraph <- get_triangle_graph()
     numbers <- get_triangle_numbers(deg_counts)
+    
+    if(!is.null(box_labels)) {
+        tgraph$nodes$node <- gsub("P1", box_labels[1], tgraph$nodes$node)
+        tgraph$nodes$node <- gsub("P2", box_labels[2], tgraph$nodes$node)
+        tgraph$nodes$node <- gsub("F1", box_labels[3], tgraph$nodes$node)
+        tgraph$nodes$node <- gsub("Midparent", box_labels[4], tgraph$nodes$node)
+    }
     
     # Plot triangle
     p <- ggplot() +
@@ -42,8 +60,7 @@ plot_expression_triangle <- function(deg_counts) {
                 xmin = .data$xmin, ymin = .data$ymin, 
                 xmax = .data$xmax, ymax = .data$ymax
             ),
-            color = "grey20", 
-            fill = c("dodgerblue3", "firebrick", "purple4", "mediumorchid4")
+            color = "grey20", fill = pal
         ) +
         geom_text(
             data = tgraph$nodes, 
@@ -73,6 +90,11 @@ plot_expression_triangle <- function(deg_counts) {
 #' @param group_by Character indicating the name of the variable 
 #' in \strong{partition_table} to use to group genes. One of "Group" or
 #' "Class". Default: "Group".
+#' @param palette Character vector with color names to be used for each level
+#' of the variable specified in \strong{group_by}. 
+#' If \strong{group_by = "Group"}, this must be a vector of length 12.
+#' If \strong{group_by = "Class"}, this must be a vector of length 5.
+#' If NULL, a default color palette will be used.
 #'
 #' @return A ggplot object with a plot showing genes in each expression
 #' partition.
@@ -85,17 +107,15 @@ plot_expression_triangle <- function(deg_counts) {
 #' data(deg_list)
 #' partition_table <- expression_partitioning(deg_list)
 #' plot_expression_partitions(partition_table)
-plot_expression_partitions <- function(partition_table, group_by = "Group") {
+plot_expression_partitions <- function(
+        partition_table, group_by = "Group", palette = NULL
+) {
     
     pdata <- partition_table
     pdata <- pdata[!is.na(pdata$lFC_F1_vs_P1) & !is.na(pdata$lFC_F1_vs_P2), ]
     
     # Define color palette
-    pal <- c(
-        "#5050FFFF", "#CE3D32FF", "#749B58FF", "#F0E685FF", "#466983FF", 
-        "#BA6338FF", "#5DB1DDFF", "#802268FF", "#6BD76BFF", "#D595A7FF", 
-        "gold2", "#837B8DFF"
-    )[seq_along(levels(pdata[[group_by]]))]
+    pal <- ppal(palette, "partition")[seq_along(levels(pdata[[group_by]]))]
     names(pal) <- levels(pdata[[group_by]])
     
     # 1) Create scatterplot
@@ -140,6 +160,11 @@ plot_expression_partitions <- function(partition_table, group_by = "Group") {
 #' @param group_by Character indicating the name of the variable 
 #' in \strong{partition_table} to use to group genes. One of "Group" or
 #' "Class". Default: "Group".
+#' @param palette Character vector with color names to be used for each level
+#' of the variable specified in \strong{group_by}. 
+#' If \strong{group_by = "Group"}, this must be a vector of length 12.
+#' If \strong{group_by = "Class"}, this must be a vector of length 5.
+#' If NULL, a default color palette will be used.
 #' 
 #' @return A ggplot object with a barplot showing gene frequencies per
 #' partition next to explanatory line plots depicting each partition.
@@ -152,15 +177,14 @@ plot_expression_partitions <- function(partition_table, group_by = "Group") {
 #' data(deg_list)
 #' partition_table <- expression_partitioning(deg_list)
 #' plot_partition_frequencies(partition_table)
-plot_partition_frequencies <- function(partition_table, group_by = "Group") {
+plot_partition_frequencies <- function(
+        partition_table, group_by = "Group", palette = NULL
+) {
     
     # Define color palette
-    pal <- c(
-        "#5050FFFF", "#CE3D32FF", "#749B58FF", "#F0E685FF", "#466983FF", 
-        "#BA6338FF", "#5DB1DDFF", "#802268FF", "#6BD76BFF", "#D595A7FF", 
-        "gold2", "#837B8DFF"
-    )[seq_along(levels(partition_table[[group_by]]))]
-    names(pal) <- levels(partition_table[[group_by]])
+    lev <- levels(partition_table[[group_by]])
+    pal <- ppal(palette, "partition")[seq_along(lev)]
+    names(pal) <- lev
 
     # Get barplot data
     freqs <- table(partition_table[[group_by]])
@@ -200,5 +224,99 @@ plot_partition_frequencies <- function(partition_table, group_by = "Group") {
     
     return(p_final)
 }
+
+
+
+#' Perform a principal component analysis (PCA) and plot PCs
+#'
+#' @param se A `SummarizedExperiment` object with a count matrix and sample
+#' metadata.
+#' @param PCs Numeric vector indicating which principal components to show
+#' in the x-axis and y-axis, respectively. Default: \code{c(1,2)}.
+#' @param color_by Character with the name of the column in \code{colData(se)}
+#' to use to group samples by color. Default: NULL.
+#' @param shape_by Character with the name of the column in \code{colData(se)}
+#' to use to group samples by shape. Default: NULL.
+#' @param add_mean Logical indicating whether to add a diamond symbol
+#' with the mean value for each level of the variable indicated 
+#' in \strong{color_by}. Default: FALSE
+#' @param palette Character vector with colors to use for each level of the
+#' variable indicated in \strong{color_by}. If NULL, a default color palette
+#' will be used.
+#'
+#' @return A ggplot object with a PCA plot showing 2 principal components
+#' in each axis along with their % of variance explained.
+#'
+#' @importFrom SummarizedExperiment assay colData
+#' @importFrom DESeq2 vst
+#' @importFrom stats prcomp
+#' @importFrom ggplot2 geom_point theme scale_color_manual element_blank
+#' @export
+#' @rdname pca_plot
+#' @examples
+#' data(se_chlamy)
+#' se <- add_midparent_expression(se_chlamy)
+#' pca_plot(
+#'     se, color_by = "Ploidy", shape_by = "Generation", add_mean = TRUE
+#' )
+#'
+pca_plot <- function(
+        se, PCs = c(1, 2), color_by = NULL, shape_by = NULL, add_mean = FALSE,
+        palette = NULL
+) {
+    
+    pc <- paste0("PC", PCs)
+    pal <- ppal(palette, "pca")
+    
+    # Get sample metadata
+    cdata <- as.data.frame(colData(se))
+
+    # Perform PCA on vs-transformed and get data frame to plot
+    pca_df <- prcomp(t(vst(assay(se))))
+    
+    # Create final plot data: 1) PCA + coldata; 2) % variance explained
+    pdata <- merge(as.data.frame(pca_df$x), cdata, by = "row.names")
+    names(pdata)[1] <- "Sample"
+    
+    varexp <- data.frame(
+        row.names = colnames(pca_df$x), 
+        Var = round(100 * pca_df$sdev^2 / sum(pca_df$sdev^2), 1)
+    )
+    
+    # (optional) Add mean by a particular variable
+    point_mean <- NULL
+    if(add_mean) {
+        mean_df <- lapply(split(pdata, pdata[[mean_by]]), function(x) {
+            cmeans <- colMeans(x[, pc])
+            df <- data.frame(pcx = cmeans[1], pcy = cmeans[2], g = x[1, mean_by])
+            names(df) <- c(pc, mean_by)
+            return(df)
+        })
+        mean_df <- Reduce(rbind, mean_df)
+        point_mean <- geom_point(
+            data = mean_df, aes(color = .data[[color_by]]), size = 8, shape = 18
+        )
+    }
+    
+    # Plot PCA
+    p_pca <- ggplot(pdata, aes(x = .data[[pc[1]]], y = .data[[pc[2]]])) +
+        geom_point(
+            aes(
+                color = .data[[color_by]], shape = .data[[shape_by]]
+            ), size = 3, alpha = 0.7
+        ) +
+        point_mean +
+        scale_color_manual(values = pal) +
+        labs(
+            title = "PCA of samples",
+            x = paste0(pc[1], " (", varexp[pc[1], ], "%)"),
+            y = paste0(pc[2], " (", varexp[pc[2], ], "%)")
+        ) +
+        theme_bw() +
+        theme(panel.grid = element_blank())
+    
+    return(p_pca)
+}
+
 
 

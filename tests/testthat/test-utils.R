@@ -67,3 +67,15 @@ test_that("partition_lineplots() creates a list of line plots", {
 })
 
 
+test_that("ppal() generates a vector of color palettes", {
+    
+    pal1 <- ppal(c("red", "green", "blue"))
+    pal2 <- ppal(NULL, "triangle")
+    pal3 <- ppal(NULL, "pca")
+    pal4 <- ppal(NULL, "partition")
+    
+    expect_true(is.character(pal1))
+    expect_true(is.character(pal2))
+    expect_true(is.character(pal3))
+    expect_true(is.character(pal4))
+})
