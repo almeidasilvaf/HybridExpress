@@ -44,8 +44,7 @@ Perform a principal component analysis (PCA) and plot PCs
 \examples{
 data(se_chlamy)
 se <- add_midparent_expression(se_chlamy)
-pca_plot(
-    se, color_by = "Ploidy", shape_by = "Generation", mean_by = "Ploidy"
-)
-
+se$Ploidy[is.na(se$Ploidy)] <- "midparent"
+se$Generation[is.na(se$Generation)] <- "midparent"
+pca_plot(se, color_by = "Generation", shape_by = "Ploidy", add_mean = TRUE)
 }

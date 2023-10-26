@@ -256,10 +256,9 @@ plot_partition_frequencies <- function(
 #' @examples
 #' data(se_chlamy)
 #' se <- add_midparent_expression(se_chlamy)
-#' pca_plot(
-#'     se, color_by = "Ploidy", shape_by = "Generation", add_mean = TRUE
-#' )
-#'
+#' se$Ploidy[is.na(se$Ploidy)] <- "midparent"
+#' se$Generation[is.na(se$Generation)] <- "midparent"
+#' pca_plot(se, color_by = "Generation", shape_by = "Ploidy", add_mean = TRUE)
 pca_plot <- function(
         se, PCs = c(1, 2), color_by = NULL, shape_by = NULL, add_mean = FALSE,
         palette = NULL
@@ -286,10 +285,10 @@ pca_plot <- function(
     # (optional) Add mean by a particular variable
     point_mean <- NULL
     if(add_mean) {
-        mean_df <- lapply(split(pdata, pdata[[mean_by]]), function(x) {
+        mean_df <- lapply(split(pdata, pdata[[color_by]]), function(x) {
             cmeans <- colMeans(x[, pc])
-            df <- data.frame(pcx = cmeans[1], pcy = cmeans[2], g = x[1, mean_by])
-            names(df) <- c(pc, mean_by)
+            df <- data.frame(pcx = cmeans[1], pcy = cmeans[2], g = x[1, color_by])
+            names(df) <- c(pc, color_by)
             return(df)
         })
         mean_df <- Reduce(rbind, mean_df)
