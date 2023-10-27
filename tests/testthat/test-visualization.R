@@ -38,7 +38,7 @@ test_that("plot_partition_frequencies() returns a multi-panel ggplot", {
 test_that("pca_plot() returns a ggplot object", {
     
     p1 <- pca_plot(
-        se, color_by = "Ploidy", shape_by = "Generation", mean_by = "Ploidy"
+        se, color_by = "Ploidy", shape_by = "Generation", add_mean = TRUE
     )
     
     expect_true(is(p1, "ggplot"))
