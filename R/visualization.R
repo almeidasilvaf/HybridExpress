@@ -88,11 +88,11 @@ plot_expression_triangle <- function(
 #' @param partition_table A data frame with genes per expression partition
 #' as returned by \code{expression_partitioning()}.
 #' @param group_by Character indicating the name of the variable 
-#' in \strong{partition_table} to use to group genes. One of "Group" or
-#' "Class". Default: "Group".
+#' in \strong{partition_table} to use to group genes. One of "Category" or
+#' "Class". Default: "Category".
 #' @param palette Character vector with color names to be used for each level
 #' of the variable specified in \strong{group_by}. 
-#' If \strong{group_by = "Group"}, this must be a vector of length 12.
+#' If \strong{group_by = "Category"}, this must be a vector of length 12.
 #' If \strong{group_by = "Class"}, this must be a vector of length 5.
 #' If NULL, a default color palette will be used.
 #'
@@ -108,7 +108,7 @@ plot_expression_triangle <- function(
 #' partition_table <- expression_partitioning(deg_list)
 #' plot_expression_partitions(partition_table)
 plot_expression_partitions <- function(
-        partition_table, group_by = "Group", palette = NULL
+        partition_table, group_by = "Category", palette = NULL
 ) {
     
     pdata <- partition_table
@@ -158,11 +158,11 @@ plot_expression_partitions <- function(
 #' @param partition_table A data frame with genes per expression partition
 #' as returned by \code{expression_partitioning()}.
 #' @param group_by Character indicating the name of the variable 
-#' in \strong{partition_table} to use to group genes. One of "Group" or
-#' "Class". Default: "Group".
+#' in \strong{partition_table} to use to group genes. One of "Category" or
+#' "Class". Default: "Category".
 #' @param palette Character vector with color names to be used for each level
 #' of the variable specified in \strong{group_by}. 
-#' If \strong{group_by = "Group"}, this must be a vector of length 12.
+#' If \strong{group_by = "Category"}, this must be a vector of length 12.
 #' If \strong{group_by = "Class"}, this must be a vector of length 5.
 #' If NULL, a default color palette will be used.
 #' 
@@ -178,7 +178,7 @@ plot_expression_partitions <- function(
 #' partition_table <- expression_partitioning(deg_list)
 #' plot_partition_frequencies(partition_table)
 plot_partition_frequencies <- function(
-        partition_table, group_by = "Group", palette = NULL
+        partition_table, group_by = "Category", palette = NULL
 ) {
     
     # Define color palette
@@ -189,21 +189,21 @@ plot_partition_frequencies <- function(
     # Get barplot data
     freqs <- table(partition_table[[group_by]])
     freq_df <- data.frame(
-        Group = factor(names(freqs), levels = names(freqs)), 
+        Category = factor(names(freqs), levels = names(freqs)), 
         N = as.numeric(freqs)
     )
     freq_df$Perc <- paste0(round((freq_df$N / sum(freq_df$N)) * 100, 2), "%")
     ymax <- round(max(freq_df$N) + mean(freq_df$N), -2)
     
     # Create barplot
-    p_bar <- ggplot(freq_df, aes(x = .data$Group, y = .data$N)) +
+    p_bar <- ggplot(freq_df, aes(x = .data$Category, y = .data$N)) +
         geom_bar(fill = pal, color = "gray20", stat = "identity") +
         geom_text(aes(label = .data$Perc), hjust = -0.2) +
         theme_bw() +
         scale_y_continuous(limits = c(0, ymax), expand = c(0, 0)) +
         theme(plot.subtitle = element_text(size = 13)) +
         labs(y = "Count", subtitle = "Frequency of genes per partition") +
-        scale_x_discrete(limits = rev(levels(freq_df$Group))) +
+        scale_x_discrete(limits = rev(levels(freq_df$Category))) +
         coord_flip() 
     
     
@@ -213,7 +213,7 @@ plot_partition_frequencies <- function(
     )
     
     # Combine plots
-    ncols <- ifelse(group_by == "Group", 2, 1)
+    ncols <- ifelse(group_by == "Category", 2, 1)
     p_final <- wrap_plots(
         wrap_plots(p_line, ncol = ncols) & 
             theme(plot.margin = unit(rep(1, 4), "pt")),

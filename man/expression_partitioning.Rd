@@ -14,7 +14,7 @@ differentially expressed genes as returned by \code{get_deg_list()}.}
 A data with the following variables:
 \describe{
 \item{Gene}{Character, gene ID.}
-\item{Group}{Factor, expression group. Group names are numbers from
+\item{Category}{Factor, expression group. Category names are numbers from
 1 to 12.}
 \item{Class}{Factor, expression group class. One of "UP" (transgressive
 up-regulation), "DOWN" (transgressive down-regulation),

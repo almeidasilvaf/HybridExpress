@@ -7,7 +7,7 @@
 #' @return A data with the following variables:
 #' \describe{
 #'   \item{Gene}{Character, gene ID.}
-#'   \item{Group}{Factor, expression group. Group names are numbers from
+#'   \item{Category}{Factor, expression group. Category names are numbers from
 #'   1 to 12.}
 #'   \item{Class}{Factor, expression group class. One of "UP" (transgressive
 #'   up-regulation), "DOWN" (transgressive down-regulation), 
@@ -52,7 +52,7 @@ expression_partitioning <- function(deg_list) {
             "unchanged-down-down",
             "up-down-down"
         ),
-        Group = factor(c(1:12), levels = 1:12),
+        Category = factor(c(1:12), levels = 1:12),
         Class = factor(cl, levels = c("UP", "DOWN", "ADD", "ELD_P1", "ELD_P2"))
     )
 
@@ -74,9 +74,9 @@ expression_partitioning <- function(deg_list) {
     )
     
     # Combine classification data frame with log2foldchange
-    class_df <- merge(classified_genes[, c("Gene", "Group", "Class")], log2fc_df)
-    class_df <- class_df[!is.na(class_df$Group), ]
-    class_df <- class_df[order(class_df$Group), ]
+    class_df <- merge(classified_genes[, c("Gene", "Category", "Class")], log2fc_df)
+    class_df <- class_df[!is.na(class_df$Category), ]
+    class_df <- class_df[order(class_df$Category), ]
     
     rownames(class_df) <- NULL
     

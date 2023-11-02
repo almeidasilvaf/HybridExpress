@@ -24,7 +24,7 @@ test_that("plot_expression_triangle() returns a ggplot object", {
 
 test_that("plot_expression_partitions() returns a multi-panel ggplot", {
     
-    p1 <- plot_expression_partitions(ptable, group_by = "Group")
+    p1 <- plot_expression_partitions(ptable, group_by = "Category")
     p2 <- plot_expression_partitions(ptable, group_by = "Class")
     
     expect_true(is(p1, "ggplot"))
@@ -33,7 +33,7 @@ test_that("plot_expression_partitions() returns a multi-panel ggplot", {
 
 test_that("plot_partition_frequencies() returns a multi-panel ggplot", {
     
-    p1 <- plot_partition_frequencies(ptable, group_by = "Group")
+    p1 <- plot_partition_frequencies(ptable, group_by = "Category")
     p2 <- plot_partition_frequencies(ptable, group_by = "Class")
     
     expect_true(is(p1, "ggplot"))

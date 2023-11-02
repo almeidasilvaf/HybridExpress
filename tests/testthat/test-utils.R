@@ -68,7 +68,7 @@ test_that("get_deg_summary() returns a data frame with DE summary", {
 test_that("partition_scatterplot() creates a scatterplot", {
     
     p1 <- partition_scatterplot(partition_table, palette_class, "Class")
-    p2 <- partition_scatterplot(partition_table, palette_group, "Group")
+    p2 <- partition_scatterplot(partition_table, palette_group, "Category")
     
     expect_true(is(p1, "ggplot"))
 })

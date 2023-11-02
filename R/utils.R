@@ -179,8 +179,8 @@ get_deg_summary <- function(deg_list) {
 #' as returned by \code{expression_partitioning()}.
 #' @param palette A character vector with the color palette to use.
 #' @param group_by Character indicating the name of the variable 
-#' in \strong{partition_table} to use to group genes. One of "Group" or
-#' "Class". Default: "Group".
+#' in \strong{partition_table} to use to group genes. One of "Category" or
+#' "Class". Default: "Category".
 #'
 #' @return A ggplot object with a scatterplot.
 #' 
@@ -189,7 +189,9 @@ get_deg_summary <- function(deg_list) {
 #' @importFrom rlang .data
 #' @noRd
 #' 
-partition_scatterplot <- function(partition_table, palette, group_by = "Group") {
+partition_scatterplot <- function(
+        partition_table, palette, group_by = "Category"
+) {
     
     p_scatter <- ggplot(
         partition_table, aes(x = .data$lFC_F1_vs_P1, y = .data$lFC_F1_vs_P2)
@@ -223,8 +225,8 @@ partition_scatterplot <- function(partition_table, palette, group_by = "Group") 
 #' @param add_n Logical indicating whether to include number of genes in each
 #' group or not. Default: TRUE.
 #' @param group_by Character indicating the name of the variable 
-#' in \strong{partition_table} to use to group genes. One of "Group" or
-#' "Class". Default: "Group".
+#' in \strong{partition_table} to use to group genes. One of "Category" or
+#' "Class". Default: "Category".
 #'
 #' @return A list of ggplot objects with line plots.
 #' 
@@ -234,12 +236,12 @@ partition_scatterplot <- function(partition_table, palette, group_by = "Group") 
 #' @noRd
 #' 
 partition_lineplots <- function(
-        partition_table, palette, add_n = TRUE, group_by = "Group"
+        partition_table, palette, add_n = TRUE, group_by = "Category"
 ) {
     
     # Data frame of point coordinates for each group
     pline_data <- data.frame(
-        Group = factor(rep(1:12, each = 3)),
+        Category = factor(rep(1:12, each = 3)),
         Class = factor(
             rep(c(
                 "ADD", "ELD_P1", "DOWN", "ELD_P2", "UP", "UP", 
@@ -267,7 +269,7 @@ partition_lineplots <- function(
     pline_data <- split(pline_data, pline_data[[group_by]])
     
     ## Number of genes per level of `group_by`
-    n <- as.numeric(table(partition_table$Group))
+    n <- as.numeric(table(partition_table$Category))
     
     p_line <- lapply(seq_along(pline_data), function(x) {
         
@@ -286,7 +288,7 @@ partition_lineplots <- function(
             ) +
             ylim(c(0, 4))
         
-        if(group_by == "Class") { p <- p + facet_wrap("Group") }
+        if(group_by == "Class") { p <- p + facet_wrap("Category") }
         
         return(p)
     })
