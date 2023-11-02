@@ -334,6 +334,8 @@ pca_plot <- function(
 #' which columns should be extracted from \strong{rowData(se)}.
 #' @param ntop Numeric indicating the number of top genes with the 
 #' highest variances to use for the PCA. Default: 500.
+#' @param cor_method Character indicating the correlation method to use.
+#' One of "pearson" or "spearman". Default: "pearson".
 #' @param palette Character indicating the name of the color palette from
 #' the RColorBrewer package to use. Default: "Blues".
 #' @param ... Additional arguments to be passed
@@ -347,6 +349,7 @@ pca_plot <- function(
 #' @importFrom ComplexHeatmap pheatmap
 #' @importFrom RColorBrewer brewer.pal
 #' @importFrom grDevices colorRampPalette
+#' @importFrom stats cor
 #' @export
 #' @rdname plot_samplecor
 #' @examples
@@ -357,12 +360,12 @@ pca_plot <- function(
 #' plot_samplecor(se, ntop = 500)
 plot_samplecor <- function(
         se, coldata_cols = NULL, rowdata_cols = NULL, 
-        ntop = 500, palette = "Blues", ...
+        ntop = 500, cor_method = "pearson", palette = "Blues", ...
 ) {
     
     # Get gene expression matrix for genes with highest variances
     top <- sort(apply(assay(se), 1, var), decreasing = TRUE)[seq_len(ntop)]
-    exp <- as.matrix(assay(se)[names(top), ])
+    exp <- as.matrix(varianceStabilizingTransformation(assay(se)[names(top), ]))
     
     coldata <- se2metadata(se, coldata_cols = coldata_cols)$coldata
     rowdata <- se2metadata(se, rowdata_cols = rowdata_cols)$rowdata
@@ -385,7 +388,7 @@ plot_samplecor <- function(
     
     # Plot heatmap
     hm <- ComplexHeatmap::pheatmap(
-        as.matrix(exp),
+        cor(as.matrix(exp), method = cor_method),
         name = "Correlation",
         color = colorRampPalette(brewer.pal(9, palette))(100),
         border_color = NA,

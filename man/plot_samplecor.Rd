@@ -9,6 +9,7 @@ plot_samplecor(
   coldata_cols = NULL,
   rowdata_cols = NULL,
   ntop = 500,
+  cor_method = "pearson",
   palette = "Blues",
   ...
 )
@@ -26,6 +27,9 @@ which columns should be extracted from \strong{rowData(se)}.}
 
 \item{ntop}{Numeric indicating the number of top genes with the
 highest variances to use for the PCA. Default: 500.}
+
+\item{cor_method}{Character indicating the correlation method to use.
+One of "pearson" or "spearman". Default: "pearson".}
 
 \item{palette}{Character indicating the name of the color palette from
 the RColorBrewer package to use. Default: "Blues".}
