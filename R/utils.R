@@ -336,3 +336,139 @@ ppal <- function(palette = NULL, plot = "triangle") {
 }
 
 
+#' Extract row and column metadata from `SummarizedExperiment` objects
+#'
+#' @param se A `SummarizedExperiment` object.
+#' @param rowdata_cols Columns to use from the rowData element of the
+#' `SummarizedExperiment` object. It can be either a character vector
+#' of column names or a numeric vector of column indices.
+#' @param coldata_cols Columns to use from the colData element of the
+#' `SummarizedExperiment` object. It can be either a character vector
+#' of column names or a numeric vector of column indices.
+#'
+#' @return A list with the following elements:
+#' \describe{
+#'   \item{rowdata}{A data frame of row metadata containing only the selected
+#'                  columns.}
+#'   \item{coldata}{A data frame of column metadata containing only the
+#'                  selected columns.}
+#' }
+#'
+#' @noRd
+#' @importFrom SummarizedExperiment rowData colData
+se2metadata <- function(se, rowdata_cols = NULL, coldata_cols = NULL) {
+    
+    final_rowdata <- NA
+    final_coldata <- NA
+    
+    # Extract row and column metadata
+    rowdata <- SummarizedExperiment::rowData(se)
+    coldata <- SummarizedExperiment::colData(se)
+    
+    # Extract user-defined columns from metadata
+    ## Row metadata
+    if(ncol(rowdata) > 0) {
+        r_cols <- rowdata_cols
+        if(is.null(rowdata_cols)) { r_cols <- seq_along(rowdata) }
+        
+        final_rowdata <- as.data.frame(rowdata[, r_cols, drop = FALSE])
+    }
+    
+    if(ncol(coldata) > 0) {
+        c_cols <- coldata_cols
+        if(is.null(coldata_cols)) { c_cols <- seq_along(coldata) }
+        final_coldata <- as.data.frame(coldata[, c_cols, drop = FALSE])
+    }
+    
+    # Return resuls as a list
+    metadata_list <- list(
+        rowdata = final_rowdata,
+        coldata = final_coldata
+    )
+    
+    return(metadata_list)
+}
+
+
+#' Map levels of metadata variables to colors for plotting
+#'
+#' @param metadata A data frame with column or row metadata. If column
+#' metadata is passed, row names must contain sample names. If row metadata is
+#' passed, row names must contain gene names.
+#'
+#' @return A list containing the following elements:
+#' \describe{
+#'   \item{metadata}{A metadata data frame as in \strong{metadata}, but
+#'                   with rows sorted by levels of every column.}
+#'   \item{colors}{A list of named character vectors containing the mapping
+#'                 between levels of metadata variables and colors.}
+#' }
+#'
+#' @noRd
+#' @importFrom stats setNames
+metadata2colors <- function(metadata) {
+    
+    coldata <- NA
+    colors <- NA
+    
+    if(is.data.frame(metadata)) {
+        # Get variable names in metadata
+        col_names <- names(metadata)
+        if(length(col_names) > 3) {
+            stop("Maximum number of columns for row and sample metadata is 3.")
+        }
+        
+        # Sort elements in all columns
+        coldata <- metadata[do.call(order, metadata), , drop = FALSE]
+        
+        # Create a list of named vectors with variable levels and colors
+        colors <- lapply(seq_along(col_names), function(x) {
+            levels <- unique(coldata[, x])
+            cols <- setNames(custom_palette(x)[seq_along(levels)], levels)
+            return(cols)
+        })
+        names(colors) <- col_names
+    }
+    
+    # Return results as a list
+    results <- list(
+        metadata = coldata,
+        colors = colors
+    )
+    
+    return(results)
+}
+
+
+
+#' Generate custom color palette
+#'
+#' @param pal Numeric specifying palette number, from 1 to 3.
+#'
+#' @return Character vector of custom color palette with 20 colors
+#' @noRd
+custom_palette <- function(pal = 1) {
+    pal1 <- c("#1F77B4FF", "#FF7F0EFF", "#2CA02CFF", "#D62728FF",
+              "#9467BDFF", "#8C564BFF", "#E377C2FF", "#7F7F7FFF",
+              "#BCBD22FF", "#17BECFFF", "#AEC7E8FF", "#FFBB78FF",
+              "#98DF8AFF", "#FF9896FF", "#C5B0D5FF", "#C49C94FF",
+              "#F7B6D2FF", "#C7C7C7FF", "#DBDB8DFF", "#9EDAE5FF")
+    
+    pal2 <- c("#3182BDFF", "#E6550DFF", "#31A354FF", "#756BB1FF",
+              "#636363FF", "#6BAED6FF", "#FD8D3CFF", "#74C476FF",
+              "#9E9AC8FF", "#969696FF", "#9ECAE1FF", "#FDAE6BFF",
+              "#A1D99BFF", "#BCBDDCFF", "#BDBDBDFF", "#C6DBEFFF",
+              "#FDD0A2FF", "#C7E9C0FF", "#DADAEBFF", "#D9D9D9FF")
+    
+    pal3 <- c("#393B79FF", "#637939FF", "#8C6D31FF", "#843C39FF",
+              "#7B4173FF", "#5254A3FF", "#8CA252FF", "#BD9E39FF",
+              "#AD494AFF", "#A55194FF", "#6B6ECFFF", "#B5CF6BFF",
+              "#E7BA52FF", "#D6616BFF", "#CE6DBDFF", "#9C9EDEFF",
+              "#CEDB9CFF", "#E7CB94FF", "#E7969CFF", "#DE9ED6FF")
+    
+    l <- list(pal1, pal2, pal3)
+    l_final <- l[[pal]]
+    return(l_final)
+}
+
+

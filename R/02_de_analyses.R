@@ -118,8 +118,9 @@ get_deg_list <- function(
 #'   \item{up}{Numeric, number of up-regulated genes.}
 #'   \item{down}{Numeric, number of down-regulated genes.}
 #'   \item{total}{Numeric, total number of differentially expressed genes.}
-#'   \item{up_perc}{Numeric, percentage of up-regulated genes.}
-#'   \item{down_perc}{Numeric, percentage of down-regulated genes.}
+#'   \item{perc_up}{Numeric, percentage of up-regulated genes.}
+#'   \item{perc_down}{Numeric, percentage of down-regulated genes.}
+#'   \item{perc_total}{Numeric, percentage of diffferentially expressed genes.}
 #' }
 #'
 #' @export

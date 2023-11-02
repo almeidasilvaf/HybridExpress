@@ -233,6 +233,8 @@ plot_partition_frequencies <- function(
 #' metadata.
 #' @param PCs Numeric vector indicating which principal components to show
 #' in the x-axis and y-axis, respectively. Default: \code{c(1,2)}.
+#' @param ntop Numeric indicating the number of top genes with the 
+#' highest variances to use for the PCA. Default: 500.
 #' @param color_by Character with the name of the column in \code{colData(se)}
 #' to use to group samples by color. Default: NULL.
 #' @param shape_by Character with the name of the column in \code{colData(se)}
@@ -248,8 +250,8 @@ plot_partition_frequencies <- function(
 #' in each axis along with their % of variance explained.
 #'
 #' @importFrom SummarizedExperiment assay colData
-#' @importFrom DESeq2 vst
-#' @importFrom stats prcomp
+#' @importFrom DESeq2 varianceStabilizingTransformation
+#' @importFrom stats prcomp var
 #' @importFrom ggplot2 geom_point theme scale_color_manual element_blank
 #' @export
 #' @rdname pca_plot
@@ -260,8 +262,8 @@ plot_partition_frequencies <- function(
 #' se$Generation[is.na(se$Generation)] <- "midparent"
 #' pca_plot(se, color_by = "Generation", shape_by = "Ploidy", add_mean = TRUE)
 pca_plot <- function(
-        se, PCs = c(1, 2), color_by = NULL, shape_by = NULL, add_mean = FALSE,
-        palette = NULL
+        se, PCs = c(1, 2), ntop = 500, color_by = NULL, shape_by = NULL, 
+        add_mean = FALSE, palette = NULL
 ) {
     
     pc <- paste0("PC", PCs)
@@ -271,7 +273,10 @@ pca_plot <- function(
     cdata <- as.data.frame(colData(se))
 
     # Perform PCA on vs-transformed and get data frame to plot
-    pca_df <- prcomp(t(vst(assay(se))))
+    top <- sort(apply(assay(se), 1, var), decreasing = TRUE)[seq_len(ntop)]
+    pca_df <- prcomp(
+        t(varianceStabilizingTransformation(assay(se)[names(top), ]))
+    )
     
     # Create final plot data: 1) PCA + coldata; 2) % variance explained
     pdata <- merge(as.data.frame(pca_df$x), cdata, by = "row.names")
@@ -318,4 +323,80 @@ pca_plot <- function(
 }
 
 
+#' Plot a heatmap of pairwise sample correlations with hierarchical clustering
+#' 
+#' @param se A `SummarizedExperiment` object with a count matrix and sample
+#' metadata in the \strong{colData} slot. If a \strong{rowData} slot is 
+#' available, it can also be used for clustering rows.
+#' @param coldata_cols A vector (either numeric or character) indicating
+#' which columns should be extracted from \strong{colData(se)}.
+#' @param rowdata_cols A vector (either numeric or character) indicating
+#' which columns should be extracted from \strong{rowData(se)}.
+#' @param ntop Numeric indicating the number of top genes with the 
+#' highest variances to use for the PCA. Default: 500.
+#' @param palette Character indicating the name of the color palette from
+#' the RColorBrewer package to use. Default: "Blues".
+#' @param ... Additional arguments to be passed
+#' to \code{ComplexHeatmap::pheatmap()}. These arguments can be used to control
+#' heatmap aesthetics, such as show/hide row and column names,
+#' change font size, activate/deactivate hierarchical clustering, etc. For a
+#' complete list of the options, see \code{?ComplexHeatmap::pheatmap()}.
+#'
+#' @return A heatmap of hierarchically clustered pairwise sample correlations.
+#'
+#' @importFrom ComplexHeatmap pheatmap
+#' @importFrom RColorBrewer brewer.pal
+#' @importFrom grDevices colorRampPalette
+#' @export
+#' @rdname plot_samplecor
+#' @examples
+#' data(se_chlamy)
+#' se <- add_midparent_expression(se_chlamy)
+#' se$Ploidy[is.na(se$Ploidy)] <- "midparent"
+#' se$Generation[is.na(se$Generation)] <- "midparent"
+#' plot_samplecor(se, ntop = 500)
+plot_samplecor <- function(
+        se, coldata_cols = NULL, rowdata_cols = NULL, 
+        ntop = 500, palette = "Blues", ...
+) {
+    
+    # Get gene expression matrix for genes with highest variances
+    top <- sort(apply(assay(se), 1, var), decreasing = TRUE)[seq_len(ntop)]
+    exp <- as.matrix(assay(se)[names(top), ])
+    
+    coldata <- se2metadata(se, coldata_cols = coldata_cols)$coldata
+    rowdata <- se2metadata(se, rowdata_cols = rowdata_cols)$rowdata
+    
+    # Get column metadata with sorted rows + list of named vectors with colors
+    cdata <- metadata2colors(coldata)
+    coldata <- cdata$metadata
+    col_colors <- cdata$colors
+    
+    # Get row metadata with sorted rows + list of named vectors with colors
+    rdata <- metadata2colors(rowdata)
+    rowdata <- rdata$metadata
+    row_colors <- rdata$colors
+    
+    annotation_colors <- c(col_colors, row_colors)
+    
+    # Reorder rows and columns of the expression matrix based on metadata
+    if(is.data.frame(coldata)) { exp <- exp[, rownames(coldata)] }
+    if(is.data.frame(rowdata)) { exp <- exp[rownames(rowdata), ] }
+    
+    # Plot heatmap
+    hm <- ComplexHeatmap::pheatmap(
+        as.matrix(exp),
+        name = "Correlation",
+        color = colorRampPalette(brewer.pal(9, palette))(100),
+        border_color = NA,
+        annotation_row = rowdata,
+        annotation_col = coldata,
+        main = "Pairwise sample correlations",
+        annotation_colors = annotation_colors,
+        ...
+    )
+    
+    return(hm)
+    
 
+}

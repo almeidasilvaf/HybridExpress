@@ -7,6 +7,7 @@
 pca_plot(
   se,
   PCs = c(1, 2),
+  ntop = 500,
   color_by = NULL,
   shape_by = NULL,
   add_mean = FALSE,
@@ -19,6 +20,9 @@ metadata.}
 
 \item{PCs}{Numeric vector indicating which principal components to show
 in the x-axis and y-axis, respectively. Default: \code{c(1,2)}.}
+
+\item{ntop}{Numeric indicating the number of top genes with the
+highest variances to use for the PCA. Default: 500.}
 
 \item{color_by}{Character with the name of the column in \code{colData(se)}
 to use to group samples by color. Default: NULL.}

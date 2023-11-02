@@ -6,12 +6,17 @@ data(se_chlamy)
 
 se <- add_midparent_expression(se_chlamy)
 ptable <- expression_partitioning(deg_list)
+se$Ploidy[is.na(se$Ploidy)] <- "midparent"
+se$Generation[is.na(se$Generation)] <- "midparent"
 
 
 # Start tests ----
 test_that("plot_expression_triangle() returns a ggplot object", {
     
-    p <- plot_expression_triangle(deg_counts)
+    p <- plot_expression_triangle(
+        deg_counts, 
+        box_labels = c("Parent 1", "Parent 2", "Hybrid", "Midparent")
+    )
     
     expect_true(is(p, "ggplot"))
 })
@@ -44,6 +49,13 @@ test_that("pca_plot() returns a ggplot object", {
     expect_true(is(p1, "ggplot"))
 })
 
+
+test_that("plot_samplecor() plots a heatmap of pairwise correlations", {
+    
+    p <- plot_samplecor(se, ntop = 50)
+    
+    expect_equal(attr(class(p), "package"), "ComplexHeatmap")
+})
 
 
 
