@@ -9,12 +9,34 @@
 issues](https://img.shields.io/github/issues/almeidasilvaf/HybridExpress)](https://github.com/almeidasilvaf/HybridExpress/issues)
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-[![check-bioc](https://github.com/almeidasilvaf/HybridExpress/actions/workflows/check-bioc.yml/badge.svg)](https://github.com/almeidasilvaf/HybridExpress/actions/workflows/check-bioc.yml)
+[![check-bioc](https://github.com/almeidasilvaf/HybridExpress/actions/workflows/rworkflows.devel.yml/badge.svg)](https://github.com/almeidasilvaf/HybridExpress/actions/workflows/rworkflows.devel.yml)
 [![Codecov test
 coverage](https://codecov.io/gh/almeidasilvaf/HybridExpress/branch/devel/graph/badge.svg)](https://app.codecov.io/gh/almeidasilvaf/HybridExpress?branch=devel)
 <!-- badges: end -->
 
-The goal of `HybridExpress` is to …
+The goal of `HybridExpress` is to perform comparative transcriptomic
+analyses of hybrids relative to their progenitor species (a.k.a.
+*experimental trios*). The package features:
+
+1.  **Calculation of midparent expression values**, which are *in
+    silico* samples obtained from the mean, sum, or weighted mean of
+    random sample pairs from each parent;
+2.  **Exploratory analyses of sample grouping** with PCA plots and
+    heatmaps of hierarchically-clustered pairwise sample correlations;
+3.  **Identification of differentially expressed genes** between hybrids
+    and their progenitor species, hybrids and midparent values, and the
+    two parents. If spike-in standards are available, `HybridExpress`
+    uses them to normalize the count data by transcriptome size;
+4.  **Classification of genes in expression-based categories and
+    classes** based on [Rapp et
+    al. (2009)](https://doi.org/10.1186/1741-7007-7-18). The 12
+    expression categories proposed by [Rapp et
+    al. (2009)](https://doi.org/10.1186/1741-7007-7-18) are grouped into
+    5 major classes (transgressive up-regulation, transgressive
+    down-regulation, additivity, expression-level dominance toward
+    parent 1, and expression-level dominance toward parent 2);
+5.  **Functional analyses** through the identification of
+    overrepresented functional terms for gene sets of interest.
 
 ## Installation instructions
 
@@ -45,6 +67,22 @@ R. Please run this yourself to check for any updates on how to cite
 
 ``` r
 print(citation('HybridExpress'), bibtex = TRUE)
+#> To cite package 'HybridExpress' in publications use:
+#> 
+#>   Almeida-Silva F, Prost-Boxoen L, Van de Peer Y (2023).
+#>   _HybridExpress: Comparative analysis of RNA-seq data for hybrids and
+#>   their progenitors_. R package version 0.99.0,
+#>   <https://github.com/almeidasilvaf/HybridExpress>.
+#> 
+#> A BibTeX entry for LaTeX users is
+#> 
+#>   @Manual{,
+#>     title = {HybridExpress: Comparative analysis of RNA-seq data for hybrids and their progenitors},
+#>     author = {Fabricio Almeida-Silva and Lucas Prost-Boxoen and Yves {Van de Peer}},
+#>     year = {2023},
+#>     note = {R package version 0.99.0},
+#>     url = {https://github.com/almeidasilvaf/HybridExpress},
+#>   }
 ```
 
 Please note that the `HybridExpress` was only made possible thanks to
