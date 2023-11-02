@@ -8,7 +8,9 @@ add_midparent_expression(
   se,
   coldata_column = "Generation",
   parent1 = "P1",
-  parent2 = "P2"
+  parent2 = "P2",
+  method = "mean",
+  weights = c(1, 1)
 )
 }
 \arguments{
@@ -24,6 +26,15 @@ variable \strong{coldata_column} represents parent 1. Default: "P1".}
 
 \item{parent2}{Character indicating which level of the
 variable \strong{coldata_column} represents parent 2. Default: "P2".}
+
+\item{method}{Character indicating the method to use to create midparent
+values. One of 'mean' (default), 'sum', or 'weightedmean'.}
+
+\item{weights}{Numeric vector of length 2 indicating the weights to give
+to parents 1 and 2 (respectively) if \code{method == "weightedmean"}.
+Setting \code{method == "weightedmean"} is used sometimes when parents have
+different ploidy levels. In such cases, the ploidy levels of parents 1 and 2
+can be passed in a vector. Default: \code{c(1, 2)}.}
 }
 \value{
 A \code{SummarizedExperiment} object.

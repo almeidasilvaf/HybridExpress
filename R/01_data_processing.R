@@ -11,6 +11,13 @@
 #' variable \strong{coldata_column} represents parent 1. Default: "P1".
 #' @param parent2 Character indicating which level of the 
 #' variable \strong{coldata_column} represents parent 2. Default: "P2".
+#' @param method Character indicating the method to use to create midparent
+#' values. One of 'mean' (default), 'sum', or 'weightedmean'.
+#' @param weights Numeric vector of length 2 indicating the weights to give
+#' to parents 1 and 2 (respectively) if \code{method == "weightedmean"}.
+#' Setting \code{method == "weightedmean"} is used sometimes when parents have
+#' different ploidy levels. In such cases, the ploidy levels of parents 1 and 2
+#' can be passed in a vector. Default: \code{c(1, 2)}.
 #' 
 #' @return A `SummarizedExperiment` object.
 #'
@@ -21,7 +28,8 @@
 #' data(se_chlamy)
 #' new_se <- add_midparent_expression(se_chlamy)
 add_midparent_expression <- function(
-        se, coldata_column = "Generation", parent1 = "P1", parent2 = "P2"
+        se, coldata_column = "Generation", parent1 = "P1", parent2 = "P2",
+        method = "mean", weights = c(1, 1)
 ) {
 
     # Create a vector with samples from each parent - randomly sampled
@@ -34,9 +42,18 @@ add_midparent_expression <- function(
     nreplicates <- min(c(length(p1_samples), length(p2_samples)))
     
     count_midparent <- Reduce(cbind, lapply(seq_len(nreplicates), function(x) {
-        return(
-            as.matrix(rowMeans(count[, c(p1_samples[x], p2_samples[x])]))
-        )
+        if(method == "mean") {
+            midm <- rowMeans(count[, c(p1_samples[x], p2_samples[x])])
+        } else if(method == "sum") {
+            midm <- rowSums(count[, c(p1_samples[x], p2_samples[x])])
+        } else if(method == "weightedmean") {
+            midm <- rowSums(count[, c(p1_samples[x], p2_samples[x])] * weights)
+            midm <- midm / sum(weights)
+        } else {
+            stop("Parameter 'method' must be one of 'mean', 'sum', or 'weightedmean'.")
+        }
+        
+        return(as.matrix(midm))
     }))
     colnames(count_midparent) <- paste0("midparent", seq_len(nreplicates))
     
