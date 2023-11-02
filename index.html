@@ -81,7 +81,19 @@
 </h1></div>
 <!-- badges: start -->
 
-<p>The goal of <code>HybridExpress</code> is to …</p>
+<p>The goal of <code>HybridExpress</code> is to perform comparative transcriptomic analyses of hybrids relative to their progenitor species (a.k.a. <em>experimental trios</em>). The package features:</p>
+<ol style="list-style-type: decimal">
+<li>
+<strong>Calculation of midparent expression values</strong>, which are <em>in silico</em> samples obtained from the mean, sum, or weighted mean of random sample pairs from each parent;</li>
+<li>
+<strong>Exploratory analyses of sample grouping</strong> with PCA plots and heatmaps of hierarchically-clustered pairwise sample correlations;</li>
+<li>
+<strong>Identification of differentially expressed genes</strong> between hybrids and their progenitor species, hybrids and midparent values, and the two parents. If spike-in standards are available, <code>HybridExpress</code> uses them to normalize the count data by transcriptome size;</li>
+<li>
+<strong>Classification of genes in expression-based categories and classes</strong> based on <a href="https://doi.org/10.1186/1741-7007-7-18" class="external-link">Rapp et al. (2009)</a>. The 12 expression categories proposed by <a href="https://doi.org/10.1186/1741-7007-7-18" class="external-link">Rapp et al. (2009)</a> are grouped into 5 major classes (transgressive up-regulation, transgressive down-regulation, additivity, expression-level dominance toward parent 1, and expression-level dominance toward parent 2);</li>
+<li>
+<strong>Functional analyses</strong> through the identification of overrepresented functional terms for gene sets of interest.</li>
+</ol>
 <div class="section level2">
 <h2 id="installation-instructions">Installation instructions<a class="anchor" aria-label="anchor" href="#installation-instructions"></a>
 </h2>
@@ -185,7 +197,7 @@
 <ul class="list-unstyled">
 <li><a href="https://github.com/almeidasilvaf/HybridExpress/issues" class="external-link"><img src="https://img.shields.io/github/issues/almeidasilvaf/HybridExpress" alt="GitHub issues"></a></li>
 <li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
-<li><a href="https://github.com/almeidasilvaf/HybridExpress/actions/workflows/check-bioc.yml" class="external-link"><img src="https://github.com/almeidasilvaf/HybridExpress/actions/workflows/check-bioc.yml/badge.svg" alt="check-bioc"></a></li>
+<li><a href="https://github.com/almeidasilvaf/HybridExpress/actions/workflows/rworkflows.devel.yml" class="external-link"><img src="https://github.com/almeidasilvaf/HybridExpress/actions/workflows/rworkflows.devel.yml/badge.svg" alt="check-bioc"></a></li>
 <li><a href="https://app.codecov.io/gh/almeidasilvaf/HybridExpress?branch=devel" class="external-link"><img src="https://codecov.io/gh/almeidasilvaf/HybridExpress/branch/devel/graph/badge.svg" alt="Codecov test coverage"></a></li>
 </ul>
 </div>
