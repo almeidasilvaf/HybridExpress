@@ -1,20 +1,28 @@
 ---
-title: "Introduction to HybridExpress"
+title: "Analyzing expression data for hybrids relative to their parents"
 author: 
-  - name: Your name
-    affiliation:
-    - Your institution
-    email: your.email@somewhere.com
+  - name: Fabricio Almeida-Silva
+    affiliation: 
+    - VIB-UGent Center for Plant Systems Biology, Ghent, Belgium
+    - Department of Plant Biotechnology and Bioinformatics, Ghent University, Ghent, Belgium
+  - name: Lucas Prost-Boxoen
+    affiliation: 
+    - VIB-UGent Center for Plant Systems Biology, Ghent, Belgium
+    - Department of Plant Biotechnology and Bioinformatics, Ghent University, Ghent, Belgium
+  - name: Yves Van de Peer
+    affiliation: 
+    - VIB-UGent Center for Plant Systems Biology, Ghent, Belgium
+    - Department of Plant Biotechnology and Bioinformatics, Ghent University, Ghent, Belgium
+    - College of Horticulture, Academy for Advanced Interdisciplinary Studies, Nanjing Agricultural University, Nanjing, China
+    - Center for Microbial Ecology and Genomics, Department of Biochemistry, Genetics and Microbiology, University of Pretoria, Pretoria, South Africa
 output: 
   BiocStyle::html_document:
-    self_contained: yes
     toc: true
     toc_float: true
-    toc_depth: 2
-date: "`r Sys.Date()`"
-package: "`r pkg_ver('HybridExpress')`"
+    number_sections: yes
+bibliography: vignette_bibliography.bib
 vignette: >
-  %\VignetteIndexEntry{Introduction to HybridExpress}
+  %\VignetteIndexEntry{Analyzing expression data for hybrids relative to their parents}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -26,3 +34,88 @@ knitr::opts_chunk$set(
     crop = NULL ## Related to https://stat.ethz.ch/pipermail/bioc-devel/2020-April/016656.html
 )
 ```
+
+# Introduction
+
+The formation of hybrids through the fusion of distinct genomes and subsequent 
+genome duplication in cases of allopolyploidy represents a significant 
+evolutionary event with complex effects on cellular biology, particularly gene expression. The impact of such genome mergings and duplications on 
+transcription remain incompletely understood. To bridge this gap, we introduce __HybridExpress__, a comprehensive package designed to facilitate the 
+comparative transcriptomic analysis of hybrids and their progenitor species.
+__HybridExpress__ is tailored for RNA-Seq data derived from an 
+'experimental trio': the hybrid organism and its two parental species. 
+This package offers a suite of intuitive functions enabling researchers to 
+perform differential expression analysis with ease, generate principal 
+component analysis (PCA) plots for visualizing gene expression trends, 
+categorize genes into 12 distinct expression pattern groups 
+(as in @rapp2009genomic), and conduct in-depth functional analyses.
+Acknowledging the potential variability in cell and transcriptome size 
+across species and ploidy levels, __HybridExpress__ incorporates features for 
+rigorous normalization of count data. Specifically, it allows for the 
+integration of spike-in standards directly into the normalization process, 
+ensuring accurate transcriptome size adjustments when these standards are 
+present in the RNA-Seq count data (see full methodology in @coate2023beyond). 
+By offering these capabilities, __HybridExpress__ provides a robust toolset for unraveling the intricate effects of genome doubling and merging on hybrid gene expression, paving the way for novel insights into the cellular biology of hybrid organisms.
+
+# Installation
+
+`r BiocStyle::Biocpkg("HybridExpress")` can be installed from Bioconductor
+with the following code:
+
+```{r installation, eval=FALSE}
+if(!requireNamespace('BiocManager', quietly = TRUE))
+  install.packages('BiocManager')
+
+BiocManager::install("HybridExpress")
+```
+
+```{r load_package, message=FALSE}
+# Load package after installation
+library(HybridExpress)
+```
+
+# Data description
+
+
+
+
+
+# Adding midparent expression values
+
+
+1. Mean (default)
+2. Sum
+3. Weighted mean
+
+# Exploratory data analyses
+
+
+
+# Identifying differentially expressed genes between hybrids and their parents
+
+
+# Expression-based gene classification
+
+
+
+# FAQ {.unnumbered}
+
+1. How do I create a `SummarizedExperiment` object?
+
+
+# Session information {.unnumbered}
+
+This document was created under the following conditions:
+
+```{r, echo = FALSE}
+sessioninfo::session_info()
+```
+
+# References {.unnumbered}
+
+
+
+
+
+
+
