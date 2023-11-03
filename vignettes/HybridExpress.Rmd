@@ -318,6 +318,67 @@ plot_expression_triangle(deg_counts, palette = pal, box_labels = labels)
 
 # Expression-based gene classification
 
+After identifying DEGs for different contrasts, you'd typically want
+to classify your genes into expression partitions based on their expression
+patterns. This can be performed with the function `expression_partitioning()`,
+which classifies genes into one of the 12 **categories** as in @rapp2009genomic,
+and into 5 major **classes** that summarize the 12 categories. The five classes
+are:
+
+1. **Transgressive up-regulation (UP):** gene is up-regulated in the hybrid
+as compared to both parents.
+2. **Transgressive down-regulation (DOWN):** gene is down-regulated in the
+hybrid as compared to both parents.
+3. **Additivity (ADD):** gene expression in the hybrid is the mean of
+both parents (additive effect).
+4. **Expression-level dominance toward parent 1 (ELD_P1):** gene expression
+in the hybrid is the same as in parent 1, but different from parent 2.
+5. **Expression-level dominance toward parent 2 (ELD_P2):** gene expression
+in the hybrid is the same as in parent 2, but different from parent 1.
+
+
+
+```{r}
+# Classify genes in expression partitions
+exp_partitions <- expression_partitioning(deg_list)
+
+# Inspect the output
+head(exp_partitions)
+
+# Count number of genes per category
+table(exp_partitions$Category)
+
+# Count number of genes per class
+table(exp_partitions$Class)
+```
+
+To visualize the expression partitions as a scatter plot of expression 
+divergences, you can use the function `plot_expression_partitions()`.
+
+```{r, fig.height=6, fig.width=8}
+# Plot partitions as a scatter plot of divergences
+plot_expression_partitions(exp_partitions, group_by = "Category")
+```
+
+By default, genes are grouped by `Category`. However, you can also
+group genes by `Class` as follows:
+
+```{r, fig.height=7, fig.width=8}
+# Group by `Class`
+plot_expression_partitions(exp_partitions, group_by = "Class")
+```
+
+You can also visualize the frequencies of genes in each partition with
+the function `plot_partition_frequencies()`.
+
+```{r, fig.height=7}
+# Visualize frequency of genes in each partition
+## By `Category` (default)
+plot_partition_frequencies(exp_partitions)
+
+## By `Class`
+plot_partition_frequencies(exp_partitions, group_by = "Class")
+```
 
 
 # FAQ {.unnumbered}
