@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Analyzing expression data for hybrids relative to their parents • HybridExpress</title>
+<title>Comparative transcriptomic analysis of hybrids and their progenitors • HybridExpress</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Analyzing expression data for hybrids relative to their parents">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Comparative transcriptomic analysis of hybrids and their progenitors">
 <meta property="og:description" content="HybridExpress">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -69,8 +69,8 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Analyzing expression data for hybrids relative
-to their parents</h1>
+      <h1 data-toc-skip>Comparative transcriptomic analysis of hybrids
+and their progenitors</h1>
                         <h4 data-toc-skip class="author">Fabricio
 Almeida-Silva</h4>
             <address class="author_afil">
@@ -148,24 +148,402 @@ can be installed from Bioconductor with the following code:</p>
 <div class="section level2">
 <h2 id="data-description">Data description<a class="anchor" aria-label="anchor" href="#data-description"></a>
 </h2>
+<p>For this vignette, we will use an example data set that comprises
+(unpublished) gene expression data (in counts) for <em>Chlamydomonas
+reinhardtii</em>. In our lab, we crossed a diploid line of <em>C.
+reinhardtii</em> (hereafter “P1”) with a haploid line (hereafter “P2”),
+thus generating a triploid line through the merging of the two parental
+genomes. The count matrix and sample metadata are stored in
+<code>SummarizedExperiment</code> objects, which is the standard
+Bioconductor data structure required by <em><a href="https://github.com/HybridExpress" class="external-link">HybridExpress</a></em>. For
+instructions on how to create a <code>SummarizedExperiment</code>
+object, check the FAQ section of this vignette.</p>
+<p>Let’s load the example data and take a quick look at it:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/SummarizedExperiment" class="external-link">SummarizedExperiment</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Load data</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">se_chlamy</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Inspect the `SummarizedExperiment` object</span></span>
+<span><span class="va">se_chlamy</span></span>
+<span><span class="co">#&gt; class: SummarizedExperiment </span></span>
+<span><span class="co">#&gt; dim: 13058 18 </span></span>
+<span><span class="co">#&gt; metadata(0):</span></span>
+<span><span class="co">#&gt; assays(1): counts</span></span>
+<span><span class="co">#&gt; rownames(13058): Cre01.g000050 Cre01.g000150 ... ERCC-00170 ERCC-00171</span></span>
+<span><span class="co">#&gt; rowData names(0):</span></span>
+<span><span class="co">#&gt; colnames(18): S1 S2 ... S17 S18</span></span>
+<span><span class="co">#&gt; colData names(2): Ploidy Generation</span></span>
+<span></span>
+<span><span class="co">## Take a look at the colData and count matrix</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData</a></span><span class="op">(</span><span class="va">se_chlamy</span><span class="op">)</span></span>
+<span><span class="co">#&gt; DataFrame with 18 rows and 2 columns</span></span>
+<span><span class="co">#&gt;          Ploidy Generation</span></span>
+<span><span class="co">#&gt;     &lt;character&gt;   &lt;factor&gt;</span></span>
+<span><span class="co">#&gt; S1      diploid         P1</span></span>
+<span><span class="co">#&gt; S2      diploid         P1</span></span>
+<span><span class="co">#&gt; S3      diploid         P1</span></span>
+<span><span class="co">#&gt; S4      diploid         P1</span></span>
+<span><span class="co">#&gt; S5      diploid         P1</span></span>
+<span><span class="co">#&gt; ...         ...        ...</span></span>
+<span><span class="co">#&gt; S14    triploid         F1</span></span>
+<span><span class="co">#&gt; S15    triploid         F1</span></span>
+<span><span class="co">#&gt; S16    triploid         F1</span></span>
+<span><span class="co">#&gt; S17    triploid         F1</span></span>
+<span><span class="co">#&gt; S18    triploid         F1</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assay</a></span><span class="op">(</span><span class="va">se_chlamy</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                 S1  S2   S3   S4  S5   S6   S7   S8   S9 S10 S11  S12  S13  S14</span></span>
+<span><span class="co">#&gt; Cre01.g000050   31  21   26   33  19   48   17    6   13   6  10    7   31   22</span></span>
+<span><span class="co">#&gt; Cre01.g000150   50  29   35   99  11   58   51   46   41  33  28   14   53   25</span></span>
+<span><span class="co">#&gt; Cre01.g000200   36  26   24   29  17   36   14   15   12   8  14    7   25   24</span></span>
+<span><span class="co">#&gt; Cre01.g000250  440 272  394  332 283  585  272  274  255 160 225  235  405  391</span></span>
+<span><span class="co">#&gt; Cre01.g000300 1242 839 1216 1251 811 1785 1341 1306 1122 877 844 1082 1704 1739</span></span>
+<span><span class="co">#&gt; Cre01.g000350  412 264  294  336 252  478  233  221  195 155 190  201  299  272</span></span>
+<span><span class="co">#&gt;                S15  S16  S17  S18</span></span>
+<span><span class="co">#&gt; Cre01.g000050   29   22   21   16</span></span>
+<span><span class="co">#&gt; Cre01.g000150   37   17   24   21</span></span>
+<span><span class="co">#&gt; Cre01.g000200   24   26   18   21</span></span>
+<span><span class="co">#&gt; Cre01.g000250  358  339  340  332</span></span>
+<span><span class="co">#&gt; Cre01.g000300 1524 1720 1517 1243</span></span>
+<span><span class="co">#&gt; Cre01.g000350  276  324  246  275</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">se_chlamy</span><span class="op">$</span><span class="va">Ploidy</span>, <span class="va">se_chlamy</span><span class="op">$</span><span class="va">Generation</span><span class="op">)</span></span>
+<span><span class="co">#&gt;           </span></span>
+<span><span class="co">#&gt;            F1 P1 P2</span></span>
+<span><span class="co">#&gt;   diploid   0  6  0</span></span>
+<span><span class="co">#&gt;   haploid   0  0  6</span></span>
+<span><span class="co">#&gt;   triploid  6  0  0</span></span></code></pre></div>
+<p>As you can see, the count matrix contains 13058 genes and 18 samples,
+with 6 replicates for parent 1 (P1, diploid), 6 replicates for parent 2
+(P2, haploid), and 6 replicates for the progeny (F1, triploid).</p>
 </div>
 <div class="section level2">
 <h2 id="adding-midparent-expression-values">Adding midparent expression values<a class="anchor" aria-label="anchor" href="#adding-midparent-expression-values"></a>
 </h2>
+<p>First of all, you’d want to add in your count matrix <em>in
+silico</em> samples that contain the expression values of the midparent.
+This can be done with the function
+<code><a href="../reference/add_midparent_expression.html">add_midparent_expression()</a></code>, which takes a random sample
+pair (one sample from each parent, sampling without replacement) and
+calculates the midparent expression value in one of three ways:</p>
 <ol style="list-style-type: decimal">
-<li>Mean (default)</li>
-<li>Sum</li>
-<li>Weighted mean</li>
+<li>
+<strong>Mean (default):</strong> get the mean expression of the two
+samples.</li>
+<li>
+<strong>Sum:</strong> get the sum of the two samples.</li>
+<li>
+<strong>Weighted mean:</strong> get the weighted mean of the two
+samples by multiplying the expression value of each parent by a weight.
+Typically, this can be used if the two parents have different ploidy
+levels, and the weights would correspond to the ploidy level of each
+parent.</li>
 </ol>
+<p>For this function, besides specifying the method to obtain the
+midparent expression values (i.e., “mean”, “sum”, or “weightedmean”),
+users must also specify the name of the column in <code>colData</code>
+that contains information about the generations (default:
+<em>“Generation”</em>), as well as the levels corresponding to each
+parent (default: <em>“P1”</em> and <em>“P2”</em> for parents 1 and 2,
+respectively).</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Add midparent expression using the mean of the counts</span></span>
+<span><span class="va">se</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/add_midparent_expression.html">add_midparent_expression</a></span><span class="op">(</span><span class="va">se_chlamy</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assay</a></span><span class="op">(</span><span class="va">se</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                 S1  S2   S3   S4  S5   S6   S7   S8   S9 S10 S11  S12  S13  S14</span></span>
+<span><span class="co">#&gt; Cre01.g000050   31  21   26   33  19   48   17    6   13   6  10    7   31   22</span></span>
+<span><span class="co">#&gt; Cre01.g000150   50  29   35   99  11   58   51   46   41  33  28   14   53   25</span></span>
+<span><span class="co">#&gt; Cre01.g000200   36  26   24   29  17   36   14   15   12   8  14    7   25   24</span></span>
+<span><span class="co">#&gt; Cre01.g000250  440 272  394  332 283  585  272  274  255 160 225  235  405  391</span></span>
+<span><span class="co">#&gt; Cre01.g000300 1242 839 1216 1251 811 1785 1341 1306 1122 877 844 1082 1704 1739</span></span>
+<span><span class="co">#&gt; Cre01.g000350  412 264  294  336 252  478  233  221  195 155 190  201  299  272</span></span>
+<span><span class="co">#&gt;                S15  S16  S17  S18 midparent1 midparent2 midparent3 midparent4</span></span>
+<span><span class="co">#&gt; Cre01.g000050   29   22   21   16         22         22         28         14</span></span>
+<span><span class="co">#&gt; Cre01.g000150   37   17   24   21         43         46         36         20</span></span>
+<span><span class="co">#&gt; Cre01.g000200   24   26   18   21         19         24         22         16</span></span>
+<span><span class="co">#&gt; Cre01.g000250  358  339  340  332        333        348        410        254</span></span>
+<span><span class="co">#&gt; Cre01.g000300 1524 1720 1517 1243       1278       1182       1434        828</span></span>
+<span><span class="co">#&gt; Cre01.g000350  276  324  246  275        264        304        340        221</span></span>
+<span><span class="co">#&gt;               midparent5 midparent6</span></span>
+<span><span class="co">#&gt; Cre01.g000050         20         14</span></span>
+<span><span class="co">#&gt; Cre01.g000150         72         31</span></span>
+<span><span class="co">#&gt; Cre01.g000200         22         17</span></span>
+<span><span class="co">#&gt; Cre01.g000250        303        216</span></span>
+<span><span class="co">#&gt; Cre01.g000300       1278        858</span></span>
+<span><span class="co">#&gt; Cre01.g000350        278        210</span></span>
+<span></span>
+<span><span class="co"># Alternative 1: using the sum of the counts</span></span>
+<span><span class="fu"><a href="../reference/add_midparent_expression.html">add_midparent_expression</a></span><span class="op">(</span><span class="va">se_chlamy</span>, method <span class="op">=</span> <span class="st">"sum"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assay</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                 S1  S2   S3   S4  S5   S6   S7   S8   S9 S10 S11  S12  S13  S14</span></span>
+<span><span class="co">#&gt; Cre01.g000050   31  21   26   33  19   48   17    6   13   6  10    7   31   22</span></span>
+<span><span class="co">#&gt; Cre01.g000150   50  29   35   99  11   58   51   46   41  33  28   14   53   25</span></span>
+<span><span class="co">#&gt; Cre01.g000200   36  26   24   29  17   36   14   15   12   8  14    7   25   24</span></span>
+<span><span class="co">#&gt; Cre01.g000250  440 272  394  332 283  585  272  274  255 160 225  235  405  391</span></span>
+<span><span class="co">#&gt; Cre01.g000300 1242 839 1216 1251 811 1785 1341 1306 1122 877 844 1082 1704 1739</span></span>
+<span><span class="co">#&gt; Cre01.g000350  412 264  294  336 252  478  233  221  195 155 190  201  299  272</span></span>
+<span><span class="co">#&gt;                S15  S16  S17  S18 midparent1 midparent2 midparent3 midparent4</span></span>
+<span><span class="co">#&gt; Cre01.g000050   29   22   21   16         32         54         48         46</span></span>
+<span><span class="co">#&gt; Cre01.g000150   37   17   24   21         81         91        101        140</span></span>
+<span><span class="co">#&gt; Cre01.g000200   24   26   18   21         39         44         50         41</span></span>
+<span><span class="co">#&gt; Cre01.g000250  358  339  340  332        668        745        712        587</span></span>
+<span><span class="co">#&gt; Cre01.g000300 1524 1720 1517 1243       2522       2662       2583       2373</span></span>
+<span><span class="co">#&gt; Cre01.g000350  276  324  246  275        515        633        645        531</span></span>
+<span><span class="co">#&gt;               midparent5 midparent6</span></span>
+<span><span class="co">#&gt; Cre01.g000050         29         28</span></span>
+<span><span class="co">#&gt; Cre01.g000150         39         43</span></span>
+<span><span class="co">#&gt; Cre01.g000200         31         33</span></span>
+<span><span class="co">#&gt; Cre01.g000250        508        507</span></span>
+<span><span class="co">#&gt; Cre01.g000300       1655       1921</span></span>
+<span><span class="co">#&gt; Cre01.g000350        442        465</span></span>
+<span></span>
+<span><span class="co"># Alternative 2: using the weighted mean of the counts (weights = ploidy)</span></span>
+<span><span class="va">w</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span> <span class="co"># P1 = diploid; P2 = haploid</span></span>
+<span><span class="fu"><a href="../reference/add_midparent_expression.html">add_midparent_expression</a></span><span class="op">(</span><span class="va">se_chlamy</span>, method <span class="op">=</span> <span class="st">"weightedmean"</span>, weights <span class="op">=</span> <span class="va">w</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assay</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                 S1  S2   S3   S4  S5   S6   S7   S8   S9 S10 S11  S12  S13  S14</span></span>
+<span><span class="co">#&gt; Cre01.g000050   31  21   26   33  19   48   17    6   13   6  10    7   31   22</span></span>
+<span><span class="co">#&gt; Cre01.g000150   50  29   35   99  11   58   51   46   41  33  28   14   53   25</span></span>
+<span><span class="co">#&gt; Cre01.g000200   36  26   24   29  17   36   14   15   12   8  14    7   25   24</span></span>
+<span><span class="co">#&gt; Cre01.g000250  440 272  394  332 283  585  272  274  255 160 225  235  405  391</span></span>
+<span><span class="co">#&gt; Cre01.g000300 1242 839 1216 1251 811 1785 1341 1306 1122 877 844 1082 1704 1739</span></span>
+<span><span class="co">#&gt; Cre01.g000350  412 264  294  336 252  478  233  221  195 155 190  201  299  272</span></span>
+<span><span class="co">#&gt;                S15  S16  S17  S18 midparent1 midparent2 midparent3 midparent4</span></span>
+<span><span class="co">#&gt; Cre01.g000050   29   22   21   16         27         33         22         36</span></span>
+<span><span class="co">#&gt; Cre01.g000150   37   17   24   21         26         50         16         35</span></span>
+<span><span class="co">#&gt; Cre01.g000200   24   26   18   21         33         29         21         34</span></span>
+<span><span class="co">#&gt; Cre01.g000250  358  339  340  332        222        201        210        286</span></span>
+<span><span class="co">#&gt; Cre01.g000300 1524 1720 1517 1243       1391       1728       1532       2061</span></span>
+<span><span class="co">#&gt; Cre01.g000350  276  324  246  275        201        190        165        233</span></span>
+<span><span class="co">#&gt;               midparent5 midparent6</span></span>
+<span><span class="co">#&gt; Cre01.g000050         17         23</span></span>
+<span><span class="co">#&gt; Cre01.g000150         15         23</span></span>
+<span><span class="co">#&gt; Cre01.g000200         17         25</span></span>
+<span><span class="co">#&gt; Cre01.g000250        148        176</span></span>
+<span><span class="co">#&gt; Cre01.g000300       1125       1307</span></span>
+<span><span class="co">#&gt; Cre01.g000350        136        153</span></span></code></pre></div>
+<p>We will proceed our analyses with the midparent expression values
+obtained from the mean of the counts, stored in the <code>se</code>
+object.</p>
 </div>
 <div class="section level2">
 <h2 id="exploratory-data-analyses">Exploratory data analyses<a class="anchor" aria-label="anchor" href="#exploratory-data-analyses"></a>
 </h2>
+<p>Next, you can perform exploratory analyses of sample clustering to
+verify if samples group as expected. With <em><a href="https://github.com/HybridExpress" class="external-link">HybridExpress</a></em>, this can
+be performed using two functions:</p>
+<ol style="list-style-type: decimal">
+<li>
+<code><a href="../reference/pca_plot.html">pca_plot()</a></code>: creates principal component analysis (PCA)
+plots, with colors and shapes (optional) mapped to levels of
+<code>colData</code> variables;</li>
+<li>
+<code><a href="../reference/plot_samplecor.html">plot_samplecor()</a></code>: plots a heatmap of hierarchically
+clustered pairwise sample correlations.</li>
+</ol>
+<p>Let’s start with the PCA plot:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># For colData rows with missing values (midparent samples), add "midparent"</span></span>
+<span><span class="va">se</span><span class="op">$</span><span class="va">Ploidy</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">se</span><span class="op">$</span><span class="va">Ploidy</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"midparent"</span></span>
+<span><span class="va">se</span><span class="op">$</span><span class="va">Generation</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">se</span><span class="op">$</span><span class="va">Generation</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"midparent"</span></span>
+<span></span>
+<span><span class="co"># Create PCA plot</span></span>
+<span><span class="fu"><a href="../reference/pca_plot.html">pca_plot</a></span><span class="op">(</span><span class="va">se</span>, color_by <span class="op">=</span> <span class="st">"Generation"</span>, shape_by <span class="op">=</span> <span class="st">"Ploidy"</span>, add_mean <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; converting counts to integer mode</span></span></code></pre></div>
+<p><img src="HybridExpress_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
+<p>In the plot above, each data point corresponds to a sample, and
+colors and shapes are mapped to levels of the variables specified in the
+arguments <code>color_by</code> and <code>shape_by</code>, respectively.
+Besides, by specifying <code>add_mean = TRUE</code>, we added a diamond
+shape indicating the mean PC coordinates based on the variable in
+<code>color_by</code> (here, <em>“Generation”</em>).</p>
+<p>Now, let’s plot the heatmap of sample correlations:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Plot a heatmap of sample correlations</span></span>
+<span><span class="fu"><a href="../reference/plot_samplecor.html">plot_samplecor</a></span><span class="op">(</span><span class="va">se</span><span class="op">)</span></span>
+<span><span class="co">#&gt; converting counts to integer mode</span></span></code></pre></div>
+<p><img src="HybridExpress_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
+<p>We can see that samples group well together both in the PCA plot and
+in the correlation heatmap.</p>
+<p>Of note, both <code><a href="../reference/pca_plot.html">pca_plot()</a></code> and
+<code><a href="../reference/plot_samplecor.html">plot_samplecor()</a></code> use only the top 500 genes with the
+highest variances to create the plot. This is because genes with low
+variances (i.e., genes that do not vary much across samples) are
+uninformative and typically only add noise. You can change this number
+(to use more or less genes) in the <code>ntop</code> argument of both
+functions.</p>
 </div>
 <div class="section level2">
 <h2 id="identifying-differentially-expressed-genes-between-hybrids-and-their-parents">Identifying differentially expressed genes between hybrids and their
 parents<a class="anchor" aria-label="anchor" href="#identifying-differentially-expressed-genes-between-hybrids-and-their-parents"></a>
 </h2>
+<p>To compare gene expression levels of hybrids to their progenitor
+species, you can use the function <code><a href="../reference/get_deg_list.html">get_deg_list()</a></code>. This
+function performs differential expression analyses using <em><a href="https://bioconductor.org/packages/3.18/DESeq2" class="external-link">DESeq2</a></em> and
+returns a list of data frames with gene-wise test statistics for the
+following contrasts:</p>
+<ol style="list-style-type: decimal">
+<li>
+<code>P2_vs_P1</code>: parent 2 (numerator) versus parent 1
+(denominator).</li>
+<li>
+<code>F1_vs_P1</code>: hybrid (numerator) versus parent 1
+(denominator).</li>
+<li>
+<code>F1_vs_P2</code>: hybrid (numerator) versus parent 2
+(denominator).</li>
+<li>
+<code>F1_vs_midparent</code>: hybrid (numerator) vs midparent
+(denominator).</li>
+</ol>
+<p>By default, count data are normalized by library size using the
+standard normalization process in <em><a href="https://bioconductor.org/packages/3.18/DESeq2" class="external-link">DESeq2</a></em>.
+However, if spike-in standards are included in the count matrix, you can
+use them for normalization by setting <code>spikein_norm = TRUE</code>
+and specifying the pattern used to indicate rows that contain spike-ins
+(usually they start with <em>ERCC</em>). In our example data set,
+spike-in standards are available in the last rows of the count
+matrix.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Show last rows of the count matrix</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assay</a></span><span class="op">(</span><span class="va">se</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;              S1   S2   S3   S4   S5   S6   S7   S8   S9  S10  S11  S12  S13</span></span>
+<span><span class="co">#&gt; ERCC-00163   74   75   55   77   51   84  132  127   93  108   79  102   66</span></span>
+<span><span class="co">#&gt; ERCC-00164    0    4    0    1    4    1    6    4    1    4    3    2    5</span></span>
+<span><span class="co">#&gt; ERCC-00165  147  139   87  165  118  179  236  246  139  218  176  145  118</span></span>
+<span><span class="co">#&gt; ERCC-00168    2    5    2    2    2    6    5    1    1    5    0    3    4</span></span>
+<span><span class="co">#&gt; ERCC-00170   97   95   73  101   70  118  186  148  110  167  110  103   72</span></span>
+<span><span class="co">#&gt; ERCC-00171 4644 4959 3554 5357 4170 5946 8207 7915 4992 7843 6455 5884 4537</span></span>
+<span><span class="co">#&gt;             S14  S15  S16  S17  S18 midparent1 midparent2 midparent3 midparent4</span></span>
+<span><span class="co">#&gt; ERCC-00163   67   62   80   88   47         94         84         93         65</span></span>
+<span><span class="co">#&gt; ERCC-00164    4    3    5    4    2          3          0          2          4</span></span>
+<span><span class="co">#&gt; ERCC-00165  143  115  185  192  136        162        143        162        147</span></span>
+<span><span class="co">#&gt; ERCC-00168    6    2   11    5    2          4          2          4          1</span></span>
+<span><span class="co">#&gt; ERCC-00170   99   64  121  103   84        130        104        110         90</span></span>
+<span><span class="co">#&gt; ERCC-00171 5665 4598 6168 5771 4747       5880       4818       5915       5312</span></span>
+<span><span class="co">#&gt;            midparent5 midparent6</span></span>
+<span><span class="co">#&gt; ERCC-00163        102         92</span></span>
+<span><span class="co">#&gt; ERCC-00164          2          4</span></span>
+<span><span class="co">#&gt; ERCC-00165        206        178</span></span>
+<span><span class="co">#&gt; ERCC-00168          2          5</span></span>
+<span><span class="co">#&gt; ERCC-00170        124        131</span></span>
+<span><span class="co">#&gt; ERCC-00171       6636       6401</span></span></code></pre></div>
+<p>Now, we will use <code><a href="../reference/get_deg_list.html">get_deg_list()</a></code> to get differentially
+expressed genes (DEGs) for each contrast while using spike-in
+normalization.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Get a list of differentially expressed genes for each contrast</span></span>
+<span><span class="va">deg_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_deg_list.html">get_deg_list</a></span><span class="op">(</span><span class="va">se</span>, spikein_norm <span class="op">=</span> <span class="cn">TRUE</span>, spikein_pattern <span class="op">=</span> <span class="st">"ERCC"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; converting counts to integer mode</span></span>
+<span><span class="co">#&gt; using pre-existing size factors</span></span>
+<span><span class="co">#&gt; estimating dispersions</span></span>
+<span><span class="co">#&gt; gene-wise dispersion estimates</span></span>
+<span><span class="co">#&gt; mean-dispersion relationship</span></span>
+<span><span class="co">#&gt; final dispersion estimates</span></span>
+<span><span class="co">#&gt; fitting model and testing</span></span>
+<span></span>
+<span><span class="co"># Inspecting the output</span></span>
+<span><span class="co">## Getting contrast names</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">deg_list</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "P2_vs_P1"        "F1_vs_P1"        "F1_vs_P2"        "F1_vs_midparent"</span></span>
+<span></span>
+<span><span class="co">## Accessing gene-wise test statistics for contrast `F1_vs_P1`</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">deg_list</span><span class="op">$</span><span class="va">F1_vs_P1</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                baseMean log2FoldChange     lfcSE      stat       pvalue</span></span>
+<span><span class="co">#&gt; Cre01.g000450  39.49524     -1.1632185 0.2117781 -5.492629 3.959948e-08</span></span>
+<span><span class="co">#&gt; Cre01.g000500  32.92001      0.5814708 0.2339150  2.485821 1.292530e-02</span></span>
+<span><span class="co">#&gt; Cre01.g000750 103.06457      0.8809112 0.1825994  4.824282 1.405084e-06</span></span>
+<span><span class="co">#&gt; Cre01.g000850 561.55778     -0.5622595 0.2026641 -2.774342 5.531349e-03</span></span>
+<span><span class="co">#&gt; Cre01.g000900 472.11168      0.6808258 0.2030674  3.352709 8.002484e-04</span></span>
+<span><span class="co">#&gt; Cre01.g001000  10.32087     -6.6337813 0.9147439 -7.252064 4.104686e-13</span></span>
+<span><span class="co">#&gt;                       padj</span></span>
+<span><span class="co">#&gt; Cre01.g000450 2.498332e-07</span></span>
+<span><span class="co">#&gt; Cre01.g000500 2.704591e-02</span></span>
+<span><span class="co">#&gt; Cre01.g000750 6.843320e-06</span></span>
+<span><span class="co">#&gt; Cre01.g000850 1.277413e-02</span></span>
+<span><span class="co">#&gt; Cre01.g000900 2.263849e-03</span></span>
+<span><span class="co">#&gt; Cre01.g001000 5.489150e-12</span></span>
+<span></span>
+<span><span class="co">## Counting the number of DEGs per contrast</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">deg_list</span>, <span class="va">nrow</span><span class="op">)</span></span>
+<span><span class="co">#&gt;        P2_vs_P1        F1_vs_P1        F1_vs_P2 F1_vs_midparent </span></span>
+<span><span class="co">#&gt;            9680            6831            8529            5716</span></span></code></pre></div>
+<p>To summarize the frequencies of up- and down-regulated genes per
+contrast in a single data frame, use the function
+<code><a href="../reference/get_deg_counts.html">get_deg_counts()</a></code>.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Get a data frame with DEG frequencies for each contrast</span></span>
+<span><span class="va">deg_counts</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_deg_counts.html">get_deg_counts</a></span><span class="op">(</span><span class="va">deg_list</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">deg_counts</span></span>
+<span><span class="co">#&gt;          contrast   up down total perc_up perc_down perc_total</span></span>
+<span><span class="co">#&gt; 1        P2_vs_P1 1047 8634  9680     8.1      66.6       74.7</span></span>
+<span><span class="co">#&gt; 2        F1_vs_P1 1989 4843  6831    15.3      37.4       52.7</span></span>
+<span><span class="co">#&gt; 3        F1_vs_P2 7430 1100  8529    57.3       8.5       65.8</span></span>
+<span><span class="co">#&gt; 4 F1_vs_midparent 3484 2233  5716    26.9      17.2       44.1</span></span></code></pre></div>
+<p>It is important to note that the columns <code>perc_up</code>,
+<code>perc_down</code>, and <code>perc_total</code> show the percentages
+of up-regulated, down-regulated, and all differentially expressed genes
+relative to the total number of genes in the count matrix. The total
+number of genes in the count matrix is stored in the <code>ngenes</code>
+attribute of the list returned by <code><a href="../reference/get_deg_list.html">get_deg_list()</a></code>:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/attributes.html" class="external-link">attributes</a></span><span class="op">(</span><span class="va">deg_list</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $names</span></span>
+<span><span class="co">#&gt; [1] "P2_vs_P1"        "F1_vs_P1"        "F1_vs_P2"        "F1_vs_midparent"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $ngenes</span></span>
+<span><span class="co">#&gt; [1] 12966</span></span></code></pre></div>
+<p>However, since the count matrix usually does not include all genes in
+the genome (e.g., lowly expressed genes and genes with low variance are
+usually filtered out), the percentages in <code>perc_up</code>,
+<code>perc_down</code>, and <code>perc_total</code> are not relative to
+the total number of genes in the genome. To use the total number of
+genes in the genome as the reference, we need to update the
+<code>ngenes</code> attribute of the DEG list with the appropriate
+number as follows:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Total number of genes in the C. reinhardtii genome (v6.1): 16883</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/attributes.html" class="external-link">attributes</a></span><span class="op">(</span><span class="va">deg_list</span><span class="op">)</span><span class="op">$</span><span class="va">ngenes</span> <span class="op">&lt;-</span> <span class="fl">16883</span></span></code></pre></div>
+<p>Then, we can run <code><a href="../reference/get_deg_counts.html">get_deg_counts()</a></code> again to get the
+percentages relative to the total number of genes in the genome.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">deg_counts</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_deg_counts.html">get_deg_counts</a></span><span class="op">(</span><span class="va">deg_list</span><span class="op">)</span></span>
+<span><span class="va">deg_counts</span></span>
+<span><span class="co">#&gt;          contrast   up down total perc_up perc_down perc_total</span></span>
+<span><span class="co">#&gt; 1        P2_vs_P1 1047 8634  9680     6.2      51.1       57.3</span></span>
+<span><span class="co">#&gt; 2        F1_vs_P1 1989 4843  6831    11.8      28.7       40.5</span></span>
+<span><span class="co">#&gt; 3        F1_vs_P2 7430 1100  8529    44.0       6.5       50.5</span></span>
+<span><span class="co">#&gt; 4 F1_vs_midparent 3484 2233  5716    20.6      13.2       33.9</span></span></code></pre></div>
+<p>Finally, we can summarize everything in a single publication-ready
+figure using the plot <code><a href="../reference/plot_expression_triangle.html">plot_expression_triangle()</a></code>, which
+shows the ‘experimental trio’ (i.e., hybrid and its progenitors) as a
+triangle, with the frequencies of DEGs indicated.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Plot expression triangle</span></span>
+<span><span class="fu"><a href="../reference/plot_expression_triangle.html">plot_expression_triangle</a></span><span class="op">(</span><span class="va">deg_counts</span><span class="op">)</span></span></code></pre></div>
+<p><img src="HybridExpress_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
+<p>This figure is commonly used in publications, and it was inspired by
+<span class="citation">Rapp, Udall, and Wendel (2009)</span>. For each
+edge (line), numbers in the middle (in bold) indicate the frequency of
+all DEGs, and numbers at the ends (close to boxes) indicate the
+frequency of up-regulated genes in each generation. For instance, the
+figure above shows that, for the contrast between F1 and P1, there are
+6831 DEGs (40.5% of the genome), of which 1989 are up-regulated in F1,
+and 4843 are up-regulated in P1.</p>
+<p>For a custom figure, you can also specify your own color palette and
+labels for the boxes. For example:</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Create vectors (length 4) of colors and box labels</span></span>
+<span><span class="va">pal</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"springgreen4"</span>, <span class="st">"darkorange3"</span>, <span class="st">"mediumpurple4"</span>, <span class="st">"mediumpurple3"</span><span class="op">)</span></span>
+<span><span class="va">labels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Parent 1\n(2n)"</span>, <span class="st">"Parent 2\n(n)"</span>, <span class="st">"Progeny\n(3n)"</span>, <span class="st">"Midparent"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/plot_expression_triangle.html">plot_expression_triangle</a></span><span class="op">(</span><span class="va">deg_counts</span>, palette <span class="op">=</span> <span class="va">pal</span>, box_labels <span class="op">=</span> <span class="va">labels</span><span class="op">)</span></span></code></pre></div>
+<p><img src="HybridExpress_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
 </div>
 <div class="section level2">
 <h2 id="expression-based-gene-classification">Expression-based gene classification<a class="anchor" aria-label="anchor" href="#expression-based-gene-classification"></a>
@@ -198,8 +576,8 @@ parents<a class="anchor" aria-label="anchor" href="#identifying-differentially-e
 <span><span class="co">#&gt; <span style="color: #00BBBB; font-weight: bold;">─ Packages ───────────────────────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt;  <span style="color: #555555; font-style: italic;">package             </span> <span style="color: #555555; font-style: italic;">*</span> <span style="color: #555555; font-style: italic;">version  </span> <span style="color: #555555; font-style: italic;">date (UTC)</span> <span style="color: #555555; font-style: italic;">lib</span> <span style="color: #555555; font-style: italic;">source</span></span></span>
 <span><span class="co">#&gt;  abind                  1.4-5     <span style="color: #555555;">2016-07-21</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
-<span><span class="co">#&gt;  Biobase                2.62.0    <span style="color: #555555;">2023-10-24</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">#&gt;  BiocGenerics           0.48.1    <span style="color: #555555;">2023-11-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">#&gt;  Biobase              * 2.62.0    <span style="color: #555555;">2023-10-24</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">#&gt;  BiocGenerics         * 0.48.1    <span style="color: #555555;">2023-11-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
 <span><span class="co">#&gt;  BiocManager            1.30.22   <span style="color: #555555;">2023-08-08</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  BiocParallel           1.36.0    <span style="color: #555555;">2023-10-24</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
 <span><span class="co">#&gt;  BiocStyle            * 2.30.0    <span style="color: #555555;">2023-10-24</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
@@ -222,31 +600,34 @@ parents<a class="anchor" aria-label="anchor" href="#identifying-differentially-e
 <span><span class="co">#&gt;  doParallel             1.0.17    <span style="color: #555555;">2022-02-07</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  evaluate               0.23      <span style="color: #555555;">2023-11-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  fansi                  1.0.5     <span style="color: #555555;">2023-10-08</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
+<span><span class="co">#&gt;  farver                 2.1.1     <span style="color: #555555;">2022-07-06</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  fastmap                1.1.1     <span style="color: #555555;">2023-02-24</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  foreach                1.5.2     <span style="color: #555555;">2022-02-02</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  fs                     1.6.3     <span style="color: #555555;">2023-07-20</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
-<span><span class="co">#&gt;  GenomeInfoDb           1.38.0    <span style="color: #555555;">2023-10-24</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">#&gt;  GenomeInfoDb         * 1.38.0    <span style="color: #555555;">2023-10-24</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
 <span><span class="co">#&gt;  GenomeInfoDbData       1.2.11    <span style="color: #555555;">2023-11-02</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">#&gt;  GenomicRanges          1.54.1    <span style="color: #555555;">2023-10-29</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">#&gt;  GenomicRanges        * 1.54.1    <span style="color: #555555;">2023-10-29</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
 <span><span class="co">#&gt;  GetoptLong             1.0.5     <span style="color: #555555;">2020-12-15</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  ggplot2                3.4.4     <span style="color: #555555;">2023-10-12</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  GlobalOptions          0.1.2     <span style="color: #555555;">2020-06-10</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  glue                   1.6.2     <span style="color: #555555;">2022-02-24</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  gtable                 0.3.4     <span style="color: #555555;">2023-08-21</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
+<span><span class="co">#&gt;  highr                  0.10      <span style="color: #555555;">2022-12-22</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  htmltools              0.5.6.1   <span style="color: #555555;">2023-10-06</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  HybridExpress        * 0.99.0    <span style="color: #555555;">2023-11-03</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">#&gt;  IRanges                2.36.0    <span style="color: #555555;">2023-10-24</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">#&gt;  IRanges              * 2.36.0    <span style="color: #555555;">2023-10-24</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
 <span><span class="co">#&gt;  iterators              1.0.14    <span style="color: #555555;">2022-02-05</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  jquerylib              0.1.4     <span style="color: #555555;">2021-04-26</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  jsonlite               1.8.7     <span style="color: #555555;">2023-06-29</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  knitr                  1.45      <span style="color: #555555;">2023-10-30</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
+<span><span class="co">#&gt;  labeling               0.4.3     <span style="color: #555555;">2023-08-29</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  lattice                0.21-9    <span style="color: #555555;">2023-10-01</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  lifecycle              1.0.3     <span style="color: #555555;">2022-10-07</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  locfit                 1.5-9.8   <span style="color: #555555;">2023-06-11</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  magrittr               2.0.3     <span style="color: #555555;">2022-03-30</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  Matrix                 1.6-1.1   <span style="color: #555555;">2023-09-18</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
-<span><span class="co">#&gt;  MatrixGenerics         1.14.0    <span style="color: #555555;">2023-10-24</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">#&gt;  matrixStats            1.0.0     <span style="color: #555555;">2023-06-02</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
+<span><span class="co">#&gt;  MatrixGenerics       * 1.14.0    <span style="color: #555555;">2023-10-24</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">#&gt;  matrixStats          * 1.0.0     <span style="color: #555555;">2023-06-02</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  memoise                2.0.1     <span style="color: #555555;">2021-11-26</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  munsell                0.5.0     <span style="color: #555555;">2018-06-12</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  patchwork              1.1.3     <span style="color: #555555;">2023-08-14</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
@@ -265,7 +646,7 @@ parents<a class="anchor" aria-label="anchor" href="#identifying-differentially-e
 <span><span class="co">#&gt;  rmarkdown              2.25      <span style="color: #555555;">2023-09-18</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  rprojroot              2.0.3     <span style="color: #555555;">2022-04-02</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  S4Arrays               1.2.0     <span style="color: #555555;">2023-10-24</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">#&gt;  S4Vectors              0.40.1    <span style="color: #555555;">2023-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">#&gt;  S4Vectors            * 0.40.1    <span style="color: #555555;">2023-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
 <span><span class="co">#&gt;  sass                   0.4.7     <span style="color: #555555;">2023-07-15</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  scales                 1.2.1     <span style="color: #555555;">2022-08-20</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  sessioninfo            1.2.2     <span style="color: #555555;">2021-12-06</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
@@ -273,12 +654,13 @@ parents<a class="anchor" aria-label="anchor" href="#identifying-differentially-e
 <span><span class="co">#&gt;  SparseArray            1.2.0     <span style="color: #555555;">2023-10-24</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
 <span><span class="co">#&gt;  stringi                1.7.12    <span style="color: #555555;">2023-01-11</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  stringr                1.5.0     <span style="color: #555555;">2022-12-02</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
-<span><span class="co">#&gt;  SummarizedExperiment   1.32.0    <span style="color: #555555;">2023-10-24</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">#&gt;  SummarizedExperiment * 1.32.0    <span style="color: #555555;">2023-10-24</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
 <span><span class="co">#&gt;  systemfonts            1.0.5     <span style="color: #555555;">2023-10-09</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  textshaping            0.3.7     <span style="color: #555555;">2023-10-09</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  tibble                 3.2.1     <span style="color: #555555;">2023-03-20</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  utf8                   1.2.4     <span style="color: #555555;">2023-10-22</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  vctrs                  0.6.4     <span style="color: #555555;">2023-10-12</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
+<span><span class="co">#&gt;  withr                  2.5.2     <span style="color: #555555;">2023-10-30</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  xfun                   0.41      <span style="color: #555555;">2023-11-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  XVector                0.42.0    <span style="color: #555555;">2023-10-24</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
 <span><span class="co">#&gt;  yaml                   2.3.7     <span style="color: #555555;">2023-01-23</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
