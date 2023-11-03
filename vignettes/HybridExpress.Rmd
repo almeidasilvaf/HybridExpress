@@ -1,5 +1,5 @@
 ---
-title: "Analyzing expression data for hybrids relative to their parents"
+title: "Comparative transcriptomic analysis of hybrids and their progenitors"
 author: 
   - name: Fabricio Almeida-Silva
     affiliation: 
@@ -22,7 +22,7 @@ output:
     number_sections: yes
 bibliography: vignette_bibliography.bib
 vignette: >
-  %\VignetteIndexEntry{Analyzing expression data for hybrids relative to their parents}
+  %\VignetteIndexEntry{Comparative transcriptomic analysis of hybrids and their progenitors}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -76,23 +76,245 @@ library(HybridExpress)
 
 # Data description
 
+For this vignette, we will use an example data set that comprises
+(unpublished) gene expression data (in counts) for *Chlamydomonas reinhardtii*. 
+In our lab, we crossed a diploid line of *C. reinhardtii* (hereafter "P1") 
+with a haploid line (hereafter "P2"), thus generating a triploid line through
+the merging of the two parental genomes. The count matrix and sample
+metadata are stored in `SummarizedExperiment` objects, which is the standard
+Bioconductor data structure required by 
+`r BiocStyle::Githubpkg("HybridExpress")`. For instructions on how to create
+a `SummarizedExperiment` object, check the FAQ section of this vignette.
 
+Let's load the example data and take a quick look at it:
 
+```{r message = FALSE}
+library(SummarizedExperiment)
 
+# Load data
+data(se_chlamy)
+
+# Inspect the `SummarizedExperiment` object
+se_chlamy
+
+## Take a look at the colData and count matrix
+colData(se_chlamy)
+assay(se_chlamy) |> head()
+
+table(se_chlamy$Ploidy, se_chlamy$Generation)
+```
+
+As you can see, the count matrix contains `r nrow(se_chlamy)` genes
+and `r ncol(se_chlamy)` samples, with 6 replicates for parent 1 
+(P1, diploid), 6 replicates for parent 2 (P2, haploid), and 6 replicates 
+for the progeny (F1, triploid).
 
 # Adding midparent expression values
 
+First of all, you'd want to add in your count matrix *in silico* samples 
+that contain the expression values of the midparent. This can be done
+with the function `add_midparent_expression()`, which takes a random
+sample pair (one sample from each parent, sampling without replacement) 
+and calculates the midparent expression value in one of three ways:
 
-1. Mean (default)
-2. Sum
-3. Weighted mean
+
+1. **Mean (default):** get the mean expression of the two samples.
+2. **Sum:** get the sum of the two samples.
+3. **Weighted mean:** get the weighted mean of the two samples by multiplying
+the expression value of each parent by a weight. Typically, this can be used
+if the two parents have different ploidy levels, and the weights would
+correspond to the ploidy level of each parent.
+
+
+For this function, besides specifying the method to obtain the midparent 
+expression values (i.e., "mean", "sum", or "weightedmean"), users must
+also specify the name of the column in `colData` that contains information 
+about the generations (default: *"Generation"*), as well as the levels
+corresponding to each parent (default: *"P1"* and *"P2"* for parents 1 and 2,
+respectively).
+
+```{r}
+# Add midparent expression using the mean of the counts
+se <- add_midparent_expression(se_chlamy)
+head(assay(se))
+
+# Alternative 1: using the sum of the counts
+add_midparent_expression(se_chlamy, method = "sum") |>
+    assay() |> 
+    head()
+
+# Alternative 2: using the weighted mean of the counts (weights = ploidy)
+w <- c(2, 1) # P1 = diploid; P2 = haploid
+add_midparent_expression(se_chlamy, method = "weightedmean", weights = w) |>
+    assay() |> 
+    head()
+```
+
+We will proceed our analyses with the midparent expression values obtained
+from the mean of the counts, stored in the `se` object.
 
 # Exploratory data analyses
 
+Next, you can perform exploratory analyses of sample clustering to verify if
+samples group as expected. With `r BiocStyle::Githubpkg("HybridExpress")`,
+this can be performed using two functions:
+
+1. `pca_plot()`: creates principal component analysis (PCA) plots, with colors 
+and shapes (optional) mapped to levels of `colData` variables;
+2. `plot_samplecor()`: plots a heatmap of hierarchically clustered pairwise 
+sample correlations.
+
+Let's start with the PCA plot:
+
+```{r}
+# For colData rows with missing values (midparent samples), add "midparent"
+se$Ploidy[is.na(se$Ploidy)] <- "midparent"
+se$Generation[is.na(se$Generation)] <- "midparent"
+
+# Create PCA plot
+pca_plot(se, color_by = "Generation", shape_by = "Ploidy", add_mean = TRUE)
+```
+
+In the plot above, each data point corresponds to a sample, and colors
+and shapes are mapped to levels of the variables specified in the
+arguments `color_by` and `shape_by`, respectively. Besides, 
+by specifying `add_mean = TRUE`,
+we added a diamond shape indicating the mean PC coordinates based on the variable
+in `color_by` (here, *"Generation"*).
+
+Now, let's plot the heatmap of sample correlations:
+
+```{r}
+# Plot a heatmap of sample correlations
+plot_samplecor(se)
+```
+
+We can see that samples group well together both in the PCA plot and in
+the correlation heatmap. 
+
+Of note, both `pca_plot()` and `plot_samplecor()`
+use only the top 500 genes with the highest variances to create the plot.
+This is because genes with low variances (i.e., genes that do not vary much
+across samples) are uninformative and typically only add noise. You can change
+this number (to use more or less genes) in the `ntop` argument of 
+both functions.
 
 
 # Identifying differentially expressed genes between hybrids and their parents
 
+To compare gene expression levels of hybrids to their progenitor species, you
+can use the function `get_deg_list()`. This function performs
+differential expression analyses using `r BiocStyle::Biocpkg("DESeq2")`
+and returns a list of data frames with gene-wise test statistics 
+for the following contrasts:
+
+1. `P2_vs_P1`: parent 2 (numerator) versus parent 1 (denominator).
+2. `F1_vs_P1`: hybrid (numerator) versus parent 1 (denominator).
+3. `F1_vs_P2`: hybrid (numerator) versus parent 2 (denominator).
+4. `F1_vs_midparent`: hybrid (numerator) vs midparent (denominator).
+
+By default, count data are normalized by library size using the standard
+normalization process in `r BiocStyle::Biocpkg("DESeq2")`. However,
+if spike-in standards are included in the count matrix, you can use them
+for normalization by setting `spikein_norm = TRUE` and specifying the
+pattern used to indicate rows that contain spike-ins (usually they start
+with *ERCC*). In our example data set, spike-in standards are available 
+in the last rows of the count matrix.
+
+```{r}
+# Show last rows of the count matrix
+assay(se) |> 
+    tail()
+```
+
+Now, we will use `get_deg_list()` to get differentially expressed genes (DEGs)
+for each contrast while using spike-in normalization.
+
+```{r}
+# Get a list of differentially expressed genes for each contrast
+deg_list <- get_deg_list(se, spikein_norm = TRUE, spikein_pattern = "ERCC")
+
+# Inspecting the output
+## Getting contrast names
+names(deg_list)
+
+## Accessing gene-wise test statistics for contrast `F1_vs_P1`
+head(deg_list$F1_vs_P1)
+
+## Counting the number of DEGs per contrast
+sapply(deg_list, nrow)
+```
+
+To summarize the frequencies of up- and down-regulated genes per contrast
+in a single data frame, use the function `get_deg_counts()`.
+
+```{r}
+# Get a data frame with DEG frequencies for each contrast
+deg_counts <- get_deg_counts(deg_list)
+
+deg_counts
+```
+
+It is important to note that the columns `perc_up`, `perc_down`, 
+and `perc_total` show the percentages of up-regulated, down-regulated, and
+all differentially expressed genes relative to the total number of genes
+in the count matrix. The total number of genes in the count matrix
+is stored in the `ngenes` attribute of the list returned by `get_deg_list()`:
+
+```{r}
+attributes(deg_list)
+```
+
+However, since the count matrix usually does not include all genes in the 
+genome (e.g., lowly expressed genes and genes with low variance are usually
+filtered out), the percentages in `perc_up`, `perc_down`, and `perc_total`
+are not relative to the total number of genes in the genome. To use the
+total number of genes in the genome as the reference, we need to update
+the `ngenes` attribute of the DEG list with the appropriate number
+as follows:
+
+```{r}
+# Total number of genes in the C. reinhardtii genome (v6.1): 16883
+attributes(deg_list)$ngenes <- 16883
+```
+
+Then, we can run `get_deg_counts()` again to get the percentages relative
+to the total number of genes in the genome.
+
+```{r}
+deg_counts <- get_deg_counts(deg_list)
+deg_counts
+```
+
+Finally, we can summarize everything in a single publication-ready figure
+using the plot `plot_expression_triangle()`, which shows the 
+'experimental trio' (i.e., hybrid and its progenitors) as a triangle,
+with the frequencies of DEGs indicated.
+
+```{r}
+# Plot expression triangle
+plot_expression_triangle(deg_counts)
+```
+
+This figure is commonly used in publications, and it was inspired by 
+@rapp2009genomic. For each edge (line), numbers in the middle (in bold) 
+indicate the frequency of all DEGs, and numbers at the ends (close to boxes)
+indicate the frequency of up-regulated genes in each generation. For instance, 
+the figure above shows that, for the contrast between F1 and P1, there 
+are `r deg_counts[2, "total"]` DEGs (`r deg_counts[2, "perc_total"]`% of the
+genome), of which `r deg_counts[2, "up"]` are up-regulated in F1,
+and `r deg_counts[2, "down"]` are up-regulated in P1.
+
+For a custom figure, you can also specify your own color palette and
+labels for the boxes. For example:
+
+```{r fig.height=5}
+# Create vectors (length 4) of colors and box labels
+pal <- c("springgreen4", "darkorange3", "mediumpurple4", "mediumpurple3")
+labels <- c("Parent 1\n(2n)", "Parent 2\n(n)", "Progeny\n(3n)", "Midparent")
+
+plot_expression_triangle(deg_counts, palette = pal, box_labels = labels)
+```
 
 # Expression-based gene classification
 
