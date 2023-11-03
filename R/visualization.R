@@ -112,7 +112,6 @@ plot_expression_partitions <- function(
 ) {
     
     pdata <- partition_table
-    pdata <- pdata[!is.na(pdata$lFC_F1_vs_P1) & !is.na(pdata$lFC_F1_vs_P2), ]
     
     # Define color palette
     pal <- ppal(palette, "partition")[seq_along(levels(pdata[[group_by]]))]

@@ -34,26 +34,26 @@ expression_partitioning <- function(deg_list) {
     
     # Data frame with classification rules for groups and classes
     cl <- c(
-        "ADD", "ELD_P1", "DOWN", "ELD_P2", "UP", "UP", 
-        "DOWN", "UP", "ELD_P2", "DOWN", "ELD_P1", "ADD"
+        "ADD", "ELD_P2", "DOWN", "ELD_P1", "UP", "UP", 
+        "DOWN", "UP", "ELD_P1", "DOWN", "ELD_P2", "ADD"
     )
     partition_rules <- data.frame(
-        DEG = c(
-            "down-up-up",
-            "unchanged-up-up",
-            "down-down-up",
-            "up-unchanged-down",
-            "up-up-up",
-            "up-up-down",
-            "down-down-unchanged",
-            "up-up-unchanged",
-            "down-unchanged-up",
-            "down-down-down",
-            "unchanged-down-down",
-            "up-down-down"
-        ),
         Category = factor(seq_len(12), levels = seq_len(12)),
-        Class = factor(cl, levels = c("UP", "DOWN", "ADD", "ELD_P1", "ELD_P2"))
+        Class = factor(cl, levels = c("UP", "DOWN", "ADD", "ELD_P1", "ELD_P2")),
+        DEG = c(
+            "down-up-up", #             1
+            "unchanged-up-up", #        2
+            "down-down-up", #           3
+            "up-unchanged-down", #      4
+            "up-up-up", #               5
+            "up-up-down", #             6
+            "down-down-unchanged", #    7
+            "up-up-unchanged", #        8
+            "down-unchanged-up", #      9
+            "down-down-down", #         10
+            "unchanged-down-down", #    11
+            "up-down-down" #            12
+        )
     )
 
     # Classify genes in 12 groups
@@ -70,11 +70,16 @@ expression_partitioning <- function(deg_list) {
         data.frame(
             Gene = rownames(deg_list$F1_vs_P2),
             lFC_F1_vs_P2 = deg_list$F1_vs_P2$log2FoldChange
-        )
+        ),
+        all = TRUE
     )
+    log2fc_df[is.na(log2fc_df)] <- 0
     
     # Combine classification data frame with log2foldchange
-    class_df <- merge(classified_genes[, c("Gene", "Category", "Class")], log2fc_df)
+    class_df <- merge(
+        classified_genes[, c("Gene", "Category", "Class")], log2fc_df,
+        all.x = TRUE
+    )
     class_df <- class_df[!is.na(class_df$Category), ]
     class_df <- class_df[order(class_df$Category), ]
     

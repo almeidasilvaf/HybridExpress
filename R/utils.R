@@ -241,11 +241,11 @@ partition_lineplots <- function(
     
     # Data frame of point coordinates for each group
     pline_data <- data.frame(
-        Category = factor(rep(1:12, each = 3)),
+        Category = factor(rep(seq_len(12), each = 3)),
         Class = factor(
             rep(c(
-                "ADD", "ELD_P1", "DOWN", "ELD_P2", "UP", "UP", 
-                "DOWN", "UP", "ELD_P2", "DOWN", "ELD_P1", "ADD"
+                "ADD", "ELD_P2", "DOWN", "ELD_P1", "UP", "UP", 
+                "DOWN", "UP", "ELD_P1", "DOWN", "ELD_P2", "ADD"
             ), each = 3),
             levels = c("UP", "DOWN", "ADD", "ELD_P1", "ELD_P2")),
         x = factor(rep(c("P1", "F1", "P2"), 12), levels = c("P1", "F1", "P2")),
@@ -269,7 +269,7 @@ partition_lineplots <- function(
     pline_data <- split(pline_data, pline_data[[group_by]])
     
     ## Number of genes per level of `group_by`
-    n <- as.numeric(table(partition_table$Category))
+    n <- as.numeric(table(partition_table[[group_by]]))
     
     p_line <- lapply(seq_along(pline_data), function(x) {
         
