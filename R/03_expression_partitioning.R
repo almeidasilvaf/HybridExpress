@@ -52,7 +52,7 @@ expression_partitioning <- function(deg_list) {
             "unchanged-down-down",
             "up-down-down"
         ),
-        Category = factor(c(1:12), levels = 1:12),
+        Category = factor(seq_len(12), levels = seq_len(12)),
         Class = factor(cl, levels = c("UP", "DOWN", "ADD", "ELD_P1", "ELD_P2"))
     )
 
