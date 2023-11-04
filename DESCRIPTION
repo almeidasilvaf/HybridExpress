@@ -57,7 +57,8 @@ Imports:
     stats,
     RColorBrewer,
     ComplexHeatmap,
-    grDevices
+    grDevices,
+    BiocParallel
 Suggests: 
     BiocStyle,
     knitr,

@@ -46,3 +46,17 @@
 #' @usage data(deg_counts)
 "deg_counts"
 
+
+#' Data frame with GO terms annotated to each gene of Chlamydomonas reinhardtii
+#'
+#' Data were obtained from Phytozome and processed so that each row contains
+#' only one GO term (long format).
+#' 
+#' @name go_chlamy
+#' @format A 2-column data frame with columns \strong{gene} (character, gene 
+#' ID), and \strong{GO} (character, name of GO term.)
+#' @examples 
+#' data(go_chlamy)
+#' @usage data(go_chlamy)
+"go_chlamy"
+
