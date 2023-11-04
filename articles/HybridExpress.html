@@ -4,73 +4,73 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="HybridExpress">
 <title>Comparative transcriptomic analysis of hybrids and their progenitors • HybridExpress</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
-<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><link href="../deps/Atkinson_Hyperlegible-0.4.7/font.css" rel="stylesheet">
+<link href="../deps/Source_Code_Pro-0.4.7/font.css" rel="stylesheet">
+<!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Comparative transcriptomic analysis of hybrids and their progenitors">
+<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Comparative transcriptomic analysis of hybrids and their progenitors">
 <meta property="og:description" content="HybridExpress">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body data-spy="scroll" data-target="#toc">
+<body>
+    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <div class="container template-article">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">HybridExpress</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.99.0</span>
-      </span>
-    </div>
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-#0092ac"><div class="container">
+    
+    <a class="navbar-brand me-2" href="../index.html">HybridExpress</a>
 
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-<li>
-  <a href="../articles/HybridExpress.html">Get started</a>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.0</small>
+
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar" class="collapse navbar-collapse ms-3">
+      <ul class="navbar-nav me-auto">
+<li class="active nav-item">
+  <a class="nav-link" href="../articles/HybridExpress.html">Get started</a>
 </li>
-<li>
-  <a href="../reference/index.html">Reference</a>
+<li class="nav-item">
+  <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
-<li>
-  <a href="../news/index.html">Changelog</a>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="https://github.com/almeidasilvaf/HybridExpress/" class="external-link">
-    <span class="fab fa-github fa-lg"></span>
+<form class="form-inline my-2 my-lg-0" role="search">
+        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
+</form>
+
+      <ul class="navbar-nav">
+<li class="nav-item">
+  <a class="external-link nav-link" href="https://github.com/almeidasilvaf/HybridExpress/" aria-label="github">
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
       </ul>
 </div>
-<!--/.nav-collapse -->
+
+    
   </div>
-<!--/.container -->
-</div>
-<!--/.navbar -->
+</nav><div class="container template-article">
 
-      
 
-      </header><div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Comparative transcriptomic analysis of hybrids
-and their progenitors</h1>
+
+
+<div class="row">
+  <main id="main" class="col-md-9"><div class="page-header">
+      <img src="" class="logo" alt=""><h1>Comparative transcriptomic analysis of hybrids and their progenitors</h1>
                         <h4 data-toc-skip class="author">Fabricio
 Almeida-Silva</h4>
             <address class="author_afil">
@@ -93,8 +93,7 @@ Interdisciplinary Studies, Nanjing Agricultural University, Nanjing,
 ChinaCenter for Microbial Ecology and Genomics, Department of
 Biochemistry, Genetics and Microbiology, University of Pretoria,
 Pretoria, South Africa<br><small class="dont-index">Source: <a href="https://github.com/almeidasilvaf/HybridExpress/blob/HEAD/vignettes/HybridExpress.Rmd" class="external-link"><code>vignettes/HybridExpress.Rmd</code></a></small>
-      <div class="hidden name"><code>HybridExpress.Rmd</code></div>
-
+      <div class="d-none name"><code>HybridExpress.Rmd</code></div>
     </address>
 </address>
 </address>
@@ -143,7 +142,9 @@ can be installed from Bioconductor with the following code:</p>
 <span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"HybridExpress"</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Load package after installation</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/almeidasilvaf/HybridExpress" class="external-link">HybridExpress</a></span><span class="op">)</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/almeidasilvaf/HybridExpress" class="external-link">HybridExpress</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span> <span class="co"># for reproducibility</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="data-description">Data description<a class="anchor" aria-label="anchor" href="#data-description"></a>
@@ -259,19 +260,19 @@ respectively).</p>
 <span><span class="co">#&gt; Cre01.g000300 1242 839 1216 1251 811 1785 1341 1306 1122 877 844 1082 1704 1739</span></span>
 <span><span class="co">#&gt; Cre01.g000350  412 264  294  336 252  478  233  221  195 155 190  201  299  272</span></span>
 <span><span class="co">#&gt;                S15  S16  S17  S18 midparent1 midparent2 midparent3 midparent4</span></span>
-<span><span class="co">#&gt; Cre01.g000050   29   22   21   16         16         14         18         24</span></span>
-<span><span class="co">#&gt; Cre01.g000150   37   17   24   21         26         22         32         50</span></span>
-<span><span class="co">#&gt; Cre01.g000200   24   26   18   21         14         16         19         25</span></span>
-<span><span class="co">#&gt; Cre01.g000250  358  339  340  332        269        254        310        356</span></span>
-<span><span class="co">#&gt; Cre01.g000300 1524 1720 1517 1243        966        960       1030       1292</span></span>
-<span><span class="co">#&gt; Cre01.g000350  276  324  246  275        224        232        242        322</span></span>
+<span><span class="co">#&gt; Cre01.g000050   29   22   21   16         18         27         14         20</span></span>
+<span><span class="co">#&gt; Cre01.g000150   37   17   24   21         32         46         38         56</span></span>
+<span><span class="co">#&gt; Cre01.g000200   24   26   18   21         19         22         20         18</span></span>
+<span><span class="co">#&gt; Cre01.g000250  358  339  340  332        310        372        273        284</span></span>
+<span><span class="co">#&gt; Cre01.g000300 1524 1720 1517 1243       1030       1331       1072       1166</span></span>
+<span><span class="co">#&gt; Cre01.g000350  276  324  246  275        242        316        242        268</span></span>
 <span><span class="co">#&gt;               midparent5 midparent6</span></span>
-<span><span class="co">#&gt; Cre01.g000050         20         27</span></span>
-<span><span class="co">#&gt; Cre01.g000150         66         52</span></span>
-<span><span class="co">#&gt; Cre01.g000200         18         26</span></span>
-<span><span class="co">#&gt; Cre01.g000250        246        430</span></span>
-<span><span class="co">#&gt; Cre01.g000300       1064       1546</span></span>
-<span><span class="co">#&gt; Cre01.g000350        246        350</span></span>
+<span><span class="co">#&gt; Cre01.g000050         18         22</span></span>
+<span><span class="co">#&gt; Cre01.g000150         31         46</span></span>
+<span><span class="co">#&gt; Cre01.g000200         16         24</span></span>
+<span><span class="co">#&gt; Cre01.g000250        278        348</span></span>
+<span><span class="co">#&gt; Cre01.g000300       1076       1182</span></span>
+<span><span class="co">#&gt; Cre01.g000350        242        304</span></span>
 <span></span>
 <span><span class="co"># Alternative 1: using the sum of the counts</span></span>
 <span><span class="fu"><a href="../reference/add_midparent_expression.html">add_midparent_expression</a></span><span class="op">(</span><span class="va">se_chlamy</span>, method <span class="op">=</span> <span class="st">"sum"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -285,19 +286,19 @@ respectively).</p>
 <span><span class="co">#&gt; Cre01.g000300 1242 839 1216 1251 811 1785 1341 1306 1122 877 844 1082 1704 1739</span></span>
 <span><span class="co">#&gt; Cre01.g000350  412 264  294  336 252  478  233  221  195 155 190  201  299  272</span></span>
 <span><span class="co">#&gt;                S15  S16  S17  S18 midparent1 midparent2 midparent3 midparent4</span></span>
-<span><span class="co">#&gt; Cre01.g000050   29   22   21   16         32         50         34         58</span></span>
-<span><span class="co">#&gt; Cre01.g000150   37   17   24   21         68        150         70         86</span></span>
-<span><span class="co">#&gt; Cre01.g000200   24   26   18   21         32         43         38         50</span></span>
-<span><span class="co">#&gt; Cre01.g000250  358  339  340  332        554        604        527        810</span></span>
-<span><span class="co">#&gt; Cre01.g000300 1524 1720 1517 1243       2093       2592       1961       2629</span></span>
-<span><span class="co">#&gt; Cre01.g000350  276  324  246  275        449        569        459        668</span></span>
+<span><span class="co">#&gt; Cre01.g000050   29   22   21   16         43         26         58         46</span></span>
+<span><span class="co">#&gt; Cre01.g000150   37   17   24   21         86         25         86        140</span></span>
+<span><span class="co">#&gt; Cre01.g000200   24   26   18   21         38         24         50         41</span></span>
+<span><span class="co">#&gt; Cre01.g000250  358  339  340  332        666        518        810        587</span></span>
+<span><span class="co">#&gt; Cre01.g000300 1524 1720 1517 1243       2557       1893       2629       2373</span></span>
+<span><span class="co">#&gt; Cre01.g000350  276  324  246  275        527        453        668        531</span></span>
 <span><span class="co">#&gt;               midparent5 midparent6</span></span>
-<span><span class="co">#&gt; Cre01.g000050         38         25</span></span>
-<span><span class="co">#&gt; Cre01.g000150         64         57</span></span>
-<span><span class="co">#&gt; Cre01.g000200         43         32</span></span>
-<span><span class="co">#&gt; Cre01.g000250        675        557</span></span>
-<span><span class="co">#&gt; Cre01.g000300       2324       2117</span></span>
-<span><span class="co">#&gt; Cre01.g000350        613        473</span></span>
+<span><span class="co">#&gt; Cre01.g000050         37         27</span></span>
+<span><span class="co">#&gt; Cre01.g000150         96         62</span></span>
+<span><span class="co">#&gt; Cre01.g000200         51         34</span></span>
+<span><span class="co">#&gt; Cre01.g000250        714        432</span></span>
+<span><span class="co">#&gt; Cre01.g000300       2548       1716</span></span>
+<span><span class="co">#&gt; Cre01.g000350        633        419</span></span>
 <span></span>
 <span><span class="co"># Alternative 2: using the weighted mean of the counts (weights = ploidy)</span></span>
 <span><span class="va">w</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span> <span class="co"># P1 = diploid; P2 = haploid</span></span>
@@ -312,19 +313,19 @@ respectively).</p>
 <span><span class="co">#&gt; Cre01.g000300 1242 839 1216 1251 811 1785 1341 1306 1122 877 844 1082 1704 1739</span></span>
 <span><span class="co">#&gt; Cre01.g000350  412 264  294  336 252  478  233  221  195 155 190  201  299  272</span></span>
 <span><span class="co">#&gt;                S15  S16  S17  S18 midparent1 midparent2 midparent3 midparent4</span></span>
-<span><span class="co">#&gt; Cre01.g000050   29   22   21   16         27         36         25         29</span></span>
-<span><span class="co">#&gt; Cre01.g000150   37   17   24   21         38         35         27         30</span></span>
-<span><span class="co">#&gt; Cre01.g000200   24   26   18   21         24         34         27         32</span></span>
-<span><span class="co">#&gt; Cre01.g000250  358  339  340  332        189        286        181        232</span></span>
-<span><span class="co">#&gt; Cre01.g000300 1524 1720 1517 1243       1555       2061       1453       1576</span></span>
-<span><span class="co">#&gt; Cre01.g000350  276  324  246  275        179        233        166        202</span></span>
+<span><span class="co">#&gt; Cre01.g000050   29   22   21   16         25         29         39         22</span></span>
+<span><span class="co">#&gt; Cre01.g000150   37   17   24   21         27         30         29         16</span></span>
+<span><span class="co">#&gt; Cre01.g000200   24   26   18   21         27         32         33         21</span></span>
+<span><span class="co">#&gt; Cre01.g000250  358  339  340  332        181        232        270        210</span></span>
+<span><span class="co">#&gt; Cre01.g000300 1524 1720 1517 1243       1453       1576       1753       1532</span></span>
+<span><span class="co">#&gt; Cre01.g000350  276  324  246  275        166        202        223        165</span></span>
 <span><span class="co">#&gt;               midparent5 midparent6</span></span>
-<span><span class="co">#&gt; Cre01.g000050         24         17</span></span>
-<span><span class="co">#&gt; Cre01.g000150         21         15</span></span>
-<span><span class="co">#&gt; Cre01.g000200         25         17</span></span>
-<span><span class="co">#&gt; Cre01.g000250        206        148</span></span>
-<span><span class="co">#&gt; Cre01.g000300       1373       1125</span></span>
-<span><span class="co">#&gt; Cre01.g000350        161        136</span></span></code></pre></div>
+<span><span class="co">#&gt; Cre01.g000050         26         17</span></span>
+<span><span class="co">#&gt; Cre01.g000150         48         15</span></span>
+<span><span class="co">#&gt; Cre01.g000200         29         17</span></span>
+<span><span class="co">#&gt; Cre01.g000250        202        148</span></span>
+<span><span class="co">#&gt; Cre01.g000300       1705       1125</span></span>
+<span><span class="co">#&gt; Cre01.g000350        186        136</span></span></code></pre></div>
 <p>We will proceed our analyses with the midparent expression values
 obtained from the mean of the counts, stored in the <code>se</code>
 object.</p>
@@ -419,19 +420,19 @@ matrix.</p>
 <span><span class="co">#&gt; ERCC-00170   97   95   73  101   70  118  186  148  110  167  110  103   72</span></span>
 <span><span class="co">#&gt; ERCC-00171 4644 4959 3554 5357 4170 5946 8207 7915 4992 7843 6455 5884 4537</span></span>
 <span><span class="co">#&gt;             S14  S15  S16  S17  S18 midparent1 midparent2 midparent3 midparent4</span></span>
-<span><span class="co">#&gt; ERCC-00163   67   62   80   88   47         72         88         67        103</span></span>
-<span><span class="co">#&gt; ERCC-00164    4    3    5    4    2          2          3          2          3</span></span>
-<span><span class="co">#&gt; ERCC-00165  143  115  185  192  136        128        142        132        192</span></span>
-<span><span class="co">#&gt; ERCC-00168    6    2   11    5    2          2          4          1          4</span></span>
-<span><span class="co">#&gt; ERCC-00170   99   64  121  103   84         90         99         92        142</span></span>
-<span><span class="co">#&gt; ERCC-00171 5665 4598 6168 5771 4747       4581       5422       5004       6426</span></span>
+<span><span class="co">#&gt; ERCC-00163   67   62   80   88   47         67         96        101         90</span></span>
+<span><span class="co">#&gt; ERCC-00164    4    3    5    4    2          2          2          4          2</span></span>
+<span><span class="co">#&gt; ERCC-00165  143  115  185  192  136        132        198        192        155</span></span>
+<span><span class="co">#&gt; ERCC-00168    6    2   11    5    2          1          6          3          2</span></span>
+<span><span class="co">#&gt; ERCC-00170   99   64  121  103   84         92        142        122        102</span></span>
+<span><span class="co">#&gt; ERCC-00171 5665 4598 6168 5771 4747       5004       6894       6437       5620</span></span>
 <span><span class="co">#&gt;            midparent5 midparent6</span></span>
-<span><span class="co">#&gt; ERCC-00163         92        106</span></span>
-<span><span class="co">#&gt; ERCC-00164          2          2</span></span>
-<span><span class="co">#&gt; ERCC-00165        192        212</span></span>
-<span><span class="co">#&gt; ERCC-00168          4          4</span></span>
-<span><span class="co">#&gt; ERCC-00170        134        133</span></span>
-<span><span class="co">#&gt; ERCC-00171       6600       6930</span></span></code></pre></div>
+<span><span class="co">#&gt; ERCC-00163         92         84</span></span>
+<span><span class="co">#&gt; ERCC-00164          5          0</span></span>
+<span><span class="co">#&gt; ERCC-00165        177        143</span></span>
+<span><span class="co">#&gt; ERCC-00168          4          2</span></span>
+<span><span class="co">#&gt; ERCC-00170        128        104</span></span>
+<span><span class="co">#&gt; ERCC-00171       6188       4818</span></span></code></pre></div>
 <p>Now, we will use <code><a href="../reference/get_deg_list.html">get_deg_list()</a></code> to get differentially
 expressed genes (DEGs) for each contrast while using spike-in
 normalization.</p>
@@ -454,24 +455,24 @@ normalization.</p>
 <span><span class="co">## Accessing gene-wise test statistics for contrast `F1_vs_P1`</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">deg_list</span><span class="op">$</span><span class="va">F1_vs_P1</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                baseMean log2FoldChange     lfcSE      stat       pvalue</span></span>
-<span><span class="co">#&gt; Cre01.g000450  39.31366     -1.1638924 0.2021314 -5.758099 8.506640e-09</span></span>
-<span><span class="co">#&gt; Cre01.g000500  32.73765      0.5804855 0.2260330  2.568145 1.022445e-02</span></span>
-<span><span class="co">#&gt; Cre01.g000750 102.97735      0.8807983 0.1782321  4.941861 7.738022e-07</span></span>
-<span><span class="co">#&gt; Cre01.g000850 559.27880     -0.5628686 0.1848477 -3.045040 2.326491e-03</span></span>
-<span><span class="co">#&gt; Cre01.g000900 471.69643      0.6805195 0.2013453  3.379862 7.252221e-04</span></span>
-<span><span class="co">#&gt; Cre01.g001000  10.31079     -6.6339949 0.9182469 -7.224631 5.024655e-13</span></span>
+<span><span class="co">#&gt; Cre01.g000450  39.59273     -1.1632346 0.2165407 -5.371898 7.791211e-08</span></span>
+<span><span class="co">#&gt; Cre01.g000750 103.10296      0.8807307 0.1842856  4.779162 1.760270e-06</span></span>
+<span><span class="co">#&gt; Cre01.g000900 471.44084      0.6807925 0.1980730  3.437079 5.880239e-04</span></span>
+<span><span class="co">#&gt; Cre01.g001000  10.34574     -6.6304915 0.9631384 -6.884256 5.809030e-12</span></span>
+<span><span class="co">#&gt; Cre01.g001100 453.87151     -0.6457115 0.1506903 -4.285025 1.827187e-05</span></span>
+<span><span class="co">#&gt; Cre01.g001200 159.03643      0.7231060 0.1946090  3.715685 2.026536e-04</span></span>
 <span><span class="co">#&gt;                       padj</span></span>
-<span><span class="co">#&gt; Cre01.g000450 5.292158e-08</span></span>
-<span><span class="co">#&gt; Cre01.g000500 2.113520e-02</span></span>
-<span><span class="co">#&gt; Cre01.g000750 3.556308e-06</span></span>
-<span><span class="co">#&gt; Cre01.g000850 5.618883e-03</span></span>
-<span><span class="co">#&gt; Cre01.g000900 1.964585e-03</span></span>
-<span><span class="co">#&gt; Cre01.g001000 5.596620e-12</span></span>
+<span><span class="co">#&gt; Cre01.g000450 4.653531e-07</span></span>
+<span><span class="co">#&gt; Cre01.g000750 8.329159e-06</span></span>
+<span><span class="co">#&gt; Cre01.g000900 1.707442e-03</span></span>
+<span><span class="co">#&gt; Cre01.g001000 6.659069e-11</span></span>
+<span><span class="co">#&gt; Cre01.g001100 7.200448e-05</span></span>
+<span><span class="co">#&gt; Cre01.g001200 6.453951e-04</span></span>
 <span></span>
 <span><span class="co">## Counting the number of DEGs per contrast</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">deg_list</span>, <span class="va">nrow</span><span class="op">)</span></span>
 <span><span class="co">#&gt;        P2_vs_P1        F1_vs_P1        F1_vs_P2 F1_vs_midparent </span></span>
-<span><span class="co">#&gt;            9783            7074            8711            6013</span></span></code></pre></div>
+<span><span class="co">#&gt;            8698            5476            7350            4348</span></span></code></pre></div>
 <p>To summarize the frequencies of up- and down-regulated genes per
 contrast in a single data frame, use the function
 <code><a href="../reference/get_deg_counts.html">get_deg_counts()</a></code>.</p>
@@ -481,10 +482,10 @@ contrast in a single data frame, use the function
 <span></span>
 <span><span class="va">deg_counts</span></span>
 <span><span class="co">#&gt;          contrast   up down total perc_up perc_down perc_total</span></span>
-<span><span class="co">#&gt; 1        P2_vs_P1 1053 8731  9783     8.1      67.3       75.5</span></span>
-<span><span class="co">#&gt; 2        F1_vs_P1 2079 4996  7074    16.0      38.5       54.6</span></span>
-<span><span class="co">#&gt; 3        F1_vs_P2 7577 1135  8711    58.4       8.8       67.2</span></span>
-<span><span class="co">#&gt; 4 F1_vs_midparent 3742 2272  6013    28.9      17.5       46.4</span></span></code></pre></div>
+<span><span class="co">#&gt; 1        P2_vs_P1  828 7870  8698     6.4      60.7       67.1</span></span>
+<span><span class="co">#&gt; 2        F1_vs_P1 1471 4005  5476    11.3      30.9       42.2</span></span>
+<span><span class="co">#&gt; 3        F1_vs_P2 6487  863  7350    50.0       6.7       56.7</span></span>
+<span><span class="co">#&gt; 4 F1_vs_midparent 2620 1728  4348    20.2      13.3       33.5</span></span></code></pre></div>
 <p>It is important to note that the columns <code>perc_up</code>,
 <code>perc_down</code>, and <code>perc_total</code> show the percentages
 of up-regulated, down-regulated, and all differentially expressed genes
@@ -515,10 +516,10 @@ percentages relative to the total number of genes in the genome.</p>
 <code class="sourceCode R"><span><span class="va">deg_counts</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_deg_counts.html">get_deg_counts</a></span><span class="op">(</span><span class="va">deg_list</span><span class="op">)</span></span>
 <span><span class="va">deg_counts</span></span>
 <span><span class="co">#&gt;          contrast   up down total perc_up perc_down perc_total</span></span>
-<span><span class="co">#&gt; 1        P2_vs_P1 1053 8731  9783     6.2      51.7       57.9</span></span>
-<span><span class="co">#&gt; 2        F1_vs_P1 2079 4996  7074    12.3      29.6       41.9</span></span>
-<span><span class="co">#&gt; 3        F1_vs_P2 7577 1135  8711    44.9       6.7       51.6</span></span>
-<span><span class="co">#&gt; 4 F1_vs_midparent 3742 2272  6013    22.2      13.5       35.6</span></span></code></pre></div>
+<span><span class="co">#&gt; 1        P2_vs_P1  828 7870  8698     4.9      46.6       51.5</span></span>
+<span><span class="co">#&gt; 2        F1_vs_P1 1471 4005  5476     8.7      23.7       32.4</span></span>
+<span><span class="co">#&gt; 3        F1_vs_P2 6487  863  7350    38.4       5.1       43.5</span></span>
+<span><span class="co">#&gt; 4 F1_vs_midparent 2620 1728  4348    15.5      10.2       25.8</span></span></code></pre></div>
 <p>Finally, we can summarize everything in a single publication-ready
 figure using the plot <code><a href="../reference/plot_expression_triangle.html">plot_expression_triangle()</a></code>, which
 shows the ‘experimental trio’ (i.e., hybrid and its progenitors) as a
@@ -533,8 +534,8 @@ edge (line), numbers in the middle (in bold) indicate the frequency of
 all DEGs, and numbers at the ends (close to boxes) indicate the
 frequency of up-regulated genes in each generation. For instance, the
 figure above shows that, for the contrast between F1 and P1, there are
-7074 DEGs (41.9% of the genome), of which 2079 are up-regulated in F1,
-and 4996 are up-regulated in P1.</p>
+5476 DEGs (32.4% of the genome), of which 1471 are up-regulated in F1,
+and 4005 are up-regulated in P1.</p>
 <p>For a custom figure, you can also specify your own color palette and
 labels for the boxes. For example:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
@@ -582,24 +583,24 @@ parent 2, but different from parent 1.</li>
 <span><span class="co"># Inspect the output</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">exp_partitions</span><span class="op">)</span></span>
 <span><span class="co">#&gt;            Gene Category Class lFC_F1_vs_P1 lFC_F1_vs_P2</span></span>
-<span><span class="co">#&gt; 1 Cre01.g003650        1   ADD    0.7833401   -1.0484704</span></span>
-<span><span class="co">#&gt; 2 Cre01.g005150        1   ADD    1.0468778   -0.5043874</span></span>
-<span><span class="co">#&gt; 3 Cre01.g008600        1   ADD    5.0497424   -1.4856888</span></span>
-<span><span class="co">#&gt; 4 Cre01.g013500        1   ADD    2.1098246   -1.5331691</span></span>
-<span><span class="co">#&gt; 5 Cre01.g034850        1   ADD    1.5835491   -0.7610260</span></span>
-<span><span class="co">#&gt; 6 Cre01.g800005        1   ADD    1.4927376   -0.9315539</span></span>
+<span><span class="co">#&gt; 1 Cre01.g003650        1   ADD    0.7838125   -1.0484464</span></span>
+<span><span class="co">#&gt; 2 Cre01.g005150        1   ADD    1.0473362   -0.5041601</span></span>
+<span><span class="co">#&gt; 3 Cre01.g008600        1   ADD    5.0518384   -1.4840829</span></span>
+<span><span class="co">#&gt; 4 Cre01.g013500        1   ADD    2.1099265   -1.5329846</span></span>
+<span><span class="co">#&gt; 5 Cre01.g034850        1   ADD    1.5838851   -0.7611868</span></span>
+<span><span class="co">#&gt; 6 Cre01.g800005        1   ADD    1.4928449   -0.9315119</span></span>
 <span></span>
 <span><span class="co"># Count number of genes per category</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">exp_partitions</span><span class="op">$</span><span class="va">Category</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;    1    2    3    4    5    6    7    8    9   10   11   12 </span></span>
-<span><span class="co">#&gt;  113  292  113 3090  152  647  238  763  304  285 1681 2578</span></span>
+<span><span class="co">#&gt;   70  262   66 3283   77  287  214  651  280  147 1760 1666</span></span>
 <span></span>
 <span><span class="co"># Count number of genes per class</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">exp_partitions</span><span class="op">$</span><span class="va">Class</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     UP   DOWN    ADD ELD_P1 ELD_P2 </span></span>
-<span><span class="co">#&gt;   1562    636   2691   3394   1973</span></span></code></pre></div>
+<span><span class="co">#&gt;   1015    427   1736   3563   2022</span></span></code></pre></div>
 <p>To visualize the expression partitions as a scatter plot of
 expression divergences, you can use the function
 <code><a href="../reference/plot_expression_partitions.html">plot_expression_partitions()</a></code>.</p>
@@ -647,7 +648,7 @@ with the function <code><a href="../reference/plot_partition_frequencies.html">p
 <span><span class="co">#&gt;  collate  en_US.UTF-8</span></span>
 <span><span class="co">#&gt;  ctype    en_US.UTF-8</span></span>
 <span><span class="co">#&gt;  tz       UTC</span></span>
-<span><span class="co">#&gt;  date     2023-11-03</span></span>
+<span><span class="co">#&gt;  date     2023-11-04</span></span>
 <span><span class="co">#&gt;  pandoc   3.1.1 @ /usr/local/bin/ (via rmarkdown)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB; font-weight: bold;">─ Packages ───────────────────────────────────────────────────────────────────</span></span></span>
@@ -675,12 +676,14 @@ with the function <code><a href="../reference/plot_partition_frequencies.html">p
 <span><span class="co">#&gt;  DESeq2                 1.42.0    <span style="color: #555555;">2023-10-24</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
 <span><span class="co">#&gt;  digest                 0.6.33    <span style="color: #555555;">2023-07-07</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  doParallel             1.0.17    <span style="color: #555555;">2022-02-07</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
+<span><span class="co">#&gt;  dplyr                  1.1.3     <span style="color: #555555;">2023-09-03</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  evaluate               0.23      <span style="color: #555555;">2023-11-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  fansi                  1.0.5     <span style="color: #555555;">2023-10-08</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  farver                 2.1.1     <span style="color: #555555;">2022-07-06</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  fastmap                1.1.1     <span style="color: #555555;">2023-02-24</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  foreach                1.5.2     <span style="color: #555555;">2022-02-02</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  fs                     1.6.3     <span style="color: #555555;">2023-07-20</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
+<span><span class="co">#&gt;  generics               0.1.3     <span style="color: #555555;">2022-07-05</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  GenomeInfoDb         * 1.38.0    <span style="color: #555555;">2023-10-24</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
 <span><span class="co">#&gt;  GenomeInfoDbData       1.2.11    <span style="color: #555555;">2023-11-02</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
 <span><span class="co">#&gt;  GenomicRanges        * 1.54.1    <span style="color: #555555;">2023-10-29</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
@@ -691,7 +694,7 @@ with the function <code><a href="../reference/plot_partition_frequencies.html">p
 <span><span class="co">#&gt;  gtable                 0.3.4     <span style="color: #555555;">2023-08-21</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  highr                  0.10      <span style="color: #555555;">2022-12-22</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  htmltools              0.5.7     <span style="color: #555555;">2023-11-03</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
-<span><span class="co">#&gt;  HybridExpress        * 0.99.0    <span style="color: #555555;">2023-11-03</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">#&gt;  HybridExpress        * 0.99.0    <span style="color: #555555;">2023-11-04</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
 <span><span class="co">#&gt;  IRanges              * 2.36.0    <span style="color: #555555;">2023-10-24</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
 <span><span class="co">#&gt;  iterators              1.0.14    <span style="color: #555555;">2022-02-05</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  jquerylib              0.1.4     <span style="color: #555555;">2021-04-26</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
@@ -719,7 +722,7 @@ with the function <code><a href="../reference/plot_partition_frequencies.html">p
 <span><span class="co">#&gt;  Rcpp                   1.0.11    <span style="color: #555555;">2023-07-06</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  RCurl                  1.98-1.13 <span style="color: #555555;">2023-11-02</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  rjson                  0.2.21    <span style="color: #555555;">2022-01-09</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
-<span><span class="co">#&gt;  rlang                  1.1.1     <span style="color: #555555;">2023-04-28</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
+<span><span class="co">#&gt;  rlang                  1.1.2     <span style="color: #555555;">2023-11-04</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  rmarkdown              2.25      <span style="color: #555555;">2023-09-18</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  rprojroot              2.0.3     <span style="color: #555555;">2022-04-02</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  S4Arrays               1.2.0     <span style="color: #555555;">2023-10-24</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
@@ -735,6 +738,7 @@ with the function <code><a href="../reference/plot_partition_frequencies.html">p
 <span><span class="co">#&gt;  systemfonts            1.0.5     <span style="color: #555555;">2023-10-09</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  textshaping            0.3.7     <span style="color: #555555;">2023-10-09</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  tibble                 3.2.1     <span style="color: #555555;">2023-03-20</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
+<span><span class="co">#&gt;  tidyselect             1.2.0     <span style="color: #555555;">2022-10-10</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  utf8                   1.2.4     <span style="color: #555555;">2023-10-22</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  vctrs                  0.6.4     <span style="color: #555555;">2023-10-12</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
 <span><span class="co">#&gt;  withr                  2.5.2     <span style="color: #555555;">2023-10-30</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
@@ -766,33 +770,26 @@ Biology</em> 7 (1): 1–10.
 </div>
 </div>
 </div>
-  </div>
-
-  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-
-        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
-    </nav>
-</div>
-
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
 
-      <footer><div class="copyright">
+    <footer><div class="pkgdown-footer-left">
   <p></p>
 <p>Developed by Fabricio Almeida-Silva, Lucas Prost-Boxoen, Yves Van de Peer.</p>
 </div>
 
-<div class="pkgdown">
+<div class="pkgdown-footer-right">
   <p></p>
 <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
-      </footer>
+    </footer>
 </div>
 
   
-
 
   
 
