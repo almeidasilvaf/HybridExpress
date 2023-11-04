@@ -21,7 +21,7 @@
 #' @param lfcThreshold Numeric indicating the log2 fold-change threshold
 #' to use to consider differentially expressed genes. Default: 0.
 #' @param alpha Numeric indicating the adjusted P-value threshold to use
-#' to consider differentially expressed genes. Default: 0.05.
+#' to consider differentially expressed genes. Default: 0.01.
 #' @param ... Additional arguments to be passed to \code{DESeq2::results()}.
 #' 
 #' @return A list of data frames with DESeq2's gene-wise tests statistics
@@ -58,7 +58,7 @@ get_deg_list <- function(
         parent1 = "P1", parent2 = "P2", offspring = "F1",
         spikein_norm = FALSE, spikein_pattern = "ERCC",
         lfcThreshold = 0,
-        alpha = 0.05,
+        alpha = 0.01,
         ...
 ) {
    
@@ -95,8 +95,9 @@ get_deg_list <- function(
         res_df <- as.data.frame(DESeq2::results(
             res, contrast = c(coldata_column, x[1], x[2]), ...
         ))
+        res_df <- res_df[!is.na(res_df$padj), ]
         res_df <- res_df[res_df$padj < alpha & 
-                             abs(res_df$log2FoldChange) >= lfcThreshold, ]
+                             abs(res_df$log2FoldChange) > lfcThreshold, ]
         
         return(res_df)
     })
@@ -134,6 +135,7 @@ get_deg_counts <- function(deg_list) {
     count_df <- Reduce(rbind, lapply(seq_along(deg_list), function(x) {
         
         deg_df <- deg_list[[x]]
+        deg_df <- deg_df[!is.na(deg_df$log2FoldChange), ]
         
         ## Number of up- and down-regulated genes
         stats_df <- data.frame(

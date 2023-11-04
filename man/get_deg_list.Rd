@@ -13,7 +13,7 @@ get_deg_list(
   spikein_norm = FALSE,
   spikein_pattern = "ERCC",
   lfcThreshold = 0,
-  alpha = 0.05,
+  alpha = 0.01,
   ...
 )
 }
@@ -46,7 +46,7 @@ if \code{spikein_norm = TRUE}.}
 to use to consider differentially expressed genes. Default: 0.}
 
 \item{alpha}{Numeric indicating the adjusted P-value threshold to use
-to consider differentially expressed genes. Default: 0.05.}
+to consider differentially expressed genes. Default: 0.01.}
 
 \item{...}{Additional arguments to be passed to \code{DESeq2::results()}.}
 }
