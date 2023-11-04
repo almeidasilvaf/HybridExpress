@@ -72,6 +72,8 @@ BiocManager::install("HybridExpress")
 ```{r load_package, message=FALSE}
 # Load package after installation
 library(HybridExpress)
+
+set.seed(123) # for reproducibility
 ```
 
 # Data description
