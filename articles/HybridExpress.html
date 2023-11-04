@@ -619,11 +619,345 @@ with the function <code><a href="../reference/plot_partition_frequencies.html">p
 <p><img src="HybridExpress_files/figure-html/unnamed-chunk-16-2.png" width="700"></p>
 </div>
 <div class="section level2">
+<h2 id="overrepresentation-analysis-of-functional-terms">Overrepresentation analysis of functional terms<a class="anchor" aria-label="anchor" href="#overrepresentation-analysis-of-functional-terms"></a>
+</h2>
+<p>Lastly, you’d want to explore whether gene sets of interest (e.g.,
+up-regulated genes in each contrast) are enriched in any particular GO
+term, pathway, protein domain, etc. For that, you will use the function
+<code><a href="../reference/ora.html">ora()</a></code>, which performs overrepresentation analysis for a
+gene set given a data frame of functional annotation for each gene.</p>
+<p>Here, we will use an example data set with GO annotation for <em>C.
+reinhardtii</em> genes. This data set illustrates how the annotation
+data frame must be shaped: gene ID in the first column, and functional
+annotations in other columns.</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Load example functional annotation (GO terms)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">go_chlamy</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">go_chlamy</span><span class="op">)</span></span>
+<span><span class="co">#&gt;            gene                                           GO</span></span>
+<span><span class="co">#&gt; 1 Cre01.g000050                                         &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 2 Cre01.g000100                                         &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 3 Cre01.g000150                                     membrane</span></span>
+<span><span class="co">#&gt; 4 Cre01.g000150                          metal ion transport</span></span>
+<span><span class="co">#&gt; 5 Cre01.g000150 metal ion transmembrane transporter activity</span></span>
+<span><span class="co">#&gt; 6 Cre01.g000150                      transmembrane transport</span></span></code></pre></div>
+<p>To demonstrate the usage of <code><a href="../reference/ora.html">ora()</a></code>, let’s check if we can
+find enrichment for any GO term among genes assigned to class “ADD”.</p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Get a vector of genes in class "ADD"</span></span>
+<span><span class="va">genes_add</span> <span class="op">&lt;-</span> <span class="va">exp_partitions</span><span class="op">$</span><span class="va">Gene</span><span class="op">[</span><span class="va">exp_partitions</span><span class="op">$</span><span class="va">Class</span> <span class="op">==</span> <span class="st">"ADD"</span><span class="op">]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">genes_add</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "Cre01.g003650" "Cre01.g005150" "Cre01.g008600" "Cre01.g013500"</span></span>
+<span><span class="co">#&gt; [5] "Cre01.g034850" "Cre01.g800005"</span></span>
+<span></span>
+<span><span class="co"># Get background genes - genes in the count matrix</span></span>
+<span><span class="va">bg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">se</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Perform overrepresentation analysis</span></span>
+<span><span class="va">ora_add</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ora.html">ora</a></span><span class="op">(</span><span class="va">genes_add</span>, <span class="va">go_chlamy</span>, background <span class="op">=</span> <span class="va">bg</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Inspect results</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">ora_add</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                                                   term genes all         pval</span></span>
+<span><span class="co">#&gt; 20                      aminoacyl-tRNA ligase activity    14  33 3.517366e-05</span></span>
+<span><span class="co">#&gt; 84                                           cytoplasm    43 151 6.083978e-07</span></span>
+<span><span class="co">#&gt; 97                                     DNA replication    17  37 1.331552e-06</span></span>
+<span><span class="co">#&gt; 114                             endopeptidase activity     6  10 7.118363e-04</span></span>
+<span><span class="co">#&gt; 115                              endoplasmic reticulum     9  17 1.128774e-04</span></span>
+<span><span class="co">#&gt; 118 eukaryotic translation initiation factor 3 complex     7   9 2.044325e-05</span></span>
+<span><span class="co">#&gt;             padj category</span></span>
+<span><span class="co">#&gt; 20  1.629713e-03       GO</span></span>
+<span><span class="co">#&gt; 84  6.342547e-05       GO</span></span>
+<span><span class="co">#&gt; 97  1.110515e-04       GO</span></span>
+<span><span class="co">#&gt; 114 2.120255e-02       GO</span></span>
+<span><span class="co">#&gt; 115 4.706990e-03       GO</span></span>
+<span><span class="co">#&gt; 118 1.217834e-03       GO</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="example-1-overrepresentation-analyses-for-all-expression-based-classes">Example 1: overrepresentation analyses for all expression-based
+classes<a class="anchor" aria-label="anchor" href="#example-1-overrepresentation-analyses-for-all-expression-based-classes"></a>
+</h3>
+<p>In the example above, we performed an overrepresentation analysis in
+genes associated with class “ADD”. What if we wanted to do the same for
+<em>all</em> classes?</p>
+<p>In that case, you could run <code><a href="../reference/ora.html">ora()</a></code> multiple times by
+looping over each class. In details, you would do the following:</p>
+<ol style="list-style-type: decimal">
+<li>For each class, create a vector of genes associated with it;</li>
+<li>Run <code><a href="../reference/ora.html">ora()</a></code> to get a data frame with ORA results.</li>
+</ol>
+<p>Below you can find an example on how to do it using
+<code><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply()</a></code>. Results for each class will be stored in elements
+of a list object.</p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Create a list of genes in each class</span></span>
+<span><span class="va">genes_by_class</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">exp_partitions</span><span class="op">$</span><span class="va">Gene</span>, <span class="va">exp_partitions</span><span class="op">$</span><span class="va">Class</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">genes_by_class</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "UP"     "DOWN"   "ADD"    "ELD_P1" "ELD_P2"</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">genes_by_class</span><span class="op">$</span><span class="va">UP</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "Cre01.g029250" "Cre01.g034380" "Cre01.g036700" "Cre01.g049400"</span></span>
+<span><span class="co">#&gt; [5] "Cre02.g085500" "Cre02.g087150"</span></span>
+<span></span>
+<span><span class="co"># Iterate through each class and perform ORA</span></span>
+<span><span class="va">ora_classes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span></span>
+<span>    <span class="va">genes_by_class</span>, <span class="co"># list through which we will iterate</span></span>
+<span>    <span class="va">ora</span>, <span class="co"># function we will apply to each element of the list</span></span>
+<span>    annotation <span class="op">=</span> <span class="va">go_chlamy</span>, background <span class="op">=</span> <span class="va">bg</span> <span class="co"># additional arguments to function</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Inspect output</span></span>
+<span><span class="va">ora_classes</span></span>
+<span><span class="co">#&gt; $UP</span></span>
+<span><span class="co">#&gt;                                    term genes all         pval         padj</span></span>
+<span><span class="co">#&gt; 29              ATP hydrolysis activity    21 119 3.074727e-04 0.0427387078</span></span>
+<span><span class="co">#&gt; 109                      dynein complex     8  13 1.172717e-06 0.0004890231</span></span>
+<span><span class="co">#&gt; 127 flavin adenine dinucleotide binding    11  42 2.687071e-04 0.0427387078</span></span>
+<span><span class="co">#&gt;     category</span></span>
+<span><span class="co">#&gt; 29        GO</span></span>
+<span><span class="co">#&gt; 109       GO</span></span>
+<span><span class="co">#&gt; 127       GO</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $DOWN</span></span>
+<span><span class="co">#&gt;                                  term genes all         pval         padj</span></span>
+<span><span class="co">#&gt; 242           oxidoreductase activity    21 274 2.668754e-04 2.225741e-02</span></span>
+<span><span class="co">#&gt; 271                    photosynthesis    13  58 3.367873e-08 7.022015e-06</span></span>
+<span><span class="co">#&gt; 272  photosynthesis, light harvesting    18  24 1.444312e-22 6.022782e-20</span></span>
+<span><span class="co">#&gt; 276                     photosystem I     5  15 8.360388e-05 8.715704e-03</span></span>
+<span><span class="co">#&gt; 376 tetrapyrrole biosynthetic process     5   8 1.885876e-06 2.621368e-04</span></span>
+<span><span class="co">#&gt;     category</span></span>
+<span><span class="co">#&gt; 242       GO</span></span>
+<span><span class="co">#&gt; 271       GO</span></span>
+<span><span class="co">#&gt; 272       GO</span></span>
+<span><span class="co">#&gt; 276       GO</span></span>
+<span><span class="co">#&gt; 376       GO</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $ADD</span></span>
+<span><span class="co">#&gt;                                                                                      term</span></span>
+<span><span class="co">#&gt; 20                                                         aminoacyl-tRNA ligase activity</span></span>
+<span><span class="co">#&gt; 84                                                                              cytoplasm</span></span>
+<span><span class="co">#&gt; 97                                                                        DNA replication</span></span>
+<span><span class="co">#&gt; 114                                                                endopeptidase activity</span></span>
+<span><span class="co">#&gt; 115                                                                 endoplasmic reticulum</span></span>
+<span><span class="co">#&gt; 118                                    eukaryotic translation initiation factor 3 complex</span></span>
+<span><span class="co">#&gt; 165                                                       intracellular protein transport</span></span>
+<span><span class="co">#&gt; 227                                                                          nuclear pore</span></span>
+<span><span class="co">#&gt; 250 oxidoreductase activity, acting on the CH-OH group of donors, NAD or NADP as acceptor</span></span>
+<span><span class="co">#&gt; 284                                                                     prefoldin complex</span></span>
+<span><span class="co">#&gt; 287                                                               proteasome core complex</span></span>
+<span><span class="co">#&gt; 293                                                                       protein folding</span></span>
+<span><span class="co">#&gt; 294                                                                 protein glycosylation</span></span>
+<span><span class="co">#&gt; 304                                                                     protein refolding</span></span>
+<span><span class="co">#&gt; 390                                                translation initiation factor activity</span></span>
+<span><span class="co">#&gt; 410                                                              unfolded protein binding</span></span>
+<span><span class="co">#&gt; 414                                                            vesicle-mediated transport</span></span>
+<span><span class="co">#&gt;     genes all         pval         padj category</span></span>
+<span><span class="co">#&gt; 20     14  33 3.517366e-05 1.629713e-03       GO</span></span>
+<span><span class="co">#&gt; 84     43 151 6.083978e-07 6.342547e-05       GO</span></span>
+<span><span class="co">#&gt; 97     17  37 1.331552e-06 1.110515e-04       GO</span></span>
+<span><span class="co">#&gt; 114     6  10 7.118363e-04 2.120255e-02       GO</span></span>
+<span><span class="co">#&gt; 115     9  17 1.128774e-04 4.706990e-03       GO</span></span>
+<span><span class="co">#&gt; 118     7   9 2.044325e-05 1.217834e-03       GO</span></span>
+<span><span class="co">#&gt; 165    25  73 3.907713e-06 2.715861e-04       GO</span></span>
+<span><span class="co">#&gt; 227     6   9 3.209008e-04 1.115130e-02       GO</span></span>
+<span><span class="co">#&gt; 250    10  27 1.647170e-03 4.292937e-02       GO</span></span>
+<span><span class="co">#&gt; 284     4   4 3.114510e-04 1.115130e-02       GO</span></span>
+<span><span class="co">#&gt; 287     9  15 2.987692e-05 1.557334e-03       GO</span></span>
+<span><span class="co">#&gt; 293    29  81 2.288079e-07 3.180430e-05       GO</span></span>
+<span><span class="co">#&gt; 294     6  10 7.118363e-04 2.120255e-02       GO</span></span>
+<span><span class="co">#&gt; 304    10  10 1.686356e-09 7.032106e-07       GO</span></span>
+<span><span class="co">#&gt; 390     9  21 8.277887e-04 2.301252e-02       GO</span></span>
+<span><span class="co">#&gt; 410    19  38 5.773438e-08 1.203762e-05       GO</span></span>
+<span><span class="co">#&gt; 414    13  41 1.832917e-03 4.496037e-02       GO</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $ELD_P1</span></span>
+<span><span class="co">#&gt;                term genes all         pval         padj category</span></span>
+<span><span class="co">#&gt; 38          binding    88 208 1.818832e-06 0.0007584527       GO</span></span>
+<span><span class="co">#&gt; 239         nucleus    77 193 8.891683e-05 0.0185391599       GO</span></span>
+<span><span class="co">#&gt; 345 rRNA processing    15  24 3.183647e-04 0.0442526890       GO</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $ELD_P2</span></span>
+<span><span class="co">#&gt;                                                                term genes all</span></span>
+<span><span class="co">#&gt; 28                             aspartic-type endopeptidase activity     6   8</span></span>
+<span><span class="co">#&gt; 170                                                iron ion binding    30  93</span></span>
+<span><span class="co">#&gt; 242                                         oxidoreductase activity    71 274</span></span>
+<span><span class="co">#&gt; 271                                                  photosynthesis    26  58</span></span>
+<span><span class="co">#&gt; 278                                                  photosystem II    17  32</span></span>
+<span><span class="co">#&gt; 320 proton-transporting two-sector ATPase complex, catalytic domain     6   8</span></span>
+<span><span class="co">#&gt;             pval         padj category</span></span>
+<span><span class="co">#&gt; 28  2.888758e-04 2.007687e-02       GO</span></span>
+<span><span class="co">#&gt; 170 3.997247e-05 4.167130e-03       GO</span></span>
+<span><span class="co">#&gt; 242 4.722014e-06 6.563600e-04       GO</span></span>
+<span><span class="co">#&gt; 271 1.031130e-07 4.299811e-05       GO</span></span>
+<span><span class="co">#&gt; 278 8.669007e-07 1.807488e-04       GO</span></span>
+<span><span class="co">#&gt; 320 2.888758e-04 2.007687e-02       GO</span></span></code></pre></div>
+<p>To do the same for each expression-based category (not class), you’d
+need to replace <code>Class</code> with <code>Category</code> in the
+<code><a href="https://rdrr.io/r/base/split.html" class="external-link">split()</a></code> function (see example above).</p>
+</div>
+<div class="section level3">
+<h3 id="example-2-overrepresentation-analyses-for-differentially-expressed-genes">Example 2: overrepresentation analyses for differentially expressed
+genes<a class="anchor" aria-label="anchor" href="#example-2-overrepresentation-analyses-for-differentially-expressed-genes"></a>
+</h3>
+<p>The same you can use <code><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply()</a></code> to loop through each
+expression class, you can also loop through each contrast in the list
+returned by <code><a href="../reference/get_deg_list.html">get_deg_list()</a></code>, and perform ORA for up- and
+down-regulated genes. Below you can find an example:</p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Get up-regulated genes for each contrast</span></span>
+<span><span class="va">up_genes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">deg_list</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="va">x</span><span class="op">$</span><span class="va">log2FoldChange</span> <span class="op">&gt;</span> <span class="fl">0</span>, <span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">up_genes</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "P2_vs_P1"        "F1_vs_P1"        "F1_vs_P2"        "F1_vs_midparent"</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">up_genes</span><span class="op">$</span><span class="va">F1_vs_P1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "Cre01.g000750" "Cre01.g000900" "Cre01.g001200" "Cre01.g002750"</span></span>
+<span><span class="co">#&gt; [5] "Cre01.g003524" "Cre01.g003650"</span></span>
+<span></span>
+<span><span class="co"># Perform ORA</span></span>
+<span><span class="va">ora_up</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span></span>
+<span>    <span class="va">up_genes</span>,</span>
+<span>    <span class="va">ora</span>,</span>
+<span>    annotation <span class="op">=</span> <span class="va">go_chlamy</span>, background <span class="op">=</span> <span class="va">bg</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ora_up</span></span>
+<span><span class="co">#&gt; $P2_vs_P1</span></span>
+<span><span class="co">#&gt; [1] term     genes    all      pval     padj     category</span></span>
+<span><span class="co">#&gt; &lt;0 rows&gt; (or 0-length row.names)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $F1_vs_P1</span></span>
+<span><span class="co">#&gt;               term genes all         pval        padj category</span></span>
+<span><span class="co">#&gt; 109 dynein complex     8  13 1.944536e-05 0.008108715       GO</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $F1_vs_P2</span></span>
+<span><span class="co">#&gt;                                              term genes all         pval</span></span>
+<span><span class="co">#&gt; 38                                        binding   138 208 7.344020e-07</span></span>
+<span><span class="co">#&gt; 96                                     DNA repair    56  83 7.655167e-04</span></span>
+<span><span class="co">#&gt; 144                                   GTP binding    72 111 8.525066e-04</span></span>
+<span><span class="co">#&gt; 169                                 ion transport    33  45 1.048368e-03</span></span>
+<span><span class="co">#&gt; 209                     microtubule-based process    10  10 9.123368e-04</span></span>
+<span><span class="co">#&gt; 239                                       nucleus   125 193 1.471530e-05</span></span>
+<span><span class="co">#&gt; 303                        protein polymerization    10  10 9.123368e-04</span></span>
+<span><span class="co">#&gt; 304                             protein refolding    10  10 9.123368e-04</span></span>
+<span><span class="co">#&gt; 307 protein serine/threonine phosphatase activity    20  24 6.876258e-04</span></span>
+<span><span class="co">#&gt; 338                                   RNA binding   101 157 1.388743e-04</span></span>
+<span><span class="co">#&gt; 384                  transcription, DNA-templated    28  36 5.139935e-04</span></span>
+<span><span class="co">#&gt;             padj category</span></span>
+<span><span class="co">#&gt; 38  0.0003062456       GO</span></span>
+<span><span class="co">#&gt; 96  0.0380444450       GO</span></span>
+<span><span class="co">#&gt; 144 0.0380444450       GO</span></span>
+<span><span class="co">#&gt; 169 0.0397426775       GO</span></span>
+<span><span class="co">#&gt; 209 0.0380444450       GO</span></span>
+<span><span class="co">#&gt; 239 0.0030681409       GO</span></span>
+<span><span class="co">#&gt; 303 0.0380444450       GO</span></span>
+<span><span class="co">#&gt; 304 0.0380444450       GO</span></span>
+<span><span class="co">#&gt; 307 0.0380444450       GO</span></span>
+<span><span class="co">#&gt; 338 0.0193035210       GO</span></span>
+<span><span class="co">#&gt; 384 0.0380444450       GO</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $F1_vs_midparent</span></span>
+<span><span class="co">#&gt;                                              term genes all         pval</span></span>
+<span><span class="co">#&gt; 80         cyclic nucleotide biosynthetic process    38 108 1.704386e-04</span></span>
+<span><span class="co">#&gt; 109                                dynein complex     9  13 1.689230e-04</span></span>
+<span><span class="co">#&gt; 166             intracellular signal transduction    38 110 2.618073e-04</span></span>
+<span><span class="co">#&gt; 168                          ion channel activity    20  48 5.098878e-04</span></span>
+<span><span class="co">#&gt; 169                                 ion transport    21  45 5.169533e-05</span></span>
+<span><span class="co">#&gt; 290                     protein dephosphorylation    21  44 3.395214e-05</span></span>
+<span><span class="co">#&gt; 307 protein serine/threonine phosphatase activity    15  24 6.787504e-06</span></span>
+<span><span class="co">#&gt;            padj category</span></span>
+<span><span class="co">#&gt; 80  0.014214579       GO</span></span>
+<span><span class="co">#&gt; 109 0.014214579       GO</span></span>
+<span><span class="co">#&gt; 166 0.018195605       GO</span></span>
+<span><span class="co">#&gt; 168 0.030374745       GO</span></span>
+<span><span class="co">#&gt; 169 0.007185651       GO</span></span>
+<span><span class="co">#&gt; 290 0.007079020       GO</span></span>
+<span><span class="co">#&gt; 307 0.002830389       GO</span></span></code></pre></div>
+<p>Likewise, for down-regulated genes, you need to replace the
+<code>&gt;</code> symbol with a <code>&lt;</code> symbol in the
+anonymous function to subset rows.</p>
+</div>
+</div>
+<div class="section level2">
 <h2 class="unnumbered" id="faq">FAQ<a class="anchor" aria-label="anchor" href="#faq"></a>
 </h2>
 <ol style="list-style-type: decimal">
 <li>How do I create a <code>SummarizedExperiment</code> object?</li>
 </ol>
+<p>A <code>SummarizedExperiment</code> is a data structure (an S4 class)
+that can be used to store, in a single object, the following
+elements:</p>
+<ol style="list-style-type: decimal">
+<li>
+<strong>assay:</strong> A quantitative matrix with features in rows
+and samples in columns. In the context of <em><a href="https://github.com/HybridExpress" class="external-link">HybridExpress</a></em>, this
+would be a gene expression matrix (in counts) with genes in rows and
+samples in columns.</li>
+<li>
+<strong>colData:</strong> A data frame of sample metadata with
+samples in rows and variables that describe samples (e.g., tissue,
+treatment, and other covariates) in columns.</li>
+<li>
+<strong>rowData:</strong> A data frame of gene metadata with genes
+in rows and variables that describe genes (e.g., chromosome name,
+alternative IDs, functional information, etc) in columns.</li>
+</ol>
+<p>For this package, you must have an <em>assay</em> containing the
+count matrix and a <em>colData</em> slot with sample metadata.
+<em>rowData</em> can be present, but it is not required.</p>
+<p>To demonstrate how to create a <code>SummarizedExperiment</code>
+object, we will extract the <em>assay</em> and <em>colData</em> from the
+example object <code>se_chlamy</code> that comes with this package.</p>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Get count matrix</span></span>
+<span><span class="va">count_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assay</a></span><span class="op">(</span><span class="va">se_chlamy</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">count_matrix</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                 S1  S2   S3   S4  S5   S6   S7   S8   S9 S10 S11  S12  S13  S14</span></span>
+<span><span class="co">#&gt; Cre01.g000050   31  21   26   33  19   48   17    6   13   6  10    7   31   22</span></span>
+<span><span class="co">#&gt; Cre01.g000150   50  29   35   99  11   58   51   46   41  33  28   14   53   25</span></span>
+<span><span class="co">#&gt; Cre01.g000200   36  26   24   29  17   36   14   15   12   8  14    7   25   24</span></span>
+<span><span class="co">#&gt; Cre01.g000250  440 272  394  332 283  585  272  274  255 160 225  235  405  391</span></span>
+<span><span class="co">#&gt; Cre01.g000300 1242 839 1216 1251 811 1785 1341 1306 1122 877 844 1082 1704 1739</span></span>
+<span><span class="co">#&gt; Cre01.g000350  412 264  294  336 252  478  233  221  195 155 190  201  299  272</span></span>
+<span><span class="co">#&gt;                S15  S16  S17  S18</span></span>
+<span><span class="co">#&gt; Cre01.g000050   29   22   21   16</span></span>
+<span><span class="co">#&gt; Cre01.g000150   37   17   24   21</span></span>
+<span><span class="co">#&gt; Cre01.g000200   24   26   18   21</span></span>
+<span><span class="co">#&gt; Cre01.g000250  358  339  340  332</span></span>
+<span><span class="co">#&gt; Cre01.g000300 1524 1720 1517 1243</span></span>
+<span><span class="co">#&gt; Cre01.g000350  276  324  246  275</span></span>
+<span></span>
+<span><span class="co"># Get colData (data frame of sample metadata)</span></span>
+<span><span class="va">coldata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData</a></span><span class="op">(</span><span class="va">se_chlamy</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">coldata</span><span class="op">)</span></span>
+<span><span class="co">#&gt; DataFrame with 6 rows and 2 columns</span></span>
+<span><span class="co">#&gt;         Ploidy Generation</span></span>
+<span><span class="co">#&gt;    &lt;character&gt;   &lt;factor&gt;</span></span>
+<span><span class="co">#&gt; S1     diploid         P1</span></span>
+<span><span class="co">#&gt; S2     diploid         P1</span></span>
+<span><span class="co">#&gt; S3     diploid         P1</span></span>
+<span><span class="co">#&gt; S4     diploid         P1</span></span>
+<span><span class="co">#&gt; S5     diploid         P1</span></span>
+<span><span class="co">#&gt; S6     diploid         P1</span></span></code></pre></div>
+<p>Once you have these two objects, you can create a
+<code>SummarizedExperiment</code> object with:</p>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Create a SummarizedExperiment object</span></span>
+<span><span class="va">new_se</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/RangedSummarizedExperiment-class.html" class="external-link">SummarizedExperiment</a></span><span class="op">(</span></span>
+<span>    assays <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>counts <span class="op">=</span> <span class="va">count_matrix</span><span class="op">)</span>,</span>
+<span>    colData <span class="op">=</span> <span class="va">coldata</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">new_se</span></span>
+<span><span class="co">#&gt; class: SummarizedExperiment </span></span>
+<span><span class="co">#&gt; dim: 13058 18 </span></span>
+<span><span class="co">#&gt; metadata(0):</span></span>
+<span><span class="co">#&gt; assays(1): counts</span></span>
+<span><span class="co">#&gt; rownames(13058): Cre01.g000050 Cre01.g000150 ... ERCC-00170 ERCC-00171</span></span>
+<span><span class="co">#&gt; rowData names(0):</span></span>
+<span><span class="co">#&gt; colnames(18): S1 S2 ... S17 S18</span></span>
+<span><span class="co">#&gt; colData names(2): Ploidy Generation</span></span></code></pre></div>
+<p>For more details on this data structure, read the vignette of the
+<em><a href="https://bioconductor.org/packages/3.18/SummarizedExperiment" class="external-link">SummarizedExperiment</a></em>
+package.</p>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="session-information">Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
