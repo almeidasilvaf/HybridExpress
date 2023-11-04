@@ -43,7 +43,13 @@
     <loc>/reference/get_deg_list.html</loc>
   </url>
   <url>
+    <loc>/reference/go_chlamy.html</loc>
+  </url>
+  <url>
     <loc>/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>/reference/ora.html</loc>
   </url>
   <url>
     <loc>/reference/pca_plot.html</loc>
