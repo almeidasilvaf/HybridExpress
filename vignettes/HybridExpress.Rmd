@@ -374,11 +374,158 @@ plot_partition_frequencies(exp_partitions)
 plot_partition_frequencies(exp_partitions, group_by = "Class")
 ```
 
+# Overrepresentation analysis of functional terms
+
+Lastly, you'd want to explore whether gene sets of interest (e.g., up-regulated
+genes in each contrast) are enriched in any particular GO term, pathway,
+protein domain, etc. For that, you will use the function `ora()`,
+which performs overrepresentation analysis for a gene set given a data frame 
+of functional annotation for each gene.
+
+Here, we will use an example data set with GO annotation for *C. reinhardtii*
+genes. This data set illustrates how the annotation data frame must be
+shaped: gene ID in the first column, and functional annotations in other
+columns.
+
+```{r}
+# Load example functional annotation (GO terms)
+data(go_chlamy)
+
+head(go_chlamy)
+```
+
+To demonstrate the usage of `ora()`, let's check if we can find enrichment
+for any GO term among genes assigned to class "ADD".
+
+```{r}
+# Get a vector of genes in class "ADD"
+genes_add <- exp_partitions$Gene[exp_partitions$Class == "ADD"]
+head(genes_add)
+
+# Get background genes - genes in the count matrix
+bg <- rownames(se)
+
+# Perform overrepresentation analysis
+ora_add <- ora(genes_add, go_chlamy, background = bg)
+
+# Inspect results
+head(ora_add)
+```
+
+## Example 1: overrepresentation analyses for all expression-based classes
+
+In the example above, we performed an overrepresentation analysis in
+genes associated with class "ADD". What if we wanted to do the same for *all*
+classes?
+
+In that case, you could run `ora()` multiple times by looping over each class.
+In details, you would do the following:
+
+1. For each class, create a vector of genes associated with it;
+2. Run `ora()` to get a data frame with ORA results.
+
+Below you can find an example on how to do it using `lapply()`. Results
+for each class will be stored in elements of a list object.
+
+```{r}
+# Create a list of genes in each class
+genes_by_class <- split(exp_partitions$Gene, exp_partitions$Class)
+
+names(genes_by_class)
+head(genes_by_class$UP)
+
+# Iterate through each class and perform ORA
+ora_classes <- lapply(
+    genes_by_class, # list through which we will iterate
+    ora, # function we will apply to each element of the list
+    annotation = go_chlamy, background = bg # additional arguments to function
+)
+
+# Inspect output
+ora_classes
+```
+
+To do the same for each expression-based category (not class), you'd need
+to replace `Class` with `Category` in the `split()` function (see example 
+above).
+
+## Example 2: overrepresentation analyses for differentially expressed genes
+
+The same you can use `lapply()` to loop through each expression class,
+you can also loop through each contrast in the list returned 
+by `get_deg_list()`, and perform ORA for up- and down-regulated genes.
+Below you can find an example:
+
+```{r}
+# Get up-regulated genes for each contrast
+up_genes <- lapply(deg_list, function(x) rownames(x[x$log2FoldChange > 0, ]))
+names(up_genes)
+head(up_genes$F1_vs_P1)
+
+# Perform ORA
+ora_up <- lapply(
+    up_genes,
+    ora,
+    annotation = go_chlamy, background = bg
+)
+
+ora_up
+```
+
+Likewise, for down-regulated genes, you need to replace the `>` symbol
+with a `<` symbol in the anonymous function to subset rows.
 
 # FAQ {.unnumbered}
 
 1. How do I create a `SummarizedExperiment` object?
 
+A `SummarizedExperiment` is a data structure (an S4 class) that can
+be used to store, in a single object, the following elements:
+
+1. **assay:** A quantitative matrix with features in rows and samples in 
+columns. In the context of `r BiocStyle::Githubpkg("HybridExpress")`, this 
+would be a gene expression matrix (in counts) with genes in rows and samples
+in columns.
+2. **colData:** A data frame of sample metadata with samples in rows
+and variables that describe samples (e.g., tissue, treatment, and other 
+covariates) in columns.
+3. **rowData:** A data frame of gene metadata with genes in rows and
+variables that describe genes (e.g., chromosome name, alternative IDs,
+functional information, etc) in columns.
+
+For this package, you must have an *assay* containing the count matrix
+and a *colData* slot with sample metadata. *rowData* can be present,
+but it is not required. 
+
+To demonstrate how to create a `SummarizedExperiment` object, we will
+extract the *assay* and *colData* from the example object `se_chlamy`
+that comes with this package.
+
+```{r}
+# Get count matrix
+count_matrix <- assay(se_chlamy)
+head(count_matrix)
+
+# Get colData (data frame of sample metadata)
+coldata <- colData(se_chlamy)
+head(coldata)
+```
+
+Once you have these two objects, you can create a `SummarizedExperiment` object
+with:
+
+```{r}
+# Create a SummarizedExperiment object
+new_se <- SummarizedExperiment(
+    assays = list(counts = count_matrix),
+    colData = coldata
+)
+
+new_se
+```
+
+For more details on this data structure, read the vignette
+of the `r BiocStyle::Biocpkg("SummarizedExperiment")` package.
 
 # Session information {.unnumbered}
 
