@@ -212,8 +212,15 @@ normalization process in `r BiocStyle::Biocpkg("DESeq2")`. However,
 if spike-in standards are included in the count matrix, you can use them
 for normalization by setting `spikein_norm = TRUE` and specifying the
 pattern used to indicate rows that contain spike-ins (usually they start
-with *ERCC*). In our example data set, spike-in standards are available 
+with *ERCC*)[^1]. In our example data set, spike-in standards are available 
 in the last rows of the count matrix.
+
+[^1]: **Note:** if you use spike-in normalization, the 
+function `get_deg_list()` automatically removes rows containing spike-in counts
+from the `SummarizedExperiment` object after normalization. However,
+if you have counts for spike-in standards in your count matrix,
+but do not want to use spike-in normalization, you should remove them 
+before creating the `SummarizedExperiment` object.
 
 ```{r}
 # Show last rows of the count matrix
