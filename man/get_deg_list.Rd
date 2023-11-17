@@ -10,6 +10,7 @@ get_deg_list(
   parent1 = "P1",
   parent2 = "P2",
   offspring = "F1",
+  midparent = "midparent",
   spikein_norm = FALSE,
   spikein_pattern = "ERCC",
   lfcThreshold = 0,
@@ -34,6 +35,10 @@ variable \strong{coldata_column} represents parent 2. Default: "P2".}
 \item{offspring}{Character indicating which level of the
 variable \strong{coldata_column} represents the offspring (hybrid
 or allopolyploid). Default: "F1"}
+
+\item{midparent}{Character indicating which level of the variable
+\strong{coldata_column} represents the midparent value. Default:
+"midparent", as returned by \code{add_midparent_expression()}.}
 
 \item{spikein_norm}{Logical indicating whether or not to normalize data
 using spike-ins. Default: FALSE.}

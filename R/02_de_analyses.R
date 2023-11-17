@@ -13,6 +13,9 @@
 #' @param offspring Character indicating which level of the 
 #' variable \strong{coldata_column} represents the offspring (hybrid
 #' or allopolyploid). Default: "F1"
+#' @param midparent Character indicating which level of the variable
+#' \strong{coldata_column} represents the midparent value. Default:
+#' "midparent", as returned by \code{add_midparent_expression()}.
 #' @param spikein_norm Logical indicating whether or not to normalize data
 #' using spike-ins. Default: FALSE.
 #' @param spikein_pattern Character with the pattern (regex) to use
@@ -55,7 +58,8 @@
 #' deg_list <- get_deg_list(se, spikein_norm = TRUE)
 get_deg_list <- function(
         se, coldata_column = "Generation", 
-        parent1 = "P1", parent2 = "P2", offspring = "F1",
+        parent1 = "P1", parent2 = "P2", offspring = "F1", 
+        midparent = "midparent",
         spikein_norm = FALSE, spikein_pattern = "ERCC",
         lfcThreshold = 0,
         alpha = 0.01,
@@ -88,7 +92,7 @@ get_deg_list <- function(
         "P2_vs_P1" = c(parent2, parent1),
         "F1_vs_P1" = c(offspring, parent1),
         "F1_vs_P2" = c(offspring, parent2),
-        "F1_vs_midparent" = c(offspring, "midparent")
+        "F1_vs_midparent" = c(offspring, midparent)
     )
     
     dge_list <- lapply(contrasts, function(x) {
