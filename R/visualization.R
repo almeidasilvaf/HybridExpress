@@ -301,13 +301,20 @@ pca_plot <- function(
         )
     }
     
+    gpoint <- geom_point(aes(color = .data[[color_by]]), size = 3, alpha = 0.7)
+    if(!is.null(shape_by)) {
+        gpoint <- geom_point(
+            aes(
+                color = .data[[color_by]], 
+                shape = .data[[shape_by]]
+            ), 
+            size = 3, alpha = 0.7
+        )
+    }
+    
     # Plot PCA
     p_pca <- ggplot(pdata, aes(x = .data[[pc[1]]], y = .data[[pc[2]]])) +
-        geom_point(
-            aes(
-                color = .data[[color_by]], shape = .data[[shape_by]]
-            ), size = 3, alpha = 0.7
-        ) +
+        gpoint +
         point_mean +
         scale_color_manual(values = pal) +
         labs(
