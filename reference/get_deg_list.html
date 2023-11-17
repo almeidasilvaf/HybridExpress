@@ -60,6 +60,7 @@
 <span>  parent1 <span class="op">=</span> <span class="st">"P1"</span>,</span>
 <span>  parent2 <span class="op">=</span> <span class="st">"P2"</span>,</span>
 <span>  offspring <span class="op">=</span> <span class="st">"F1"</span>,</span>
+<span>  midparent <span class="op">=</span> <span class="st">"midparent"</span>,</span>
 <span>  spikein_norm <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  spikein_pattern <span class="op">=</span> <span class="st">"ERCC"</span>,</span>
 <span>  lfcThreshold <span class="op">=</span> <span class="fl">0</span>,</span>
@@ -95,6 +96,12 @@ variable <strong>coldata_column</strong> represents parent 2. Default: "P2".</p>
 <dd><p>Character indicating which level of the
 variable <strong>coldata_column</strong> represents the offspring (hybrid
 or allopolyploid). Default: "F1"</p></dd>
+
+
+<dt>midparent</dt>
+<dd><p>Character indicating which level of the variable
+<strong>coldata_column</strong> represents the midparent value. Default:
+"midparent", as returned by <code><a href="add_midparent_expression.html">add_midparent_expression()</a></code>.</p></dd>
 
 
 <dt>spikein_norm</dt>
