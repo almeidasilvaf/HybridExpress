@@ -47,6 +47,12 @@
 #'   \item{pvalue}{Numeric, p-value.}
 #'   \item{padj}{Numeric, P-value adjusted for multiple testing.}
 #' }
+#' 
+#' The list contains two additional attributes named \strong{ngenes} (numeric,
+#' total number of genes), and \strong{plotdata}, which is a 3-column data
+#' frame with variables "gene" (character, gene ID), "lFC_F1_vs_P1" (numeric,
+#' log2 fold change between F1 and P1), and "lFC_F1_vs_P2" (numeric, 
+#' log2 fold change between F1 and P2).
 #'
 #' @export
 #' @rdname get_deg_list
@@ -99,14 +105,39 @@ get_deg_list <- function(
         res_df <- as.data.frame(DESeq2::results(
             res, contrast = c(coldata_column, x[1], x[2]), ...
         ))
-        res_df <- res_df[!is.na(res_df$padj), ]
-        res_df <- res_df[res_df$padj < alpha & 
-                             abs(res_df$log2FoldChange) > lfcThreshold, ]
         
         return(res_df)
     })
+
+    # Extract log2foldChange for contrast F1_P1 and F1_P2
+    cont <- c("F1_vs_P1", "F1_vs_P2")
+    dge_f1 <- dge_list[cont]
+    log2fc_df <- lapply(seq_along(dge_f1), function(x) {
+
+        stats_df <- data.frame(
+            Gene = rownames(dge_f1[[x]]),
+            log2FoldChange = dge_f1[[x]]$log2FoldChange
+        )
+        names(stats_df) <- c("Gene", paste0("lFC_", cont[x]))
+        
+        return(stats_df)
+    })
+    log2fc_df <- Reduce(
+        function(x, y) merge(x, y, by = "Gene", all.x = TRUE), 
+        log2fc_df
+    )
+    log2fc_df[is.na(log2fc_df)] <- 0
     
+    # Filter DGE list based on user-defined thresholds
+    dge_list <- lapply(dge_list, function(x) {
+        
+        res_df <- x[!is.na(x$padj), ]
+        res_df <- res_df[res_df$padj < alpha &
+                             abs(res_df$log2FoldChange) > lfcThreshold, ]
+        return(res_df)
+    })
     attributes(dge_list)$ngenes <- ngenes
+    attributes(dge_list)$plotdata <- log2fc_df
     
     return(dge_list)
 }

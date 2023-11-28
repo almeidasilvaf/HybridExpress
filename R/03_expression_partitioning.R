@@ -62,18 +62,7 @@ expression_partitioning <- function(deg_list) {
     )
     
     # Get a table with log2foldChange for contrasts `F1_vs_P1` and `F1_vs_P2`
-    log2fc_df <- merge(
-        data.frame(
-            Gene = rownames(deg_list$F1_vs_P1),
-            lFC_F1_vs_P1 = deg_list$F1_vs_P1$log2FoldChange
-        ),
-        data.frame(
-            Gene = rownames(deg_list$F1_vs_P2),
-            lFC_F1_vs_P2 = deg_list$F1_vs_P2$log2FoldChange
-        ),
-        all = TRUE
-    )
-    log2fc_df[is.na(log2fc_df)] <- 0
+    log2fc_df <- attributes(deg_list)$plotdata
     
     # Combine classification data frame with log2foldchange
     class_df <- merge(

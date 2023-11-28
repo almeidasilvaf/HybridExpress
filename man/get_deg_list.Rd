@@ -76,6 +76,12 @@ the following variables:
 \item{pvalue}{Numeric, p-value.}
 \item{padj}{Numeric, P-value adjusted for multiple testing.}
 }
+
+The list contains two additional attributes named \strong{ngenes} (numeric,
+total number of genes), and \strong{plotdata}, which is a 3-column data
+frame with variables "gene" (character, gene ID), "lFC_F1_vs_P1" (numeric,
+log2 fold change between F1 and P1), and "lFC_F1_vs_P2" (numeric,
+log2 fold change between F1 and P2).
 }
 \description{
 Get a table of differential expression expression statistics with \strong{DESeq2}

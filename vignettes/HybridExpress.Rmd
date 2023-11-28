@@ -263,7 +263,7 @@ in the count matrix. The total number of genes in the count matrix
 is stored in the `ngenes` attribute of the list returned by `get_deg_list()`:
 
 ```{r}
-attributes(deg_list)
+attributes(deg_list)$ngenes
 ```
 
 However, since the count matrix usually does not include all genes in the 
