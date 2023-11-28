@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# HybridExpress
+# HybridExpress <img src="man/figures/logo.png" align="right" height="139" alt="" />
 
 <!-- badges: start -->
 [![GitHub issues](https://img.shields.io/github/issues/almeidasilvaf/HybridExpress)](https://github.com/almeidasilvaf/HybridExpress/issues)
