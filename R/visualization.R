@@ -191,18 +191,19 @@ plot_partition_frequencies <- function(
         Category = factor(names(freqs), levels = names(freqs)), 
         N = as.numeric(freqs)
     )
+    names(freq_df)[1] <- group_by 
     freq_df$Perc <- paste0(round((freq_df$N / sum(freq_df$N)) * 100, 2), "%")
     ymax <- round(max(freq_df$N) + mean(freq_df$N), -2)
     
     # Create barplot
-    p_bar <- ggplot(freq_df, aes(x = .data$Category, y = .data$N)) +
+    p_bar <- ggplot(freq_df, aes(x = .data[[group_by]], y = .data$N)) +
         geom_bar(fill = pal, color = "gray20", stat = "identity") +
         geom_text(aes(label = .data$Perc), hjust = -0.2) +
         theme_bw() +
         scale_y_continuous(limits = c(0, ymax), expand = c(0, 0)) +
         theme(plot.subtitle = element_text(size = 13)) +
         labs(y = "Count", subtitle = "Frequency of genes per partition") +
-        scale_x_discrete(limits = rev(levels(freq_df$Category))) +
+        scale_x_discrete(limits = rev(levels(freq_df[[group_by]]))) +
         coord_flip() 
     
     
