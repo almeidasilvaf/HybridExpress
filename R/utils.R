@@ -181,6 +181,9 @@ get_deg_summary <- function(deg_list) {
 #' @param group_by Character indicating the name of the variable 
 #' in \strong{partition_table} to use to group genes. One of "Category" or
 #' "Class". Default: "Category".
+#' @param labels A character vector of length 3 indicating the labels to be
+#' given for parent 1, offspring, and parent 2. 
+#' Default: \code{c("P1", "F1", "P2")}.
 #'
 #' @return A ggplot object with a scatterplot.
 #' 
@@ -190,7 +193,8 @@ get_deg_summary <- function(deg_list) {
 #' @noRd
 #' 
 partition_scatterplot <- function(
-        partition_table, palette, group_by = "Category"
+        partition_table, palette, group_by = "Category",
+        labels = c("P1", "F1", "P2")
 ) {
     
     p_scatter <- ggplot(
@@ -203,15 +207,15 @@ partition_scatterplot <- function(
         theme_bw() +
         labs(
             subtitle = expression(Log[2] ~ "fold change between generations"),
-            x = "F1 vs P1",
-            y = "F1 vs P2"
+            x = paste0(labels[2], " vs ", labels[1]), # F1 vs P1
+            y = paste0(labels[2], " vs ", labels[3]) # F1 vs P2
         ) +
         ggplot2::theme(
             panel.grid = ggplot2::element_blank(),
             axis.text = element_text(size = 11)
         ) +
         geom_vline(xintercept = 0, linetype = "dashed") +
-        geom_hline(yintercept = 0, linetype = "dashed")
+        geom_hline(yintercept = 0, linetype = "dashed") 
     
     return(p_scatter)
 }
@@ -227,6 +231,9 @@ partition_scatterplot <- function(
 #' @param group_by Character indicating the name of the variable 
 #' in \strong{partition_table} to use to group genes. One of "Category" or
 #' "Class". Default: "Category".
+#' @param labels A character vector of length 3 indicating the labels to be
+#' given for parent 1, offspring, and parent 2. 
+#' Default: \code{c("P1", "F1", "P2")}.
 #'
 #' @return A list of ggplot objects with line plots.
 #' 
@@ -236,7 +243,8 @@ partition_scatterplot <- function(
 #' @noRd
 #' 
 partition_lineplots <- function(
-        partition_table, palette, add_n = TRUE, group_by = "Category"
+        partition_table, palette, add_n = TRUE, group_by = "Category",
+        labels = c("P1", "F1", "P2")
 ) {
     
     # Data frame of point coordinates for each group
@@ -286,7 +294,11 @@ partition_lineplots <- function(
                 axis.text.x = element_text(size = 11, face = "bold"),
                 axis.text.y = element_blank()
             ) +
-            ylim(c(0, 4))
+            ylim(c(0, 4)) +
+            scale_x_discrete(
+                breaks = c("P1", "F1", "P2"),
+                labels = labels
+            )
         
         if(group_by == "Class") { p <- p + facet_wrap("Category") }
         

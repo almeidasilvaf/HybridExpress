@@ -95,6 +95,9 @@ plot_expression_triangle <- function(
 #' If \strong{group_by = "Category"}, this must be a vector of length 12.
 #' If \strong{group_by = "Class"}, this must be a vector of length 5.
 #' If NULL, a default color palette will be used.
+#' @param labels A character vector of length 3 indicating the labels to be
+#' given for parent 1, offspring, and parent 2. 
+#' Default: \code{c("P1", "F1", "P2")}.
 #'
 #' @return A ggplot object with a plot showing genes in each expression
 #' partition.
@@ -108,7 +111,8 @@ plot_expression_triangle <- function(
 #' partition_table <- expression_partitioning(deg_list)
 #' plot_expression_partitions(partition_table)
 plot_expression_partitions <- function(
-        partition_table, group_by = "Category", palette = NULL
+        partition_table, group_by = "Category", palette = NULL,
+        labels = c("P1", "F1", "P2")
 ) {
     
     pdata <- partition_table
@@ -118,10 +122,14 @@ plot_expression_partitions <- function(
     names(pal) <- levels(pdata[[group_by]])
     
     # 1) Create scatterplot
-    p_scatter <- partition_scatterplot(pdata, pal, group_by = group_by)
+    p_scatter <- partition_scatterplot(
+        pdata, pal, group_by = group_by, labels = labels
+    )
     
     # 2) Create line plots to represent partitions
-    p_line <- partition_lineplots(pdata, pal, group_by = group_by)
+    p_line <- partition_lineplots(
+        pdata, pal, group_by = group_by, labels = labels
+    )
     
     # Combine figures
     if(group_by == "Class") {
@@ -164,6 +172,9 @@ plot_expression_partitions <- function(
 #' If \strong{group_by = "Category"}, this must be a vector of length 12.
 #' If \strong{group_by = "Class"}, this must be a vector of length 5.
 #' If NULL, a default color palette will be used.
+#' @param labels A character vector of length 3 indicating the labels to be
+#' given for parent 1, offspring, and parent 2. 
+#' Default: \code{c("P1", "F1", "P2")}.
 #' 
 #' @return A ggplot object with a barplot showing gene frequencies per
 #' partition next to explanatory line plots depicting each partition.
@@ -177,7 +188,8 @@ plot_expression_partitions <- function(
 #' partition_table <- expression_partitioning(deg_list)
 #' plot_partition_frequencies(partition_table)
 plot_partition_frequencies <- function(
-        partition_table, group_by = "Category", palette = NULL
+        partition_table, group_by = "Category", palette = NULL,
+        labels = c("P1", "F1", "P2")
 ) {
     
     # Define color palette
@@ -209,7 +221,8 @@ plot_partition_frequencies <- function(
     
     # Get line plots
     p_line <- partition_lineplots(
-        partition_table, pal, add_n = FALSE, group_by = group_by
+        partition_table, pal, add_n = FALSE, group_by = group_by,
+        labels = labels
     )
     
     # Combine plots

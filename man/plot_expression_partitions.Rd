@@ -7,7 +7,8 @@
 plot_expression_partitions(
   partition_table,
   group_by = "Category",
-  palette = NULL
+  palette = NULL,
+  labels = c("P1", "F1", "P2")
 )
 }
 \arguments{
@@ -23,6 +24,10 @@ of the variable specified in \strong{group_by}.
 If \strong{group_by = "Category"}, this must be a vector of length 12.
 If \strong{group_by = "Class"}, this must be a vector of length 5.
 If NULL, a default color palette will be used.}
+
+\item{labels}{A character vector of length 3 indicating the labels to be
+given for parent 1, offspring, and parent 2.
+Default: \code{c("P1", "F1", "P2")}.}
 }
 \value{
 A ggplot object with a plot showing genes in each expression
