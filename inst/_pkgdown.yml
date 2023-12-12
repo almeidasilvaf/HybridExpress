@@ -1,6 +1,7 @@
 template:
   bootstrap: 5
   bslib:
+    preset: "bootstrap"
     font_scale: 1.0
     base_font:
       google: "Atkinson Hyperlegible"           # font for better accessibility

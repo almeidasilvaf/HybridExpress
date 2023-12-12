@@ -8,7 +8,7 @@
 [![GitHub
 issues](https://img.shields.io/github/issues/almeidasilvaf/HybridExpress)](https://github.com/almeidasilvaf/HybridExpress/issues)
 [![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+stable](https://img.shields.io/badge/lifecycle-stable-green.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 [![check-bioc](https://github.com/almeidasilvaf/HybridExpress/actions/workflows/rworkflows.devel.yml/badge.svg)](https://github.com/almeidasilvaf/HybridExpress/actions/workflows/rworkflows.devel.yml)
 [![Codecov test
 coverage](https://codecov.io/gh/almeidasilvaf/HybridExpress/branch/devel/graph/badge.svg)](https://app.codecov.io/gh/almeidasilvaf/HybridExpress?branch=devel)
