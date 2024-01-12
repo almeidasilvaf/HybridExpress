@@ -105,7 +105,7 @@ contributing to this project, you agree to abide by its terms.
   *[rcmdcheck](https://CRAN.R-project.org/package=rcmdcheck)* customized
   to use [Bioconductor’s docker
   containers](https://www.bioconductor.org/help/docker/) and
-  *[BiocCheck](https://bioconductor.org/packages/3.17/BiocCheck)*.
+  *[BiocCheck](https://bioconductor.org/packages/3.18/BiocCheck)*.
 - Code coverage assessment is possible thanks to
   [codecov](https://codecov.io/gh) and
   *[covr](https://CRAN.R-project.org/package=covr)*.
@@ -113,11 +113,9 @@ contributing to this project, you agree to abide by its terms.
   website](http://almeidasilvaf.github.io/HybridExpress) is
   automatically updated thanks to
   *[pkgdown](https://CRAN.R-project.org/package=pkgdown)*.
-- The code is styled automatically thanks to
-  *[styler](https://CRAN.R-project.org/package=styler)*.
 - The documentation is formatted thanks to
   *[devtools](https://CRAN.R-project.org/package=devtools)* and
   *[roxygen2](https://CRAN.R-project.org/package=roxygen2)*.
 
 This package was developed using
-*[biocthis](https://bioconductor.org/packages/3.17/biocthis)*.
+*[biocthis](https://bioconductor.org/packages/3.18/biocthis)*.

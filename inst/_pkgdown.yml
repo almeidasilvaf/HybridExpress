@@ -8,14 +8,9 @@ template:
     code_font:
       google: "Source Code Pro"
     primary: "#18416a"                          # navbar hover and sidebar: dark blue
-    navbar-light-bg: "#0092ac"                  # navbar bg: Bioc blue
-    navbar-bg: "#0092ac"                        # navbar bg: Bioc blue
-    navbar-light-brand-color: "#f9fafb"         # pkg name: white
-    text-muted: "#e9ecef"                       # version: light gray
-    navbar-light-color: "#f8f9fa"               # navbar pages text color: white
-    navbar-light-hover-color: "#87b13f"         # navbar text on hover: Bioc green
+    navbar-light-brand-color: "#18416a"         # pkg name: white
+    navbar-light-hover-color: "#18416a"         # navbar text on hover: Bioc green
     pkgdown-nav-height: 78px
 
 navbar:
-  bg: "#0092ac"
   type: light
