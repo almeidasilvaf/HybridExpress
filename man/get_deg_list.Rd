@@ -80,5 +80,6 @@ Get a table of differential expression expression statistics with \strong{DESeq2
 \examples{
 data(se_chlamy)
 se <- add_midparent_expression(se_chlamy)
-deg_list <- get_deg_list(se, spikein_norm = TRUE)
+se <- add_size_factors(se, spikein = TRUE)
+deg_list <- get_deg_list(se)
 }
