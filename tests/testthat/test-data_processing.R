@@ -18,3 +18,12 @@ test_that("add_midparent_expression() adds columns with midparent expression", {
     expect_error(add_midparent_expression(se_chlamy, method = "error"))
 })
 
+test_that("add_size_factors() adds a column named 'sizeFactor' for DESeq2", {
+    
+    se_norm1 <- add_size_factors(se_chlamy, spikein = FALSE)
+    se_norm2 <- add_size_factors(se_chlamy, spikein = TRUE)
+    
+    expect_true("sizeFactor" %in% colnames(colData(se_norm1)))
+    expect_true("sizeFactor" %in% colnames(colData(se_norm2)))
+    expect_true(!identical(se_norm1$sizeFactor, se_norm2$sizeFactor))
+})

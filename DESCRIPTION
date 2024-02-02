@@ -47,7 +47,7 @@ biocViews:
     DifferentialExpression
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.0
 Imports:
     ggplot2,
     patchwork,
@@ -55,6 +55,7 @@ Imports:
     DESeq2,
     SummarizedExperiment,
     stats,
+    methods,
     RColorBrewer,
     ComplexHeatmap,
     grDevices,

@@ -11,8 +11,6 @@ get_deg_list(
   parent2 = "P2",
   offspring = "F1",
   midparent = "midparent",
-  spikein_norm = FALSE,
-  spikein_pattern = "ERCC",
   lfcThreshold = 0,
   alpha = 0.01,
   ...
@@ -39,13 +37,6 @@ or allopolyploid). Default: "F1"}
 \item{midparent}{Character indicating which level of the variable
 \strong{coldata_column} represents the midparent value. Default:
 "midparent", as returned by \code{add_midparent_expression()}.}
-
-\item{spikein_norm}{Logical indicating whether or not to normalize data
-using spike-ins. Default: FALSE.}
-
-\item{spikein_pattern}{Character with the pattern (regex) to use
-to identify spike-in features in the count matrix. Only valid
-if \code{spikein_norm = TRUE}.}
 
 \item{lfcThreshold}{Numeric indicating the log2 fold-change threshold
 to use to consider differentially expressed genes. Default: 0.}

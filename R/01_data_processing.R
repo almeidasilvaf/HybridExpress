@@ -79,3 +79,62 @@ add_midparent_expression <- function(
     
     return(new_se)
 }
+
+
+#' Add size factors to normalize count data by library size or by biomass
+#'
+#' @param se A `SummarizedExperiment` object with a count matrix and sample
+#' metadata.
+#' @param spikein Logical indicating whether or not to normalize data
+#' using spike-ins. If FALSE, data will be normalized by library size.
+#' Default: FALSE.
+#' @param spikein_pattern Character with the pattern (regex) to use
+#' to identify spike-in features in the count matrix. Only valid 
+#' if \code{spikein_norm = TRUE}.
+#' 
+#' @return A `SummarizedExperiment` object as in \strong{se}, but with an extra
+#' column in the colData slot named "sizeFactor". This column contains size
+#' factors that will be used by DESeq2 when performing differential expression
+#' analyses.
+#'
+#' @importFrom DESeq2 DESeqDataSet estimateSizeFactors sizeFactors
+#' @importFrom methods as
+#' @export
+#' @rdname add_size_factors
+#' @examples
+#' data(se_chlamy)
+#' se_norm <- add_size_factors(se_chlamy)
+add_size_factors <- function(
+        se, spikein = FALSE, spikein_pattern = "ERCC"
+) {
+    
+    # Create a DESeqDataSet with no design
+    deseq <- suppressMessages(DESeq2::DESeqDataSet(se, design = ~1))
+    
+    # Estimate size factors
+    ## Option 1: Using library size
+    sf <- estimateSizeFactors(deseq)
+    sf <- DESeq2::sizeFactors(sf)
+    
+    ## Option 2: Using spike-in controls
+    if(spikein) {
+        se_spikein <- se[grepl(spikein_pattern, rownames(se)), ]
+        deseq_spikein <- DESeqDataSet(se_spikein, design = ~1)
+        deseq_spikein <- estimateSizeFactors(deseq_spikein)
+        
+        sf <- sizeFactors(deseq_spikein)
+        
+        ## Remove rows with spike-in controls (no longer needed)
+        deseq <- deseq[!grepl(spikein_pattern, rownames(se)), ]
+    }
+    
+    # Add size factors to colData of DESeqDataSet
+    DESeq2::sizeFactors(deseq) <- sf
+    
+    # Create SummarizedExperiment object from DESeqDataSet
+    final_se <- as(deseq, "SummarizedExperiment")
+    rownames(final_se) <- rownames(deseq)
+    
+    return(final_se)
+}
+

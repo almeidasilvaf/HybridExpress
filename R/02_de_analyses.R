@@ -16,11 +16,6 @@
 #' @param midparent Character indicating which level of the variable
 #' \strong{coldata_column} represents the midparent value. Default:
 #' "midparent", as returned by \code{add_midparent_expression()}.
-#' @param spikein_norm Logical indicating whether or not to normalize data
-#' using spike-ins. Default: FALSE.
-#' @param spikein_pattern Character with the pattern (regex) to use
-#' to identify spike-in features in the count matrix. Only valid 
-#' if \code{spikein_norm = TRUE}.
 #' @param lfcThreshold Numeric indicating the log2 fold-change threshold
 #' to use to consider differentially expressed genes. Default: 0.
 #' @param alpha Numeric indicating the adjusted P-value threshold to use
@@ -66,7 +61,6 @@ get_deg_list <- function(
         se, coldata_column = "Generation", 
         parent1 = "P1", parent2 = "P2", offspring = "F1", 
         midparent = "midparent",
-        spikein_norm = FALSE, spikein_pattern = "ERCC",
         lfcThreshold = 0,
         alpha = 0.01,
         ...
@@ -77,18 +71,6 @@ get_deg_list <- function(
     # Create DESeq object
     form <- as.formula(paste0("~", coldata_column))
     deseq <- suppressMessages(DESeq2::DESeqDataSet(se, design = form))
-    if(spikein_norm) {
-        spikein_rows <- grepl(spikein_pattern, rownames(se))
-        spikein_se <- se[spikein_rows, ]
-        spikein_deseq <- DESeqDataSet(spikein_se, design = form)
-        spikein_deseq <- estimateSizeFactors(spikein_deseq)
-        
-        spikein_size_factors <- sizeFactors(spikein_deseq)
-        
-        deseq <- deseq[!spikein_rows, ]
-        DESeq2::sizeFactors(deseq) <- spikein_size_factors
-        ngenes <- nrow(deseq)
-    }
     
     # Perform DGE
     res <- DESeq2::DESeq(deseq)

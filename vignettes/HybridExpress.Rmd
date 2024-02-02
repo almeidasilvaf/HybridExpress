@@ -51,7 +51,7 @@ By offering these capabilities, __HybridExpress__ provides a robust toolset for 
 
 # Installation
 
-`r BiocStyle::Biocpkg("HybridExpress")` can be installed from Bioconductor
+`r BiocStyle::Githubpkg("HybridExpress")` can be installed from Bioconductor
 with the following code:
 
 ```{r installation, eval=FALSE}
@@ -147,6 +147,57 @@ add_midparent_expression(se_chlamy, method = "weightedmean", weights = w) |>
 We will proceed our analyses with the midparent expression values obtained
 from the mean of the counts, stored in the `se` object.
 
+# Normalizing count data
+
+To normalize count data, the function `add_size_factors()` calculates
+size factors (used by `r BiocStyle::Biocpkg("DESeq2")` 
+for normalization) and adds them as an extra column in the colData slot
+of your `SummarizedExperiment` object. Such size factors are calculated using
+one of two methods:
+
+1. By library size (default) using the 'median of
+ratios' method implemented in `r BiocStyle::Biocpkg("DESeq2")`.
+
+2. By cell size/biomass using spike-in controls (if available). If spike-in 
+controls are present in the count matrix, you can use them
+for normalization by setting `spikein = TRUE` and specifying the
+pattern used to indicate rows that contain spike-ins (usually they start
+with *ERCC*)[^1]. Normalization with spike-in controls is
+particularly useful if the amount of mRNA per cell is not equal
+between generations (due to, for instance, different ploidy levels, which
+in turn can lead to different cell sizes and/or biomass). 
+
+[^1]: **Note:** if you use spike-in normalization, the 
+function `add_size_factors()` automatically removes rows containing 
+spike-in counts from the `SummarizedExperiment` object after normalization. 
+However, if you have counts for spike-in controls in your count matrix,
+but do not want to use spike-in normalization, you should remove them 
+before creating the `SummarizedExperiment` object.
+
+In our example data set, spike-in controls are available 
+in the last rows of the count matrix. Let's take a look at them.
+
+```{r}
+# Show last rows of the count matrix
+assay(se) |> 
+    tail()
+```
+
+As you can see, rows with spike-in counts start with "ERCC". Let's add 
+size factors to our `SummarizedExperiment` object using 
+spike-in controls.
+
+```{r}
+# Take a look at the original colData
+colData(se)
+
+# Add size factors estimated from spike-in controls
+se <- add_size_factors(se, spikein = TRUE, spikein_pattern = "ERCC")
+
+# Take a look at the new colData
+colData(se)
+```
+
 # Exploratory data analyses
 
 Next, you can perform exploratory analyses of sample clustering to verify if
@@ -180,7 +231,7 @@ Now, let's plot the heatmap of sample correlations:
 
 ```{r}
 # Plot a heatmap of sample correlations
-plot_samplecor(se)
+plot_samplecor(se, coldata_cols = c("Generation", "Ploidy"))
 ```
 
 We can see that samples group well together both in the PCA plot and in
@@ -207,33 +258,13 @@ for the following contrasts:
 3. `F1_vs_P2`: hybrid (numerator) versus parent 2 (denominator).
 4. `F1_vs_midparent`: hybrid (numerator) vs midparent (denominator).
 
-By default, count data are normalized by library size using the standard
-normalization process in `r BiocStyle::Biocpkg("DESeq2")`. However,
-if spike-in standards are included in the count matrix, you can use them
-for normalization by setting `spikein_norm = TRUE` and specifying the
-pattern used to indicate rows that contain spike-ins (usually they start
-with *ERCC*)[^1]. In our example data set, spike-in standards are available 
-in the last rows of the count matrix.
-
-[^1]: **Note:** if you use spike-in normalization, the 
-function `get_deg_list()` automatically removes rows containing spike-in counts
-from the `SummarizedExperiment` object after normalization. However,
-if you have counts for spike-in standards in your count matrix,
-but do not want to use spike-in normalization, you should remove them 
-before creating the `SummarizedExperiment` object.
-
-```{r}
-# Show last rows of the count matrix
-assay(se) |> 
-    tail()
-```
-
-Now, we will use `get_deg_list()` to get differentially expressed genes (DEGs)
-for each contrast while using spike-in normalization.
+The size factors estimated with `add_size_factors()` are used for normalization
+before differential expression testing. Let's use `get_deg_list()` to get 
+differentially expressed genes (DEGs) for each contrast.
 
 ```{r}
 # Get a list of differentially expressed genes for each contrast
-deg_list <- get_deg_list(se, spikein_norm = TRUE, spikein_pattern = "ERCC")
+deg_list <- get_deg_list(se)
 
 # Inspecting the output
 ## Getting contrast names
@@ -336,7 +367,6 @@ both parents (additive effect).
 in the hybrid is the same as in parent 1, but different from parent 2.
 5. **Expression-level dominance toward parent 2 (ELD_P2):** gene expression
 in the hybrid is the same as in parent 2, but different from parent 1.
-
 
 
 ```{r}
@@ -543,10 +573,5 @@ sessioninfo::session_info()
 ```
 
 # References {.unnumbered}
-
-
-
-
-
 
 
