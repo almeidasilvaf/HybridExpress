@@ -288,11 +288,12 @@ partition_lineplots <- function(
             geom_line(color = palette[x], linewidth = 1) +
             geom_point(size = 2, color = "gray20") +
             theme_bw() +
-            labs(x = "", y = "", subtitle = subtitle) +
+            labs(x = NULL, y = NULL, subtitle = subtitle) +
             theme(
                 panel.grid.minor = element_blank(),
                 axis.text.x = element_text(size = 11, face = "bold"),
-                axis.text.y = element_blank()
+                axis.text.y = element_blank(),
+                axis.ticks.y = element_blank()
             ) +
             ylim(c(0, 4)) +
             scale_x_discrete(

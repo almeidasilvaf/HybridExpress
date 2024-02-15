@@ -180,7 +180,7 @@ plot_expression_partitions <- function(
 #' partition next to explanatory line plots depicting each partition.
 #'
 #' @importFrom ggplot2 geom_bar coord_flip scale_x_discrete geom_text
-#' scale_y_continuous
+#' scale_y_continuous unit
 #' @export
 #' @rdname plot_partition_frequencies
 #' @examples
@@ -224,6 +224,13 @@ plot_partition_frequencies <- function(
         partition_table, pal, add_n = FALSE, group_by = group_by,
         labels = labels
     )
+    
+    np <- ifelse(group_by == "Category", 10, 4)
+    p_line[seq_len(np)] <- lapply(p_line[seq_len(np)], function(x) {
+        p <- x +
+            theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
+        return(p)
+    })
     
     # Combine plots
     ncols <- ifelse(group_by == "Category", 2, 1)
