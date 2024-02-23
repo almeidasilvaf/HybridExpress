@@ -2,7 +2,6 @@
 # Load data ----
 data(se_chlamy)
 
-
 # Start tests ----
 test_that("add_midparent_expression() adds columns with midparent expression", {
     
@@ -16,6 +15,8 @@ test_that("add_midparent_expression() adds columns with midparent expression", {
     expect_true(any(grepl("midparent", colnames(new_se))))
     
     expect_error(add_midparent_expression(se_chlamy, method = "error"))
+    expect_error(add_midparent_expression(se_chlamy, coldata_column = "error"))
+    expect_error(add_midparent_expression(se_chlamy, parent1 = "error"))
 })
 
 test_that("add_size_factors() adds a column named 'sizeFactor' for DESeq2", {

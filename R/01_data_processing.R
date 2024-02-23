@@ -31,6 +31,9 @@ add_midparent_expression <- function(
         se, coldata_column = "Generation", parent1 = "P1", parent2 = "P2",
         method = "mean", weights = c(1, 1)
 ) {
+    
+    c <- check_coldata_column(se, coldata_column)
+    c <- check_coldata_levels(se, coldata_column, c(parent1, parent2))
 
     # Create a vector with samples from each parent - randomly sampled
     cdata <- as.data.frame(colData(se))
@@ -98,6 +101,7 @@ add_midparent_expression <- function(
 #' analyses.
 #'
 #' @importFrom DESeq2 DESeqDataSet estimateSizeFactors sizeFactors
+#' @importFrom SummarizedExperiment colData rowData SummarizedExperiment assay
 #' @importFrom methods as
 #' @export
 #' @rdname add_size_factors
@@ -132,9 +136,12 @@ add_size_factors <- function(
     DESeq2::sizeFactors(deseq) <- sf
     
     # Create SummarizedExperiment object from DESeqDataSet
-    final_se <- as(deseq, "SummarizedExperiment")
-    rownames(final_se) <- rownames(deseq)
-    
+    final_se <- SummarizedExperiment(
+        assays = list(counts = assay(deseq)),
+        colData = colData(deseq),
+        rowData = rowData(deseq)
+    )
+
     return(final_se)
 }
 

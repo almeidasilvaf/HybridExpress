@@ -286,6 +286,8 @@ pca_plot <- function(
         add_mean = FALSE, palette = NULL
 ) {
     
+    c <- check_coldata_column(se, color_by) & check_coldata_column(se, shape_by)
+    
     pc <- paste0("PC", PCs)
     pal <- ppal(palette, "pca")
     
@@ -325,10 +327,7 @@ pca_plot <- function(
     gpoint <- geom_point(aes(color = .data[[color_by]]), size = 3, alpha = 0.7)
     if(!is.null(shape_by)) {
         gpoint <- geom_point(
-            aes(
-                color = .data[[color_by]], 
-                shape = .data[[shape_by]]
-            ), 
+            aes(color = .data[[color_by]], shape = .data[[shape_by]]), 
             size = 3, alpha = 0.7
         )
     }

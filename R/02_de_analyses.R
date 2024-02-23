@@ -66,7 +66,9 @@ get_deg_list <- function(
         alpha = 0.01,
         ...
 ) {
-   
+    
+    c <- check_coldata_column(se, coldata_column)
+    c <- check_coldata_levels(se, coldata_column, c(parent1, parent2, offspring))
     ngenes <- nrow(se)
     
     # Create DESeq object
