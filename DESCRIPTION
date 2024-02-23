@@ -69,4 +69,4 @@ Config/testthat/edition: 3
 VignetteBuilder: knitr
 Depends: 
     R (>= 4.3.0)
-LazyData: true
+LazyData: false
