@@ -29,25 +29,30 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-The formation of hybrids through the fusion of distinct genomes and subsequent 
-genome duplication in cases of allopolyploidy represents a significant 
-evolutionary event with complex effects on cellular biology, particularly gene expression. The impact of such genome mergings and duplications on 
-transcription remain incompletely understood. To bridge this gap, we introduce __HybridExpress__, a comprehensive package designed to facilitate the 
-comparative transcriptomic analysis of hybrids and their progenitor species.
-__HybridExpress__ is tailored for RNA-Seq data derived from an 
-'experimental trio': the hybrid organism and its two parental species. 
+The formation of hybrids through the fusion of distinct genomes and 
+subsequent genome duplication (in cases of allopolyploidy) represents a 
+significant evolutionary event with complex effects on cellular biology, 
+particularly gene expression. The impact of such genome mergings and 
+duplications on transcription remain incompletely understood. To bridge this 
+gap, we introduce __HybridExpress__, a comprehensive package designed to 
+facilitate the comparative transcriptomic analysis of hybrids and their 
+progenitor species. __HybridExpress__ is tailored for RNA-Seq data derived 
+from a 'hybrid triplet': the hybrid organism and its two parental species. 
 This package offers a suite of intuitive functions enabling researchers to 
 perform differential expression analysis with ease, generate principal 
-component analysis (PCA) plots for visualizing gene expression trends, 
+component analysis (PCA) plots to visualize sample grouping, 
 categorize genes into 12 distinct expression pattern groups 
-(as in @rapp2009genomic), and conduct in-depth functional analyses.
+(as in @rapp2009genomic), and conduct functional analyses.
 Acknowledging the potential variability in cell and transcriptome size 
 across species and ploidy levels, __HybridExpress__ incorporates features for 
 rigorous normalization of count data. Specifically, it allows for the 
-integration of spike-in standards directly into the normalization process, 
+integration of spike-in controls directly into the normalization process, 
 ensuring accurate transcriptome size adjustments when these standards are 
 present in the RNA-Seq count data (see full methodology in @coate2023beyond). 
-By offering these capabilities, __HybridExpress__ provides a robust toolset for unraveling the intricate effects of genome doubling and merging on hybrid gene expression, paving the way for novel insights into the cellular biology of hybrid organisms.
+By offering these capabilities, __HybridExpress__ provides a robust 
+tool set for unraveling the intricate effects of genome doubling and 
+merging on gene expression, paving the way for novel insights into the 
+cellular biology of hybrid organisms.
 
 # Installation
 
