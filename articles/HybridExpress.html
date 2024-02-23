@@ -103,30 +103,32 @@ Belgium<br><small class="dont-index">Source: <a href="https://github.com/almeida
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
 <p>The formation of hybrids through the fusion of distinct genomes and
-subsequent genome duplication in cases of allopolyploidy represents a
+subsequent genome duplication (in cases of allopolyploidy) represents a
 significant evolutionary event with complex effects on cellular biology,
 particularly gene expression. The impact of such genome mergings and
 duplications on transcription remain incompletely understood. To bridge
 this gap, we introduce <strong>HybridExpress</strong>, a comprehensive
 package designed to facilitate the comparative transcriptomic analysis
 of hybrids and their progenitor species. <strong>HybridExpress</strong>
-is tailored for RNA-Seq data derived from an ‘experimental trio’: the
-hybrid organism and its two parental species. This package offers a
-suite of intuitive functions enabling researchers to perform
-differential expression analysis with ease, generate principal component
-analysis (PCA) plots for visualizing gene expression trends, categorize
-genes into 12 distinct expression pattern groups (as in <span class="citation">Rapp, Udall, and Wendel (2009)</span>), and conduct
-in-depth functional analyses. Acknowledging the potential variability in
-cell and transcriptome size across species and ploidy levels,
-<strong>HybridExpress</strong> incorporates features for rigorous
-normalization of count data. Specifically, it allows for the integration
-of spike-in standards directly into the normalization process, ensuring
-accurate transcriptome size adjustments when these standards are present
-in the RNA-Seq count data (see full methodology in <span class="citation">Coate (2023)</span>). By offering these capabilities,
-<strong>HybridExpress</strong> provides a robust toolset for unraveling
-the intricate effects of genome doubling and merging on hybrid gene
-expression, paving the way for novel insights into the cellular biology
-of hybrid organisms.</p>
+is tailored for RNA-Seq data derived from a ‘hybrid triplet’: the hybrid
+organism and its two parental species. This package offers a suite of
+intuitive functions enabling researchers to perform differential
+expression analysis with ease, generate principal component analysis
+(PCA) plots to visualize sample grouping, categorize genes into 12
+distinct expression pattern groups (as in <span class="citation">Rapp,
+Udall, and Wendel (2009)</span>), and conduct functional analyses.
+Acknowledging the potential variability in cell and transcriptome size
+across species and ploidy levels, <strong>HybridExpress</strong>
+incorporates features for rigorous normalization of count data.
+Specifically, it allows for the integration of spike-in controls
+directly into the normalization process, ensuring accurate transcriptome
+size adjustments when these standards are present in the RNA-Seq count
+data (see full methodology in <span class="citation">Coate
+(2023)</span>). By offering these capabilities,
+<strong>HybridExpress</strong> provides a robust tool set for unraveling
+the intricate effects of genome doubling and merging on gene expression,
+paving the way for novel insights into the cellular biology of hybrid
+organisms.</p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -1028,7 +1030,7 @@ package.</p>
 <p>This document was created under the following conditions:</p>
 <pre><code><span><span class="co">#&gt; <span style="color: #00BBBB; font-weight: bold;">─ Session info ───────────────────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt;  <span style="color: #555555; font-style: italic;">setting </span> <span style="color: #555555; font-style: italic;">value</span></span></span>
-<span><span class="co">#&gt;  version  R Under development (unstable) (2024-02-07 r85873)</span></span>
+<span><span class="co">#&gt;  version  R Under development (unstable) (2024-02-19 r85946)</span></span>
 <span><span class="co">#&gt;  os       Ubuntu 22.04.3 LTS</span></span>
 <span><span class="co">#&gt;  system   x86_64, linux-gnu</span></span>
 <span><span class="co">#&gt;  ui       X11</span></span>
@@ -1036,7 +1038,7 @@ package.</p>
 <span><span class="co">#&gt;  collate  en_US.UTF-8</span></span>
 <span><span class="co">#&gt;  ctype    en_US.UTF-8</span></span>
 <span><span class="co">#&gt;  tz       UTC</span></span>
-<span><span class="co">#&gt;  date     2024-02-15</span></span>
+<span><span class="co">#&gt;  date     2024-02-23</span></span>
 <span><span class="co">#&gt;  pandoc   3.1.1 @ /usr/local/bin/ (via rmarkdown)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB; font-weight: bold;">─ Packages ───────────────────────────────────────────────────────────────────</span></span></span>
@@ -1082,7 +1084,7 @@ package.</p>
 <span><span class="co">#&gt;  gtable                 0.3.4     <span style="color: #555555;">2023-08-21</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.4.0)</span></span></span>
 <span><span class="co">#&gt;  highr                  0.10      <span style="color: #555555;">2022-12-22</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.4.0)</span></span></span>
 <span><span class="co">#&gt;  htmltools              0.5.7     <span style="color: #555555;">2023-11-03</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.4.0)</span></span></span>
-<span><span class="co">#&gt;  HybridExpress        * 0.99.0    <span style="color: #555555;">2024-02-15</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">#&gt;  HybridExpress        * 0.99.0    <span style="color: #555555;">2024-02-23</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
 <span><span class="co">#&gt;  IRanges              * 2.37.1    <span style="color: #555555;">2024-01-19</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor 3.19 (R 4.4.0)</span></span></span>
 <span><span class="co">#&gt;  iterators              1.0.14    <span style="color: #555555;">2022-02-05</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.4.0)</span></span></span>
 <span><span class="co">#&gt;  jquerylib              0.1.4     <span style="color: #555555;">2021-04-26</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.4.0)</span></span></span>
